@@ -1,0 +1,290 @@
+{
+  "arc": {
+    "kind": "variable",
+    "name": "arc",
+    "description": "<p>This function is a curve: a function from a fraction t to a point. The points\nlie on the right half of the unit circle. They start at Point (0,1) when t is</p><ol start=\"0\"><li>When t is 0.5, they reach Point (1,0), when t is 1, they reach Point\n(0, -1).</li></ol>",
+    "type": "Curve"
+  },
+  "b_of": {
+    "kind": "variable",
+    "name": "b_of",
+    "description": "<p>Retrieves the blue component of a given Point.</p>",
+    "type": "(pt: Point) => number"
+  },
+  "connect_ends": {
+    "kind": "variable",
+    "name": "connect_ends",
+    "description": "<p>This function is a binary Curve operator: It takes two Curves as arguments\nand returns a new Curve. The two Curves are combined by using the full first\nCurve for the first portion of the result and by using the full second Curve\nfor the second portion of the result. The second Curve is translated such\nthat its point at fraction 0 is the same as the Point of the first Curve at\nfraction 1.</p>",
+    "type": "(curve1: Curve, curve2: Curve) => Curve"
+  },
+  "connect_rigidly": {
+    "kind": "variable",
+    "name": "connect_rigidly",
+    "description": "<p>This function is a binary Curve operator: It takes two Curves as arguments\nand returns a new Curve. The two Curves are combined by using the full first\nCurve for the first portion of the result and by using the full second Curve\nfor the second portion of the result. The second Curve is not changed, and\ntherefore there might be a big jump in the middle of the result Curve.</p>",
+    "type": "(curve1: Curve, curve2: Curve) => Curve"
+  },
+  "g_of": {
+    "kind": "variable",
+    "name": "g_of",
+    "description": "<p>Retrieves the green component of a given Point.</p>",
+    "type": "(pt: Point) => number"
+  },
+  "invert": {
+    "kind": "variable",
+    "name": "invert",
+    "description": "<p>This function is a Curve transformation: a function from a Curve to a Curve.\nThe points of the result Curve are the same points as the points of the\noriginal Curve, but in reverse: The result Curve applied to 0 is the original\nCurve applied to 1 and vice versa.</p>",
+    "type": "CurveTransformer"
+  },
+  "make_3D_color_point": {
+    "kind": "variable",
+    "name": "make_3D_color_point",
+    "description": "<p>Makes a 3D color Point with given x, y and z coordinates, and RGB values\nranging from 0 to 255. Any input lower than 0 for RGB will be rounded up to\n0, and any input higher than 255 will be rounded down to 255.</p>",
+    "type": "(x: number, y: number, z: number, r: number, g: number, b: number) => Point"
+  },
+  "make_3D_point": {
+    "kind": "variable",
+    "name": "make_3D_point",
+    "description": "<p>Makes a 3D Point with given x, y and z coordinates.</p>",
+    "type": "(x: number, y: number, z: number) => Point"
+  },
+  "make_color_point": {
+    "kind": "variable",
+    "name": "make_color_point",
+    "description": "<p>Makes a color Point with given x and y coordinates, and RGB values ranging\nfrom 0 to 255. Any input lower than 0 for RGB will be rounded up to 0, and\nany input higher than 255 will be rounded down to 255.</p>",
+    "type": "(x: number, y: number, r: number, g: number, b: number) => Point"
+  },
+  "make_point": {
+    "kind": "variable",
+    "name": "make_point",
+    "description": "<p>Makes a Point with given x and y coordinates.</p>",
+    "type": "(x: number, y: number) => Point"
+  },
+  "put_in_standard_position": {
+    "kind": "variable",
+    "name": "put_in_standard_position",
+    "description": "<p>This function is a Curve transformation: It takes a Curve as argument and\nreturns a new Curve, as follows. A Curve is in standard position if it\nstarts at (0,0) ends at (1,0). This function puts the given Curve in\nstandard position by rigidly translating it so its start Point is at the\norigin (0,0), then rotating it about the origin to put its endpoint on the\nx axis, then scaling it to put the endpoint at (1,0). Behavior is unspecified\non closed Curves where start-point equal end-point.</p>",
+    "type": "CurveTransformer"
+  },
+  "r_of": {
+    "kind": "variable",
+    "name": "r_of",
+    "description": "<p>Retrieves the red component of a given Point.</p>",
+    "type": "(pt: Point) => number"
+  },
+  "rotate_around_origin": {
+    "kind": "variable",
+    "name": "rotate_around_origin",
+    "description": "<p>This function an angle a in radians as parameter\nand returns a Curve transformation: a function that takes a Curve as argument\nand returns a new Curve, which is the original Curve rotated\nextrinsically with Euler angle a about the z axis.</p>",
+    "type": "(a: number) => CurveTransformer"
+  },
+  "scale": {
+    "kind": "variable",
+    "name": "scale",
+    "description": "<p>This function takes scaling factors <code>a</code>, <code>b</code> and\n<code>c</code>, as arguments and returns a\nCurve transformation that scales a given Curve by <code>a</code> in\nx-direction, <code>b</code> in y-direction and <code>c</code> in z-direction.</p>",
+    "type": "(x: number, y: number, z: number) => CurveTransformer"
+  },
+  "scale_proportional": {
+    "kind": "variable",
+    "name": "scale_proportional",
+    "description": "<p>This function takes a scaling factor s argument and returns a Curve\ntransformation that scales a given Curve by s in x, y and z direction.</p>",
+    "type": "(s: number) => CurveTransformer"
+  },
+  "translate": {
+    "kind": "variable",
+    "name": "translate",
+    "description": "<p>This function returns a Curve transformation: It takes an x-value x0, a\ny-value y0 and a z-value z0, as arguments and\nreturns a Curve transformation that takes a Curve as argument and returns a\nnew Curve, by translating the original by x0 in x-direction, y0 in\ny-direction and z0 in z-direction.</p>",
+    "type": "(x0: number, y0: number, z0: number) => CurveTransformer"
+  },
+  "unit_circle": {
+    "kind": "variable",
+    "name": "unit_circle",
+    "description": "<p>This function is a curve: a function from a fraction t to a point. The points\nlie on the unit circle. They start at Point (1,0) when t is 0. When t is\n0.25, they reach Point (0,1), when t is 0.5, they reach Point (-1, 0), etc.</p>",
+    "type": "Curve"
+  },
+  "unit_line": {
+    "kind": "variable",
+    "name": "unit_line",
+    "description": "<p>This function is a curve: a function from a fraction t to a point. The\nx-coordinate at fraction t is t, and the y-coordinate is 0.</p>",
+    "type": "Curve"
+  },
+  "unit_line_at": {
+    "kind": "variable",
+    "name": "unit_line_at",
+    "description": "<p>This function is a Curve generator: it takes a number and returns a\nhorizontal curve. The number is a y-coordinate, and the Curve generates only\npoints with the given y-coordinate.</p>",
+    "type": "(y: number) => Curve"
+  },
+  "x_of": {
+    "kind": "variable",
+    "name": "x_of",
+    "description": "<p>Retrieves the x-coordinate of a given Point.</p>",
+    "type": "(pt: Point) => number"
+  },
+  "y_of": {
+    "kind": "variable",
+    "name": "y_of",
+    "description": "<p>Retrieves the y-coordinate of a given Point.</p>",
+    "type": "(pt: Point) => number"
+  },
+  "z_of": {
+    "kind": "variable",
+    "name": "z_of",
+    "description": "<p>Retrieves the z-coordinate of a given Point.</p>",
+    "type": "(pt: Point) => number"
+  },
+  "animate_3D_curve": {
+    "kind": "variable",
+    "name": "animate_3D_curve",
+    "description": "<p>Create a animation of curves using a curve generating function.</p>",
+    "type": "(duration: number, fps: number, drawer: RenderFunction, func: CurveAnimation) => AnimatedCurve"
+  },
+  "animate_curve": {
+    "kind": "variable",
+    "name": "animate_curve",
+    "description": "<p>Create a animation of curves using a curve generating function.</p>",
+    "type": "(duration: number, fps: number, drawer: RenderFunction, func: CurveAnimation) => AnimatedCurve"
+  },
+  "draw_3D_connected": {
+    "kind": "function",
+    "name": "draw_3D_connected",
+    "description": "<p>Returns a function that turns a given 3D Curve into a Drawing, by sampling\nthe 3D Curve at <code>num</code> sample points and connecting each pair with\na line. The parts between (0,0,0) and (1,1,1) of the resulting Drawing are\nshown within the unit cube.</p>",
+    "params": [
+      [
+        "numPoints",
+        "number"
+      ]
+    ],
+    "retType": "RenderFunction"
+  },
+  "draw_3D_connected_full_view": {
+    "kind": "function",
+    "name": "draw_3D_connected_full_view",
+    "description": "<p>Returns a function that turns a given 3D Curve into a Drawing, by sampling\nthe 3D Curve at <code>num</code> sample points and connecting each pair with\na line. The Drawing is translated and stretched/shrunk to show the full\ncurve and maximize its width and height within the cube.</p>",
+    "params": [
+      [
+        "numPoints",
+        "number"
+      ]
+    ],
+    "retType": "RenderFunction"
+  },
+  "draw_3D_connected_full_view_proportional": {
+    "kind": "function",
+    "name": "draw_3D_connected_full_view_proportional",
+    "description": "<p>Returns a function that turns a given 3D Curve into a Drawing, by sampling\nthe 3D Curve at <code>num</code> sample points and connecting each pair with\na line. The Drawing is translated and scaled proportionally with its size\nmaximized to fit entirely inside the cube.</p>",
+    "params": [
+      [
+        "numPoints",
+        "number"
+      ]
+    ],
+    "retType": "RenderFunction"
+  },
+  "draw_3D_points": {
+    "kind": "function",
+    "name": "draw_3D_points",
+    "description": "<p>Returns a function that turns a given 3D Curve into a Drawing, by sampling\nthe 3D Curve at <code>num</code> sample points. The Drawing consists of\nisolated points, and does not connect them. The parts between (0,0,0)\nand (1,1,1) of the resulting Drawing are shown within the unit cube.</p>",
+    "params": [
+      [
+        "numPoints",
+        "number"
+      ]
+    ],
+    "retType": "RenderFunction"
+  },
+  "draw_3D_points_full_view": {
+    "kind": "function",
+    "name": "draw_3D_points_full_view",
+    "description": "<p>Returns a function that turns a given 3D Curve into a Drawing, by sampling\nthe 3D Curve at <code>num</code> sample points. The Drawing consists of\nisolated points, and does not connect them. The Drawing is translated and\nstretched/shrunk to maximize its size to fit entirely inside the cube.</p>",
+    "params": [
+      [
+        "numPoints",
+        "number"
+      ]
+    ],
+    "retType": "RenderFunction"
+  },
+  "draw_3D_points_full_view_proportional": {
+    "kind": "function",
+    "name": "draw_3D_points_full_view_proportional",
+    "description": "<p>Returns a function that turns a given 3D Curve into a Drawing, by sampling\nthe 3D Curve at <code>num</code> sample points. The Drawing consists of\nisolated points, and does not connect them. The Drawing is translated and\nscaled proportionally with its size maximized to fit entirely inside the cube.</p>",
+    "params": [
+      [
+        "numPoints",
+        "number"
+      ]
+    ],
+    "retType": "RenderFunction"
+  },
+  "draw_connected": {
+    "kind": "function",
+    "name": "draw_connected",
+    "description": "<p>Returns a function that turns a given Curve into a Drawing, by sampling the\nCurve at <code>num</code> sample points and connecting each pair with a line.\nThe parts between (0,0) and (1,1) of the resulting Drawing are shown in the window.</p>",
+    "params": [
+      [
+        "numPoints",
+        "number"
+      ]
+    ],
+    "retType": "RenderFunction"
+  },
+  "draw_connected_full_view": {
+    "kind": "function",
+    "name": "draw_connected_full_view",
+    "description": "<p>Returns a function that turns a given Curve into a Drawing, by sampling the\nCurve at <code>num</code> sample points and connecting each pair with a line. The Drawing is\ntranslated and stretched/shrunk to show the full curve and maximize its width\nand height, with some padding.</p>",
+    "params": [
+      [
+        "numPoints",
+        "number"
+      ]
+    ],
+    "retType": "RenderFunction"
+  },
+  "draw_connected_full_view_proportional": {
+    "kind": "function",
+    "name": "draw_connected_full_view_proportional",
+    "description": "<p>Returns a function that turns a given Curve into a Drawing, by sampling the\nCurve at <code>num</code> sample points and connecting each pair with a line. The Drawing\nis translated and scaled proportionally to show the full curve and maximize\nits size, with some padding.</p>",
+    "params": [
+      [
+        "numPoints",
+        "number"
+      ]
+    ],
+    "retType": "RenderFunction"
+  },
+  "draw_points": {
+    "kind": "function",
+    "name": "draw_points",
+    "description": "<p>Returns a function that turns a given Curve into a Drawing, by sampling the\nCurve at <code>num</code> sample points. The Drawing consists of isolated\npoints, and does not connect them. The parts between (0,0) and (1,1) of the\nresulting Drawing are shown in the window.</p>",
+    "params": [
+      [
+        "numPoints",
+        "number"
+      ]
+    ],
+    "retType": "RenderFunction"
+  },
+  "draw_points_full_view": {
+    "kind": "function",
+    "name": "draw_points_full_view",
+    "description": "<p>Returns a function that turns a given Curve into a Drawing, by sampling the\nCurve at <code>num</code> sample points. The Drawing consists of isolated\npoints, and does not connect them. The Drawing is translated and\nstretched/shrunk to show the full curve and maximize its width and height,\nwith some padding.</p>",
+    "params": [
+      [
+        "numPoints",
+        "number"
+      ]
+    ],
+    "retType": "RenderFunction"
+  },
+  "draw_points_full_view_proportional": {
+    "kind": "function",
+    "name": "draw_points_full_view_proportional",
+    "description": "<p>Returns a function that turns a given Curve into a Drawing, by sampling the\nCurve at <code>num</code> sample points. The Drawing consists of isolated\npoints, and does not connect them. The Drawing is translated and scaled\nproportionally with its size maximized to fit entirely inside the window,\nwith some padding.</p>",
+    "params": [
+      [
+        "numPoints",
+        "number"
+      ]
+    ],
+    "retType": "RenderFunction"
+  }
+}

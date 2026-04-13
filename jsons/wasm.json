@@ -1,0 +1,26 @@
+{
+  "wcompile": {
+    "kind": "function",
+    "name": "wcompile",
+    "description": "<p>Compile a (hopefully valid) WebAssembly Text module to binary.</p>",
+    "params": [
+      [
+        "program",
+        "string"
+      ]
+    ],
+    "retType": "number[]"
+  },
+  "wrun": {
+    "kind": "function",
+    "name": "wrun",
+    "description": "<p>Run a compiled WebAssembly Binary Buffer.</p>",
+    "params": [
+      [
+        "buffer",
+        "Uint8Array<ArrayBufferLike> | number[]"
+      ]
+    ],
+    "retType": "AlternatingLinkedList<string, ExportValue>"
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "entry": {
+    "kind": "function",
+    "name": "entry",
+    "description": "<p>Returns the entry of a given binary tree.</p>",
+    "params": [
+      [
+        "t",
+        "BinaryTree"
+      ]
+    ],
+    "retType": "any"
+  },
+  "is_empty_tree": {
+    "kind": "function",
+    "name": "is_empty_tree",
+    "description": "<p>Returns a boolean value, indicating whether the given\nvalue is an empty binary tree.</p>",
+    "params": [
+      [
+        "value",
+        "BinaryTree"
+      ]
+    ],
+    "retType": "boolean"
+  },
+  "is_tree": {
+    "kind": "function",
+    "name": "is_tree",
+    "description": "<p>Returns a boolean value, indicating whether the given\nvalue is a binary tree.</p>",
+    "params": [
+      [
+        "value",
+        "any"
+      ]
+    ],
+    "retType": "boolean"
+  },
+  "left_branch": {
+    "kind": "function",
+    "name": "left_branch",
+    "description": "<p>Returns the left branch of a given binary tree.</p>",
+    "params": [
+      [
+        "t",
+        "BinaryTree"
+      ]
+    ],
+    "retType": "BinaryTree"
+  },
+  "make_empty_tree": {
+    "kind": "function",
+    "name": "make_empty_tree",
+    "description": "<p>Returns an empty binary tree, represented by the empty list null</p>",
+    "params": [],
+    "retType": "BinaryTree"
+  },
+  "make_tree": {
+    "kind": "function",
+    "name": "make_tree",
+    "description": "<p>Returns a binary tree node composed of the specified left subtree, value and right subtree.</p>",
+    "params": [
+      [
+        "value",
+        "any"
+      ],
+      [
+        "left",
+        "BinaryTree"
+      ],
+      [
+        "right",
+        "BinaryTree"
+      ]
+    ],
+    "retType": "BinaryTree"
+  },
+  "right_branch": {
+    "kind": "function",
+    "name": "right_branch",
+    "description": "<p>Returns the right branch of a given binary tree.</p>",
+    "params": [
+      [
+        "t",
+        "BinaryTree"
+      ]
+    ],
+    "retType": "BinaryTree"
+  }
+}

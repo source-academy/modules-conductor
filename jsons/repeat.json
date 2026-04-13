@@ -1,0 +1,42 @@
+{
+  "repeat": {
+    "kind": "function",
+    "name": "repeat",
+    "description": "<p>Returns a new function which when applied to an argument, has the same effect\nas applying the specified function to the same argument n times.</p>",
+    "params": [
+      [
+        "func",
+        "Function"
+      ],
+      [
+        "n",
+        "number"
+      ]
+    ],
+    "retType": "Function"
+  },
+  "twice": {
+    "kind": "function",
+    "name": "twice",
+    "description": "<p>Returns a new function which when applied to an argument, has the same effect\nas applying the specified function to the same argument 2 times.</p>",
+    "params": [
+      [
+        "func",
+        "Function"
+      ]
+    ],
+    "retType": "Function"
+  },
+  "thrice": {
+    "kind": "function",
+    "name": "thrice",
+    "description": "<p>Returns a new function which when applied to an argument, has the same effect\nas applying the specified function to the same argument 3 times.</p>",
+    "params": [
+      [
+        "func",
+        "Function"
+      ]
+    ],
+    "retType": "Function"
+  }
+}

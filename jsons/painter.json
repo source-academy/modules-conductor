@@ -1,0 +1,30 @@
+{
+  "draw_line": {
+    "kind": "function",
+    "name": "draw_line",
+    "description": "<p>Draw a line from v_start to v_end</p>",
+    "params": [
+      [
+        "v_start",
+        "number[]"
+      ],
+      [
+        "v_end",
+        "number[]"
+      ]
+    ],
+    "retType": "void"
+  },
+  "display_painter": {
+    "kind": "function",
+    "name": "display_painter",
+    "description": "<p>Returns a function that turns a given Frame into a Drawing, given the\npainter</p>",
+    "params": [
+      [
+        "painter",
+        "(frame: Frame) => void"
+      ]
+    ],
+    "retType": "(frame: Frame) => void"
+  }
+}
