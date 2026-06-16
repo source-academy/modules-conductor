@@ -203,7 +203,7 @@
         "number"
       ]
     ],
-    "retType": "() => () => Sound"
+    "retType": "Object"
   },
   "record_for": {
     "kind": "function",
@@ -219,7 +219,7 @@
         "number"
       ]
     ],
-    "retType": "() => Sound"
+    "retType": "Object"
   },
   "consecutively": {
     "kind": "function",

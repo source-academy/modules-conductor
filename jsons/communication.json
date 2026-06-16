@@ -58,7 +58,7 @@
       ],
       [
         "callback",
-        "(state: any) => void"
+        "Object"
       ]
     ],
     "retType": "void"
@@ -120,7 +120,7 @@
       ],
       [
         "func",
-        "(args: any[]) => any"
+        "Object"
       ]
     ],
     "retType": "void"
@@ -144,7 +144,7 @@
       ],
       [
         "callback",
-        "(args: any[]) => void"
+        "Object"
       ]
     ],
     "retType": "void"

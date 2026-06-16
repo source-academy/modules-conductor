@@ -6,10 +6,10 @@
     "params": [
       [
         "evalFunc",
-        "(code: string) => any"
+        "Object"
       ]
     ],
-    "retType": "{ toReplString: () => string }"
+    "retType": "Object"
   },
   "repl_display": {
     "kind": "function",

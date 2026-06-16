@@ -62,7 +62,7 @@
     "params": [
       [
         "fn",
-        "(bodies: CelestialBody[]) => Vector3[]"
+        "Object"
       ]
     ],
     "retType": "Force"
@@ -110,7 +110,7 @@
     "params": [
       [
         "fn",
-        "(deltaT: number, prevState: State, currState: State) => State"
+        "Object"
       ]
     ],
     "retType": "LambdaSim"
@@ -269,7 +269,7 @@
     "params": [
       [
         "fn",
-        "(state: State) => State"
+        "Object"
       ]
     ],
     "retType": "LambdaTransformation"

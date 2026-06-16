@@ -4,7 +4,7 @@
     "name": "init",
     "description": "<p>No description available</p>",
     "params": [],
-    "retType": "{ toReplString: () => string; get_memory_size: () => number; get_memory_heap: () => MemoryHeaps; get_tags: () => number[]; get_types: () => string[]; get_column_size: () => number; get_row_size: () => number; get_memory_matrix: () => MemoryHeaps; get_flips: () => number[]; get_slots: () => number[]; get_command: () => CommandHeapObject[]; get_unmarked: () => number; get_marked: () => number; get_roots: () => number[] }"
+    "retType": "Object"
   },
   "initialize_memory": {
     "kind": "function",

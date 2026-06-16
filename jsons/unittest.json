@@ -18,7 +18,7 @@
     "params": [
       [
         "pred",
-        "() => boolean"
+        "Object"
       ]
     ],
     "retType": "void"
@@ -210,7 +210,7 @@
     "params": [
       [
         "fn",
-        "(args: any[]) => any"
+        "Object"
       ]
     ],
     "retType": "MockedFunction"

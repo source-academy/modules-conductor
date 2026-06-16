@@ -3,7 +3,7 @@
     "kind": "variable",
     "name": "ToneMatrix",
     "description": "<p>Imported functions</p>",
-    "type": "{ initialise_matrix: ($container: HTMLElement) => void; clear_matrix: () => void; randomise_matrix: () => void; bindMatrixButtons: () => void }"
+    "type": "Object"
   },
   "get_matrix": {
     "kind": "function",

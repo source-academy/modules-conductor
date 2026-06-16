@@ -212,7 +212,7 @@
         "number"
       ]
     ],
-    "retType": "() => SoundPromise"
+    "retType": "Object"
   },
   "record_for": {
     "kind": "function",

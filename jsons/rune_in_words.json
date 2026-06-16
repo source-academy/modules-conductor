@@ -364,7 +364,7 @@
       ],
       [
         "pattern",
-        "(a: string) => string"
+        "Object"
       ],
       [
         "initial",

@@ -22,9 +22,9 @@
     "params": [
       [
         "painter",
-        "(frame: Frame) => void"
+        "Object"
       ]
     ],
-    "retType": "(frame: Frame) => void"
+    "retType": "Object"
   }
 }

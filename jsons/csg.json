@@ -412,7 +412,7 @@
         "Shape"
       ]
     ],
-    "retType": "(axis: string, minMax: string) => number"
+    "retType": "Object"
   },
   "rgb": {
     "kind": "function",

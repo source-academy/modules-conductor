@@ -340,7 +340,7 @@
       ],
       [
         "pattern",
-        "(a: Rune) => Rune"
+        "Object"
       ],
       [
         "initial",
