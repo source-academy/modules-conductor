@@ -30,13 +30,22 @@ export default require => {
     if (typeof require !== "undefined") return require.apply(this, arguments);
     throw Error('Dynamic require of "' + x + '" is not supported');
   });
-  var __esm = (fn, res) => function __init() {
-    return (fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res);
+  var __esm = (fn, res, err) => function __init() {
+    if (err) throw err[0];
+    try {
+      return (fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res);
+    } catch (e) {
+      throw (err = [e], e);
+    }
   };
   var __commonJS = (cb, mod) => function __require2() {
-    return (mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = {
-      exports: {}
-    }).exports, mod), mod.exports);
+    try {
+      return (mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = {
+        exports: {}
+      }).exports, mod), mod.exports);
+    } catch (e) {
+      throw (mod = 0, e);
+    }
   };
   var __export = (target, all) => {
     for (var name in all) __defProp(target, name, {
@@ -11935,6 +11944,9 @@ export default require => {
   init_define_process();
   init_define_process();
   var import_core4 = __toESM(require_dist(), 1);
+  init_define_process();
+  var import_rttcErrors = __require("js-slang/dist/errors/rttcErrors");
+  var import_base = __require("js-slang/dist/errors/base");
   var import_context = __toESM(__require("js-slang/context"), 1);
   init_define_process();
   var import_core2 = __toESM(require_dist(), 1);
@@ -12174,8 +12186,13 @@ export default require => {
     }
   };
   var world = null;
-  var NO_WORLD = new Error("Please call set_gravity first!");
-  var MULTIPLE_WORLDS = new Error("You may only call set_gravity once!");
+  var NO_WORLD = "Please call set_gravity first!";
+  var MULTIPLE_WORLDS = "You may only call set_gravity once!";
+  function throwIfNoWorld(world2, func_name) {
+    if (!world2) {
+      throw new import_base.GeneralRuntimeError(`${func_name}: ${NO_WORLD}`);
+    }
+  }
   function make_vector(x, y) {
     return new Vector2(x, y);
   }
@@ -12190,7 +12207,7 @@ export default require => {
   }
   function set_gravity(v) {
     if (world) {
-      throw MULTIPLE_WORLDS;
+      throw new import_base.GeneralRuntimeError(`${set_gravity.name}: ${MULTIPLE_WORLDS}`);
     }
     world = new PhysicsWorld();
     import_context.default.moduleContexts.physics_2d.state = {
@@ -12199,51 +12216,37 @@ export default require => {
     world.setGravity(v);
   }
   function make_ground(height, friction) {
-    if (!world) {
-      throw NO_WORLD;
-    }
+    throwIfNoWorld(world, make_ground.name);
     world.makeGround(height, friction);
   }
   function add_wall(pos, rot, size) {
-    if (!world) {
-      throw NO_WORLD;
-    }
+    throwIfNoWorld(world, add_wall.name);
     return world.addObject(new PhysicsObject(pos, rot, new import_core4.b2PolygonShape().SetAsBox(size.x / 2, size.y / 2), true, world));
   }
   function add_box_object(pos, rot, velc, size, isStatic) {
-    if (!world) {
-      throw NO_WORLD;
-    }
+    throwIfNoWorld(world, add_box_object.name);
     const newObj = new PhysicsObject(pos, rot, new import_core4.b2PolygonShape().SetAsBox(size.x / 2, size.y / 2), isStatic, world);
     newObj.setVelocity(velc);
     return world.addObject(newObj);
   }
   function add_circle_object(pos, rot, velc, radius, isStatic) {
-    if (!world) {
-      throw NO_WORLD;
-    }
+    throwIfNoWorld(world, add_circle_object.name);
     const newObj = new PhysicsObject(pos, rot, new import_core4.b2CircleShape().Set(new Vector2(), radius), isStatic, world);
     newObj.setVelocity(velc);
     return world.addObject(newObj);
   }
   function add_triangle_object(pos, rot, velc, base, height, isStatic) {
-    if (!world) {
-      throw NO_WORLD;
-    }
+    throwIfNoWorld(world, add_triangle_object.name);
     const newObj = new PhysicsObject(pos, rot, new import_core4.b2PolygonShape().Set([new Vector2(-base / 2, -height / 2), new Vector2(base / 2, -height / 2), new Vector2(0, height / 2)]), isStatic, world);
     newObj.setVelocity(velc);
     return world.addObject(newObj);
   }
   function update_world(dt) {
-    if (!world) {
-      throw NO_WORLD;
-    }
+    throwIfNoWorld(world, update_world.name);
     world.update(dt);
   }
   function simulate_world(total_time) {
-    if (!world) {
-      throw NO_WORLD;
-    }
+    throwIfNoWorld(world, simulate_world.name);
     world.simulate(total_time);
   }
   function get_position(obj) {
@@ -12274,9 +12277,7 @@ export default require => {
     obj.setDensity(density);
   }
   function scale_size(obj, scale) {
-    if (!world) {
-      throw NO_WORLD;
-    }
+    throwIfNoWorld(world, scale_size.name);
     obj.scale_size(scale);
   }
   function set_friction(obj, friction) {
@@ -12286,9 +12287,7 @@ export default require => {
     return obj1.isTouching(obj2);
   }
   function impact_start_time(obj1, obj2) {
-    if (!world) {
-      throw NO_WORLD;
-    }
+    throwIfNoWorld(world, impact_start_time.name);
     return world.findImpact(obj1, obj2);
   }
   function apply_force_to_center(force, obj) {

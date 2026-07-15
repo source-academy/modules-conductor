@@ -33,21 +33,17 @@ export default require => {
   });
   var import_jsx_runtime = __require("react/jsx-runtime");
   var import_core = __require("@blueprintjs/core");
-  var import_icons = __require("@blueprintjs/icons");
   function clamp(value, bound1, bound2) {
-    if (bound2 == null) {
-      return Math.min(value, bound1);
-    }
+    if (bound2 == null) return Math.min(value, bound1);
     return Math.min(Math.max(value, bound1), bound2);
   }
   var import_react = __require("react");
   function MultiItemDisplay(props) {
     const [currentStep, setCurrentStep] = (0, import_react.useState)(0);
     function changeStep(newIndex) {
+      var _a;
       setCurrentStep(newIndex);
-      if (props.onStepChange) {
-        props.onStepChange(newIndex, currentStep);
-      }
+      (_a = props.onStepChange) === null || _a === void 0 ? void 0 : _a.call(props, newIndex, currentStep);
     }
     const [stepEditorValue, setStepEditorValue] = (0, import_react.useState)("1");
     const [stepEditorFocused, setStepEditorFocused] = (0, import_react.useState)(false);
@@ -77,7 +73,7 @@ export default require => {
           tabIndex: 0,
           large: true,
           outlined: true,
-          icon: (0, import_jsx_runtime.jsx)(import_icons.ArrowLeft, {}),
+          icon: "arrow-left",
           onClick: () => {
             changeStep(currentStep - 1);
             setStepEditorValue(currentStep.toString());
@@ -85,7 +81,7 @@ export default require => {
           disabled: currentStep === 0,
           children: "Previous"
         }), (0, import_jsx_runtime.jsx)("h3", {
-          className: "bp3-text-large",
+          className: "bp6-text-large",
           children: (0, import_jsx_runtime.jsxs)("div", {
             style: {
               display: "flex",
@@ -140,7 +136,7 @@ export default require => {
           },
           large: true,
           outlined: true,
-          icon: (0, import_jsx_runtime.jsx)(import_icons.ArrowRight, {}),
+          icon: "arrow-right",
           tabIndex: 0,
           onClick: () => {
             changeStep(currentStep + 1);

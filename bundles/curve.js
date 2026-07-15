@@ -45,6 +45,7 @@ export default require => {
     animate_curve: () => animate_curve,
     arc: () => arc,
     b_of: () => b_of,
+    compose: () => compose,
     connect_ends: () => connect_ends,
     connect_rigidly: () => connect_rigidly,
     draw_3D_connected: () => draw_3D_connected,
@@ -67,7 +68,9 @@ export default require => {
     make_point: () => make_point,
     put_in_standard_position: () => put_in_standard_position,
     r_of: () => r_of,
+    rainbow: () => rainbow,
     rotate_around_origin: () => rotate_around_origin,
+    rotate_around_origin_3D: () => rotate_around_origin_3D,
     scale: () => scale3,
     scale_proportional: () => scale_proportional,
     translate: () => translate2,
@@ -79,10 +82,32 @@ export default require => {
     y_of: () => y_of,
     z_of: () => z_of
   });
-  function clamp(value, bound1, bound2) {
-    if (bound2 == null) {
-      return Math.min(value, bound1);
+  var import_rttcErrors = __require("js-slang/dist/errors/rttcErrors");
+  var import_base = __require("js-slang/dist/errors/base");
+  var import_rttc = __require("js-slang/dist/utils/rttc");
+  var import_operators = __require("js-slang/dist/utils/operators");
+  function hueToRgb(hue) {
+    const h = (hue % 1 + 1) % 1;
+    const i = Math.floor(h * 6);
+    const f = h * 6 - i;
+    const q = 1 - f;
+    switch (i) {
+      case 0:
+        return [255, Math.floor(f * 255), 0];
+      case 1:
+        return [Math.floor(q * 255), 255, 0];
+      case 2:
+        return [0, 255, Math.floor(f * 255)];
+      case 3:
+        return [0, Math.floor(q * 255), 255];
+      case 4:
+        return [Math.floor(f * 255), 0, 255];
+      default:
+        return [255, 0, Math.floor(q * 255)];
     }
+  }
+  function clamp(value, bound1, bound2) {
+    if (bound2 == null) return Math.min(value, bound1);
     return Math.min(Math.max(value, bound1), bound2);
   }
   var EPSILON = 1e-6;
@@ -1802,6 +1827,7 @@ export default require => {
       return a;
     };
   })();
+  var import_operators2 = __require("js-slang/dist/utils/operators");
   var import_stringify = __require("js-slang/dist/utils/stringify");
   var vsS = `
 attribute vec4 aFragColor;
@@ -1825,7 +1851,7 @@ void main() {
   function loadShader(gl, type, source) {
     const shader = gl.createShader(type);
     if (!shader) {
-      throw new Error("WebGLShader not available.");
+      throw new import_base.InternalRuntimeError("WebGLShader not available.");
     }
     gl.shaderSource(shader, source);
     gl.compileShader(shader);
@@ -1836,7 +1862,7 @@ void main() {
     const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
     const shaderProgram = gl.createProgram();
     if (!shaderProgram) {
-      throw new Error("Unable to initialize the shader program.");
+      throw new import_base.InternalRuntimeError("Unable to initialize the shader program.");
     }
     gl.attachShader(shaderProgram, vertexShader);
     gl.attachShader(shaderProgram, fragmentShader);
@@ -1864,7 +1890,7 @@ void main() {
       this.init = canvas => {
         this.renderingContext = canvas.getContext("webgl");
         if (!this.renderingContext) {
-          throw new Error("Rendering context cannot be null.");
+          throw new import_base.InternalRuntimeError("Rendering context cannot be null.");
         }
         const cubeBuffer = this.renderingContext.createBuffer();
         this.renderingContext.bindBuffer(this.renderingContext.ARRAY_BUFFER, cubeBuffer);
@@ -1965,9 +1991,9 @@ void main() {
     let min_z = Infinity;
     let max_z = -Infinity;
     for (let i = 0; i <= numPoints; i += 1) {
-      const point = func(i / numPoints);
+      const point = (0, import_operators2.callWithoutMetadata)(func, i / numPoints);
       if (!(point instanceof Point)) {
-        throw new Error(`Expected curve to return a point, got '${(0, import_stringify.stringify)(point)}' at t=${i / numPoints}`);
+        throw new import_base.GeneralRuntimeError(`Expected curve to return a point, got '${(0, import_stringify.stringify)(point)}' at t=${i / numPoints}`);
       }
       const x = point.x * 2 - 1;
       const y = point.y * 2 - 1;
@@ -2154,14 +2180,55 @@ ${variableDeclaration2};`);
   var type_map = typeMapCreator.type_map;
   function throwIfNotPoint(obj, func_name) {
     if (!(obj instanceof Point)) {
-      throw new Error(`${func_name} expects a point as argument`);
+      throw new import_rttcErrors.InvalidParameterTypeError("Point", obj, func_name);
     }
   }
-  var CurveFunctions = class {
+  function throwIfNotCurve(obj, func_name, param_name) {
+    (0, import_rttc.assertFunctionOfLength)(obj, 1, func_name, "Curve", param_name);
+  }
+  function defineCurveTransformer(f, name) {
+    const transformer = curve => {
+      throwIfNotCurve(curve, name != null ? name : "CurveTransformer");
+      return f(t => (0, import_operators.callWithoutMetadata)(curve, t));
+    };
+    transformer.toReplString = () => "<CurveTransformer>";
+    if (name !== void 0) {
+      Object.defineProperty(transformer, "name", {
+        value: name
+      });
+    }
+    return transformer;
+  }
+  var _CurveFunctions = class _CurveFunctions {
     static make_point(x, y) {
+      (0, import_rttc.assertNumberWithinRange)(x, {
+        func_name: _CurveFunctions.make_point.name,
+        param_name: "x",
+        integer: false
+      });
+      (0, import_rttc.assertNumberWithinRange)(y, {
+        func_name: _CurveFunctions.make_point.name,
+        param_name: "y",
+        integer: false
+      });
       return new Point(x, y, 0, [0, 0, 0, 1]);
     }
     static make_3D_point(x, y, z) {
+      (0, import_rttc.assertNumberWithinRange)(x, {
+        func_name: _CurveFunctions.make_3D_point.name,
+        param_name: "x",
+        integer: false
+      });
+      (0, import_rttc.assertNumberWithinRange)(y, {
+        func_name: _CurveFunctions.make_3D_point.name,
+        param_name: "y",
+        integer: false
+      });
+      (0, import_rttc.assertNumberWithinRange)(z, {
+        func_name: _CurveFunctions.make_3D_point.name,
+        param_name: "z",
+        integer: false
+      });
       return new Point(x, y, z, [0, 0, 0, 1]);
     }
     static make_color_point(x, y, r, g, b) {
@@ -2177,30 +2244,75 @@ ${variableDeclaration2};`);
       return new Point(x, y, z, [r / 255, g / 255, b / 255, 1]);
     }
     static connect_ends(curve1, curve2) {
-      const startPointOfCurve2 = curve2(0);
-      const endPointOfCurve1 = curve1(1);
+      throwIfNotCurve(curve1, _CurveFunctions.connect_ends.name, "curve1");
+      throwIfNotCurve(curve2, _CurveFunctions.connect_ends.name, "curve2");
+      const startPointOfCurve2 = (0, import_operators.callWithoutMetadata)(curve2, 0);
+      const endPointOfCurve1 = (0, import_operators.callWithoutMetadata)(curve1, 1);
       return connect_rigidly(curve1, translate2(x_of(endPointOfCurve1) - x_of(startPointOfCurve2), y_of(endPointOfCurve1) - y_of(startPointOfCurve2), z_of(endPointOfCurve1) - z_of(startPointOfCurve2))(curve2));
     }
     static connect_rigidly(curve1, curve2) {
-      return t => t < 1 / 2 ? curve1(2 * t) : curve2(2 * t - 1);
+      throwIfNotCurve(curve1, _CurveFunctions.connect_rigidly.name, "curve1");
+      throwIfNotCurve(curve2, _CurveFunctions.connect_rigidly.name, "curve2");
+      const c1 = t => (0, import_operators.callWithoutMetadata)(curve1, t);
+      const c2 = t => (0, import_operators.callWithoutMetadata)(curve2, t);
+      return t => t < 0.5 ? c1(2 * t) : c2(2 * t - 1);
     }
     static translate(x0, y0, z0) {
-      return curve => t => {
-        const ct = curve(t);
-        return new Point(x0 + ct.x, y0 + ct.y, z0 + ct.z, [ct.color[0], ct.color[1], ct.color[2], 1]);
-      };
+      (0, import_rttc.assertNumberWithinRange)(x0, {
+        func_name: _CurveFunctions.translate.name,
+        param_name: "x0",
+        integer: false
+      });
+      (0, import_rttc.assertNumberWithinRange)(y0, {
+        func_name: _CurveFunctions.translate.name,
+        param_name: "y0",
+        integer: false
+      });
+      (0, import_rttc.assertNumberWithinRange)(z0, {
+        func_name: _CurveFunctions.translate.name,
+        param_name: "z0",
+        integer: false
+      });
+      return defineCurveTransformer(curve => t => {
+        const pt = curve(t);
+        return make_3D_color_point(x0 + x_of(pt), y0 + y_of(pt), z0 + z_of(pt), r_of(pt), g_of(pt), b_of(pt));
+      });
+    }
+    static rainbow(repeats, phase) {
+      (0, import_rttc.assertNumberWithinRange)(repeats, _CurveFunctions.rainbow.name, 0, void 0, false, "repeats");
+      (0, import_rttc.assertNumberWithinRange)(phase, _CurveFunctions.rainbow.name, void 0, void 0, false, "phase");
+      return defineCurveTransformer(curve => t => {
+        const pt = curve(t);
+        const [r, g, b] = hueToRgb((t * repeats + phase) % 1);
+        return make_3D_color_point(x_of(pt), y_of(pt), z_of(pt), r, g, b);
+      }, "rainbow");
     }
     static rotate_around_origin_3D(a, b, c) {
+      (0, import_rttc.assertNumberWithinRange)(a, {
+        func_name: _CurveFunctions.rotate_around_origin_3D.name,
+        integer: false,
+        param_name: "a"
+      });
       const cthx = Math.cos(a);
       const sthx = Math.sin(a);
+      (0, import_rttc.assertNumberWithinRange)(b, {
+        func_name: _CurveFunctions.rotate_around_origin_3D.name,
+        integer: false,
+        param_name: "b"
+      });
       const cthy = Math.cos(b);
       const sthy = Math.sin(b);
+      (0, import_rttc.assertNumberWithinRange)(c, {
+        func_name: _CurveFunctions.rotate_around_origin_3D.name,
+        integer: false,
+        param_name: "c"
+      });
       const cthz = Math.cos(c);
       const sthz = Math.sin(c);
-      return curve => t => {
-        const ct = curve(t);
-        const coord = [ct.x, ct.y, ct.z];
-        const mat = [[cthz * cthy, cthz * sthy * sthx - sthz * cthx, cthz * sthy * cthx + sthz * sthx], [sthz * cthy, sthz * sthy * sthx + cthz * cthx, sthz * sthy * cthx - cthz * sthx], [-sthy, cthy * sthx, cthy * cthx]];
+      const mat = [[cthz * cthy, cthz * sthy * sthx - sthz * cthx, cthz * sthy * cthx + sthz * sthx], [sthz * cthy, sthz * sthy * sthx + cthz * cthx, sthz * sthy * cthx - cthz * sthx], [-sthy, cthy * sthx, cthy * cthx]];
+      return defineCurveTransformer(curve => t => {
+        const pt = curve(t);
+        const coord = [pt.x, pt.y, pt.z];
         let xf = 0;
         let yf = 0;
         let zf = 0;
@@ -2209,22 +2321,43 @@ ${variableDeclaration2};`);
           yf += mat[1][i] * coord[i];
           zf += mat[2][i] * coord[i];
         }
-        return new Point(xf, yf, zf, [ct.color[0], ct.color[1], ct.color[2], 1]);
-      };
+        return make_3D_color_point(xf, yf, zf, r_of(pt), g_of(pt), z_of(pt));
+      });
     }
     static rotate_around_origin(a) {
+      (0, import_rttc.assertNumberWithinRange)(a, {
+        func_name: _CurveFunctions.rotate_around_origin.name,
+        integer: false
+      });
       const cth = Math.cos(a);
       const sth = Math.sin(a);
-      return curve => t => {
-        const ct = curve(t);
-        return new Point(cth * ct.x - sth * ct.y, sth * ct.x + cth * ct.y, ct.z, [ct.color[0], ct.color[1], ct.color[2], 1]);
-      };
+      return defineCurveTransformer(curve => t => {
+        const pt = curve(t);
+        const pt_x = x_of(pt);
+        const pt_y = y_of(pt);
+        return make_3D_color_point(cth * pt_x - sth * pt_y, sth * pt_x + cth * pt_y, z_of(pt), r_of(pt), g_of(pt), b_of(pt));
+      });
     }
     static scale(x, y, z) {
-      return curve => t => {
-        const ct = curve(t);
-        return new Point(x * ct.x, y * ct.y, z * ct.z, [ct.color[0], ct.color[1], ct.color[2], 1]);
-      };
+      (0, import_rttc.assertNumberWithinRange)(x, {
+        func_name: _CurveFunctions.scale.name,
+        param_name: "x",
+        integer: false
+      });
+      (0, import_rttc.assertNumberWithinRange)(y, {
+        func_name: _CurveFunctions.scale.name,
+        param_name: "y",
+        integer: false
+      });
+      (0, import_rttc.assertNumberWithinRange)(z, {
+        func_name: _CurveFunctions.scale.name,
+        param_name: "z",
+        integer: false
+      });
+      return defineCurveTransformer(curve => t => {
+        const pt = curve(t);
+        return make_3D_color_point(x * x_of(pt), y * y_of(pt), z * z_of(pt), r_of(pt), g_of(pt), b_of(pt));
+      });
     }
     static scale_proportional(s) {
       return scale3(s, s, s);
@@ -2254,11 +2387,15 @@ ${variableDeclaration2};`);
       return Math.floor(pt.color[2] * 255);
     }
     static unit_line_at(y) {
+      (0, import_rttc.assertNumberWithinRange)(y, {
+        func_name: _CurveFunctions.unit_line_at.name,
+        integer: false
+      });
       return t => make_point(t, y);
     }
   };
-  CurveFunctions.invert = original => t => original(1 - t);
-  CurveFunctions.put_in_standard_position = curve => {
+  _CurveFunctions.invert = defineCurveTransformer(curve => t => curve(1 - t), "invert");
+  _CurveFunctions.put_in_standard_position = defineCurveTransformer(curve => {
     const start_point = curve(0);
     const curve_started_at_origin = translate2(-x_of(start_point), -y_of(start_point), 0)(curve);
     const new_end_point = curve_started_at_origin(1);
@@ -2266,37 +2403,43 @@ ${variableDeclaration2};`);
     const curve_ended_at_x_axis = rotate_around_origin_3D(0, 0, -theta)(curve_started_at_origin);
     const end_point_on_x_axis = x_of(curve_ended_at_x_axis(1));
     return scale_proportional(1 / end_point_on_x_axis)(curve_ended_at_x_axis);
-  };
-  CurveFunctions.unit_circle = t => {
-    return make_point(Math.cos(2 * Math.PI * t), Math.sin(2 * Math.PI * t));
-  };
-  CurveFunctions.unit_line = t => make_point(t, 0);
-  CurveFunctions.arc = t => {
-    return make_point(Math.sin(Math.PI * t), Math.cos(Math.PI * t));
-  };
-  __decorateClass([functionDeclaration("x: number, y: number", "Point")], CurveFunctions, "make_point", 1);
-  __decorateClass([functionDeclaration("x: number, y: number, z: number", "Point")], CurveFunctions, "make_3D_point", 1);
-  __decorateClass([functionDeclaration("x: number, y: number, r: number, g: number, b: number", "Point")], CurveFunctions, "make_color_point", 1);
-  __decorateClass([functionDeclaration("x: number, y: number, z: number, r: number, g: number, b: number", "Point")], CurveFunctions, "make_3D_color_point", 1);
-  __decorateClass([functionDeclaration("curve1: Curve, curve2: Curve", "Curve")], CurveFunctions, "connect_ends", 1);
-  __decorateClass([functionDeclaration("curve1: Curve, curve2: Curve", "Curve")], CurveFunctions, "connect_rigidly", 1);
-  __decorateClass([functionDeclaration("x0: number, y0: number, z0: number", "(c: Curve) => Curve")], CurveFunctions, "translate", 1);
-  __decorateClass([functionDeclaration("curve: Curve", "Curve")], CurveFunctions, "invert", 2);
-  __decorateClass([functionDeclaration("curve: Curve", "Curve")], CurveFunctions, "put_in_standard_position", 2);
-  __decorateClass([functionDeclaration("a: number, b: number, c: number", "(c: Curve) => Curve")], CurveFunctions, "rotate_around_origin_3D", 1);
-  __decorateClass([functionDeclaration("a: number", "(c: Curve) => Curve")], CurveFunctions, "rotate_around_origin", 1);
-  __decorateClass([functionDeclaration("x: number, y: number, z: number", "(c: Curve) => Curve")], CurveFunctions, "scale", 1);
-  __decorateClass([functionDeclaration("s: number", "(c: Curve) => Curve")], CurveFunctions, "scale_proportional", 1);
-  __decorateClass([functionDeclaration("p: Point", "number")], CurveFunctions, "x_of", 1);
-  __decorateClass([functionDeclaration("p: Point", "number")], CurveFunctions, "y_of", 1);
-  __decorateClass([functionDeclaration("p: Point", "number")], CurveFunctions, "z_of", 1);
-  __decorateClass([functionDeclaration("p: Point", "number")], CurveFunctions, "r_of", 1);
-  __decorateClass([functionDeclaration("p: Point", "number")], CurveFunctions, "g_of", 1);
-  __decorateClass([functionDeclaration("p: Point", "number")], CurveFunctions, "b_of", 1);
-  __decorateClass([functionDeclaration("t: number", "Point")], CurveFunctions, "unit_circle", 2);
-  __decorateClass([functionDeclaration("t: number", "Point")], CurveFunctions, "unit_line", 2);
-  __decorateClass([functionDeclaration("t: number", "Curve")], CurveFunctions, "unit_line_at", 1);
-  __decorateClass([functionDeclaration("t: number", "Point")], CurveFunctions, "arc", 2);
+  }, "put_in_standard_position");
+  _CurveFunctions.compose = (0, import_operators.wrap)((...transformers) => {
+    transformers.forEach((transformer, index) => {
+      (0, import_rttc.assertFunctionOfLength)(transformer, 1, _CurveFunctions.compose.name, "CurveTransformer", `arg ${index}`);
+    });
+    return defineCurveTransformer(curve => {
+      return transformers.reduce((acc, transformer) => transformer(acc), curve);
+    });
+  }, true, "compose");
+  _CurveFunctions.unit_circle = t => make_point(Math.cos(2 * Math.PI * t), Math.sin(2 * Math.PI * t));
+  _CurveFunctions.unit_line = t => make_point(t, 0);
+  _CurveFunctions.arc = t => make_point(Math.sin(Math.PI * t), Math.cos(Math.PI * t));
+  __decorateClass([functionDeclaration("x: number, y: number", "Point")], _CurveFunctions, "make_point", 1);
+  __decorateClass([functionDeclaration("x: number, y: number, z: number", "Point")], _CurveFunctions, "make_3D_point", 1);
+  __decorateClass([functionDeclaration("x: number, y: number, r: number, g: number, b: number", "Point")], _CurveFunctions, "make_color_point", 1);
+  __decorateClass([functionDeclaration("x: number, y: number, z: number, r: number, g: number, b: number", "Point")], _CurveFunctions, "make_3D_color_point", 1);
+  __decorateClass([functionDeclaration("curve1: Curve, curve2: Curve", "Curve")], _CurveFunctions, "connect_ends", 1);
+  __decorateClass([functionDeclaration("curve1: Curve, curve2: Curve", "Curve")], _CurveFunctions, "connect_rigidly", 1);
+  __decorateClass([functionDeclaration("x0: number, y0: number, z0: number", "(c: Curve) => Curve")], _CurveFunctions, "translate", 1);
+  __decorateClass([functionDeclaration("repeats: number, phase: number", "(c: Curve) => Curve")], _CurveFunctions, "rainbow", 1);
+  __decorateClass([functionDeclaration("curve: Curve", "Curve")], _CurveFunctions, "invert", 2);
+  __decorateClass([functionDeclaration("curve: Curve", "Curve")], _CurveFunctions, "put_in_standard_position", 2);
+  __decorateClass([functionDeclaration("a: number, b: number, c: number", "(c: Curve) => Curve")], _CurveFunctions, "rotate_around_origin_3D", 1);
+  __decorateClass([functionDeclaration("a: number", "(c: Curve) => Curve")], _CurveFunctions, "rotate_around_origin", 1);
+  __decorateClass([functionDeclaration("x: number, y: number, z: number", "(c: Curve) => Curve")], _CurveFunctions, "scale", 1);
+  __decorateClass([functionDeclaration("s: number", "(c: Curve) => Curve")], _CurveFunctions, "scale_proportional", 1);
+  __decorateClass([functionDeclaration("p: Point", "number")], _CurveFunctions, "x_of", 1);
+  __decorateClass([functionDeclaration("p: Point", "number")], _CurveFunctions, "y_of", 1);
+  __decorateClass([functionDeclaration("p: Point", "number")], _CurveFunctions, "z_of", 1);
+  __decorateClass([functionDeclaration("p: Point", "number")], _CurveFunctions, "r_of", 1);
+  __decorateClass([functionDeclaration("p: Point", "number")], _CurveFunctions, "g_of", 1);
+  __decorateClass([functionDeclaration("p: Point", "number")], _CurveFunctions, "b_of", 1);
+  __decorateClass([functionDeclaration("t: number", "Point")], _CurveFunctions, "unit_circle", 2);
+  __decorateClass([functionDeclaration("t: number", "Point")], _CurveFunctions, "unit_line", 2);
+  __decorateClass([functionDeclaration("t: number", "Curve")], _CurveFunctions, "unit_line_at", 1);
+  __decorateClass([functionDeclaration("t: number", "Point")], _CurveFunctions, "arc", 2);
+  var CurveFunctions = _CurveFunctions;
   var make_point = CurveFunctions.make_point;
   var make_3D_point = CurveFunctions.make_3D_point;
   var make_color_point = CurveFunctions.make_color_point;
@@ -2309,10 +2452,12 @@ ${variableDeclaration2};`);
   var b_of = CurveFunctions.b_of;
   var invert2 = CurveFunctions.invert;
   var translate2 = CurveFunctions.translate;
+  var rainbow = CurveFunctions.rainbow;
   var rotate_around_origin_3D = CurveFunctions.rotate_around_origin_3D;
   var rotate_around_origin = CurveFunctions.rotate_around_origin;
   var scale3 = CurveFunctions.scale;
   var scale_proportional = CurveFunctions.scale_proportional;
+  var compose = CurveFunctions.compose;
   var put_in_standard_position = CurveFunctions.put_in_standard_position;
   var connect_rigidly = CurveFunctions.connect_rigidly;
   var connect_ends = CurveFunctions.connect_ends;
@@ -2320,12 +2465,9 @@ ${variableDeclaration2};`);
   var unit_line = CurveFunctions.unit_line;
   var unit_line_at = CurveFunctions.unit_line_at;
   var arc = CurveFunctions.arc;
-  function isFunctionOfLength(f, l) {
-    return typeof f === "function" && f.length === l;
-  }
   var import_context = __toESM(__require("js-slang/context"), 1);
   var glAnimationSymbol = Symbol.for("glAnimation");
-  var glAnimation = class {
+  var glAnimation = class _glAnimation {
     constructor(duration, fps) {
       this.duration = duration;
       this.fps = fps;
@@ -2333,9 +2475,12 @@ ${variableDeclaration2};`);
     get _anim_symbol() {
       return glAnimationSymbol;
     }
+    static [Symbol.hasInstance](constructor) {
+      if (typeof constructor !== "object" || constructor === null) return false;
+      return ("_anim_symbol" in constructor) && constructor._anim_symbol === glAnimationSymbol;
+    }
     static isAnimation(obj) {
-      if (typeof obj !== "object" || obj === null) return false;
-      return ("_anim_symbol" in obj) && obj._anim_symbol === glAnimationSymbol;
+      return obj instanceof _glAnimation;
     }
   };
   var AnimatedCurve2 = class extends glAnimation {
@@ -2348,9 +2493,9 @@ ${variableDeclaration2};`);
       this.angle = 0;
     }
     getFrame(timestamp) {
-      const curve = this.func(timestamp);
-      if (!isFunctionOfLength(curve, 1)) {
-        throw new Error(`CurveAnimation did not return a Curve at timestamp ${timestamp}`);
+      const curve = (0, import_operators.callWithoutMetadata)(this.func, timestamp);
+      if (!(0, import_rttc.isFunctionOfLength)(curve, 1)) {
+        throw new import_base.GeneralRuntimeError(`CurveAnimation did not return a Curve at timestamp ${timestamp}`);
       }
       curve.shouldNotAppend = true;
       const curveDrawn = this.drawer(curve);
@@ -2366,15 +2511,11 @@ ${variableDeclaration2};`);
   import_context.default.moduleContexts.curve.state = {
     drawnCurves
   };
-  function createDrawFunction(scaleMode, drawMode, space, isFullView, name) {
+  function getRenderFunctionCreator(scaleMode, drawMode, space, isFullView, name) {
     function renderFuncCreator(numPoints) {
-      if (numPoints <= 0 || numPoints > 65535 || !Number.isInteger(numPoints)) {
-        throw new Error(`${name}: The number of points must be a positive integer less than or equal to 65535. Got: ${numPoints}`);
-      }
+      (0, import_rttc.assertNumberWithinRange)(numPoints, name, 0, 65535);
       function renderFunc(curve) {
-        if (!isFunctionOfLength(curve, 1)) {
-          throw new Error("The provided curve is not a valid Curve function. A Curve function must take exactly one parameter (a number t between 0 and 1) and return a Point or 3D Point depending on whether it is a 2D or 3D curve.");
-        }
+        (0, import_rttc.assertFunctionOfLength)(curve, 1, "RenderFunction", "Curve");
         const curveDrawn = generateCurve(scaleMode, drawMode, numPoints, curve, space, isFullView);
         if (!curve.shouldNotAppend) {
           drawnCurves.push(curveDrawn);
@@ -2382,9 +2523,7 @@ ${variableDeclaration2};`);
         return curveDrawn;
       }
       renderFunc.is3D = space === "3D";
-      const stringifier = () => `<${space === "3D" ? "3D" : ""}RenderFunction(${numPoints})>`;
-      renderFunc.toString = stringifier;
-      renderFunc.toReplString = stringifier;
+      renderFunc.toReplString = () => `<${space === "3D" ? "3D" : ""}RenderFunction(${numPoints})>`;
       return renderFunc;
     }
     Object.defineProperty(renderFuncCreator, "name", {
@@ -2397,18 +2536,18 @@ ${variableDeclaration2};`);
     return renderFuncCreator;
   }
   var RenderFunctionCreators = class {};
-  RenderFunctionCreators.draw_connected = createDrawFunction("none", "lines", "2D", false, "draw_connected");
-  RenderFunctionCreators.draw_connected_full_view = createDrawFunction("stretch", "lines", "2D", true, "draw_connected_full_view");
-  RenderFunctionCreators.draw_connected_full_view_proportional = createDrawFunction("fit", "lines", "2D", true, "draw_connected_full_view_proportional");
-  RenderFunctionCreators.draw_points = createDrawFunction("none", "points", "2D", false, "draw_points");
-  RenderFunctionCreators.draw_points_full_view = createDrawFunction("stretch", "points", "2D", true, "draw_points_full_view");
-  RenderFunctionCreators.draw_points_full_view_proportional = createDrawFunction("fit", "points", "2D", true, "draw_points_full_view_proportional");
-  RenderFunctionCreators.draw_3D_connected = createDrawFunction("none", "lines", "3D", false, "draw_3D_connected");
-  RenderFunctionCreators.draw_3D_connected_full_view = createDrawFunction("stretch", "lines", "3D", true, "draw_3D_connected_full_view");
-  RenderFunctionCreators.draw_3D_connected_full_view_proportional = createDrawFunction("fit", "lines", "3D", true, "draw_3D_connected_full_view_proportional");
-  RenderFunctionCreators.draw_3D_points = createDrawFunction("none", "points", "3D", false, "draw_3D_points");
-  RenderFunctionCreators.draw_3D_points_full_view = createDrawFunction("stretch", "points", "3D", true, "draw_3D_points_full_view");
-  RenderFunctionCreators.draw_3D_points_full_view_proportional = createDrawFunction("fit", "points", "3D", true, "draw_3D_points_full_view_proportional");
+  RenderFunctionCreators.draw_connected = getRenderFunctionCreator("none", "lines", "2D", false, "draw_connected");
+  RenderFunctionCreators.draw_connected_full_view = getRenderFunctionCreator("stretch", "lines", "2D", true, "draw_connected_full_view");
+  RenderFunctionCreators.draw_connected_full_view_proportional = getRenderFunctionCreator("fit", "lines", "2D", true, "draw_connected_full_view_proportional");
+  RenderFunctionCreators.draw_points = getRenderFunctionCreator("none", "points", "2D", false, "draw_points");
+  RenderFunctionCreators.draw_points_full_view = getRenderFunctionCreator("stretch", "points", "2D", true, "draw_points_full_view");
+  RenderFunctionCreators.draw_points_full_view_proportional = getRenderFunctionCreator("fit", "points", "2D", true, "draw_points_full_view_proportional");
+  RenderFunctionCreators.draw_3D_connected = getRenderFunctionCreator("none", "lines", "3D", false, "draw_3D_connected");
+  RenderFunctionCreators.draw_3D_connected_full_view = getRenderFunctionCreator("stretch", "lines", "3D", true, "draw_3D_connected_full_view");
+  RenderFunctionCreators.draw_3D_connected_full_view_proportional = getRenderFunctionCreator("fit", "lines", "3D", true, "draw_3D_connected_full_view_proportional");
+  RenderFunctionCreators.draw_3D_points = getRenderFunctionCreator("none", "points", "3D", false, "draw_3D_points");
+  RenderFunctionCreators.draw_3D_points_full_view = getRenderFunctionCreator("stretch", "points", "3D", true, "draw_3D_points_full_view");
+  RenderFunctionCreators.draw_3D_points_full_view_proportional = getRenderFunctionCreator("fit", "points", "3D", true, "draw_3D_points_full_view_proportional");
   __decorateClass([functionDeclaration("numPoints: number", "(func: Curve) => Curve")], RenderFunctionCreators, "draw_connected", 2);
   __decorateClass([functionDeclaration("numPoints: number", "(func: Curve) => Curve")], RenderFunctionCreators, "draw_connected_full_view", 2);
   __decorateClass([functionDeclaration("numPoints: number", "(func: Curve) => Curve")], RenderFunctionCreators, "draw_connected_full_view_proportional", 2);
@@ -2433,26 +2572,29 @@ ${variableDeclaration2};`);
   var draw_3D_points = RenderFunctionCreators.draw_3D_points;
   var draw_3D_points_full_view = RenderFunctionCreators.draw_3D_points_full_view;
   var draw_3D_points_full_view_proportional = RenderFunctionCreators.draw_3D_points_full_view_proportional;
-  var CurveAnimators = class {
+  var _CurveAnimators = class _CurveAnimators {
     static animate_curve(duration, fps, drawer, func) {
       if (drawer.is3D) {
-        throw new Error(`${animate_curve.name} cannot be used with 3D draw function!`);
+        throw new import_base.GeneralRuntimeError(`${animate_curve.name} cannot be used with 3D draw function!`);
       }
+      (0, import_rttc.assertFunctionOfLength)(func, 1, _CurveAnimators.animate_curve.name, "CurveAnimation");
       const anim = new AnimatedCurve2(duration, fps, func, drawer, false);
       drawnCurves.push(anim);
       return anim;
     }
     static animate_3D_curve(duration, fps, drawer, func) {
       if (!drawer.is3D) {
-        throw new Error(`${animate_3D_curve.name} cannot be used with 2D draw function!`);
+        throw new import_base.GeneralRuntimeError(`${animate_3D_curve.name} cannot be used with 2D draw function!`);
       }
+      (0, import_rttc.assertFunctionOfLength)(func, 1, _CurveAnimators.animate_3D_curve.name, "CurveAnimation");
       const anim = new AnimatedCurve2(duration, fps, func, drawer, true);
       drawnCurves.push(anim);
       return anim;
     }
   };
-  __decorateClass([functionDeclaration("duration: number, fps: number, drawer: (func: Curve) => Curve, func: (func: Curve) => Curve", "AnimatedCurve")], CurveAnimators, "animate_curve", 1);
-  __decorateClass([functionDeclaration("duration: number, fps: number, drawer: (func: Curve) => Curve, func: (func: Curve) => Curve", "AnimatedCurve")], CurveAnimators, "animate_3D_curve", 1);
+  __decorateClass([functionDeclaration("duration: number, fps: number, drawer: (func: Curve) => Curve, func: (func: Curve) => Curve", "AnimatedCurve")], _CurveAnimators, "animate_curve", 1);
+  __decorateClass([functionDeclaration("duration: number, fps: number, drawer: (func: Curve) => Curve, func: (func: Curve) => Curve", "AnimatedCurve")], _CurveAnimators, "animate_3D_curve", 1);
+  var CurveAnimators = _CurveAnimators;
   var animate_curve = CurveAnimators.animate_curve;
   var animate_3D_curve = CurveAnimators.animate_3D_curve;
   return __toCommonJS(index_exports);

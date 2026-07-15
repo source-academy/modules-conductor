@@ -43,11 +43,7 @@ export default require => {
     const falsy = [];
     for (let i = 0; i < arr.length; i++) {
       const item = arr[i];
-      if (isInTruthy(item, i, arr)) {
-        truthy.push(item);
-      } else {
-        falsy.push(item);
-      }
+      if (isInTruthy(item, i, arr)) truthy.push(item); else falsy.push(item);
     }
     return [truthy, falsy];
   }
@@ -164,9 +160,9 @@ export default require => {
       return !!moduleState && moduleState.suiteResults.length > 0;
     },
     body: context => {
-      const moduleContext = getModuleState(context, "unittest");
+      const moduleState = getModuleState(context, "unittest");
       return (0, import_jsx_runtime.jsx)(TestSuitesTab, {
-        results: moduleContext.suiteResults
+        results: moduleState.suiteResults
       });
     },
     label: "Test suites",

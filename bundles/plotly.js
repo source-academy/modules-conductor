@@ -30,13 +30,22 @@ export default require => {
     if (typeof require !== "undefined") return require.apply(this, arguments);
     throw Error('Dynamic require of "' + x + '" is not supported');
   });
-  var __esm = (fn, res) => function __init() {
-    return (fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res);
+  var __esm = (fn, res, err) => function __init() {
+    if (err) throw err[0];
+    try {
+      return (fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res);
+    } catch (e) {
+      throw (err = [e], e);
+    }
   };
   var __commonJS = (cb, mod) => function __require2() {
-    return (mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = {
-      exports: {}
-    }).exports, mod), mod.exports);
+    try {
+      return (mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = {
+        exports: {}
+      }).exports, mod), mod.exports);
+    } catch (e) {
+      throw (mod = 0, e);
+    }
   };
   var __export = (target, all) => {
     for (var name2 in all) __defProp(target, name2, {
@@ -148,7 +157,7 @@ export default require => {
           var require_version = __commonJS2({
             "src/version.js"(exports2) {
               "use strict";
-              exports2.version = "3.5.0";
+              exports2.version = "3.6.0";
             }
           });
           var require_npo_src = __commonJS2({
@@ -662,21 +671,21 @@ export default require => {
                 d3.zip = function () {
                   return d3.transpose(arguments);
                 };
-                d3.keys = function (map) {
+                d3.keys = function (map2) {
                   var keys = [];
-                  for (var key in map) keys.push(key);
+                  for (var key in map2) keys.push(key);
                   return keys;
                 };
-                d3.values = function (map) {
+                d3.values = function (map2) {
                   var values = [];
-                  for (var key in map) values.push(map[key]);
+                  for (var key in map2) values.push(map2[key]);
                   return values;
                 };
-                d3.entries = function (map) {
+                d3.entries = function (map2) {
                   var entries = [];
-                  for (var key in map) entries.push({
+                  for (var key in map2) entries.push({
                     key,
-                    value: map[key]
+                    value: map2[key]
                   });
                   return entries;
                 };
@@ -722,18 +731,18 @@ export default require => {
                   }
                 }
                 d3.map = function (object, f) {
-                  var map = new d3_Map();
+                  var map2 = new d3_Map();
                   if (object instanceof d3_Map) {
                     object.forEach(function (key2, value) {
-                      map.set(key2, value);
+                      map2.set(key2, value);
                     });
                   } else if (Array.isArray(object)) {
                     var i = -1, n = object.length, o;
-                    if (arguments.length === 1) while (++i < n) map.set(i, object[i]); else while (++i < n) map.set(f.call(object, o = object[i], i), o);
+                    if (arguments.length === 1) while (++i < n) map2.set(i, object[i]); else while (++i < n) map2.set(f.call(object, o = object[i], i), o);
                   } else {
-                    for (var key in object) map.set(key, object[key]);
+                    for (var key in object) map2.set(key, object[key]);
                   }
-                  return map;
+                  return map2;
                 };
                 function d3_Map() {
                   this._ = Object.create(null);
@@ -796,7 +805,7 @@ export default require => {
                 }
                 d3.nest = function () {
                   var nest = {}, keys = [], sortKeys = [], sortValues, rollup;
-                  function map(mapType, array, depth) {
+                  function map2(mapType, array, depth) {
                     if (depth >= keys.length) return rollup ? rollup.call(nest, array) : sortValues ? array.sort(sortValues) : array;
                     var i = -1, n = array.length, key = keys[depth++], keyValue, object, setter, valuesByKey = new d3_Map(), values;
                     while (++i < n) {
@@ -809,21 +818,21 @@ export default require => {
                     if (mapType) {
                       object = mapType();
                       setter = function (keyValue2, values2) {
-                        object.set(keyValue2, map(mapType, values2, depth));
+                        object.set(keyValue2, map2(mapType, values2, depth));
                       };
                     } else {
                       object = {};
                       setter = function (keyValue2, values2) {
-                        object[keyValue2] = map(mapType, values2, depth);
+                        object[keyValue2] = map2(mapType, values2, depth);
                       };
                     }
                     valuesByKey.forEach(setter);
                     return object;
                   }
-                  function entries(map2, depth) {
-                    if (depth >= keys.length) return map2;
+                  function entries(map22, depth) {
+                    if (depth >= keys.length) return map22;
                     var array = [], sortKey = sortKeys[depth++];
-                    map2.forEach(function (key, keyMap) {
+                    map22.forEach(function (key, keyMap) {
                       array.push({
                         key,
                         values: entries(keyMap, depth)
@@ -834,10 +843,10 @@ export default require => {
                     }) : array;
                   }
                   nest.map = function (array, mapType) {
-                    return map(mapType, array, 0);
+                    return map2(mapType, array, 0);
                   };
                   nest.entries = function (array) {
-                    return entries(map(d3.map, array, 0), 0);
+                    return entries(map2(d3.map, array, 0), 0);
                   };
                   nest.key = function (d) {
                     keys.push(d);
@@ -1500,10 +1509,10 @@ export default require => {
                   return this.each(d3_selection_on(type, listener, capture));
                 };
                 function d3_selection_on(type, listener, capture) {
-                  var name2 = "__on" + type, i = type.indexOf("."), wrap = d3_selection_onListener;
+                  var name2 = "__on" + type, i = type.indexOf("."), wrap2 = d3_selection_onListener;
                   if (i > 0) type = type.slice(0, i);
                   var filter = d3_selection_onFilters.get(type);
-                  if (filter) (type = filter, wrap = d3_selection_onFilter);
+                  if (filter) (type = filter, wrap2 = d3_selection_onFilter);
                   function onRemove() {
                     var l = this[name2];
                     if (l) {
@@ -1512,7 +1521,7 @@ export default require => {
                     }
                   }
                   function onAdd() {
-                    var l = wrap(listener, d3_array(arguments));
+                    var l = wrap2(listener, d3_array(arguments));
                     onRemove.call(this);
                     this.addEventListener(type, this[name2] = l, l.$ = capture);
                     l._ = listener;
@@ -7896,9 +7905,9 @@ export default require => {
                   return new RegExp("^(?:" + names2.map(requote).join("|") + ")", "i");
                 }
                 function formatLookup(names2) {
-                  var map = {}, i = -1, n = names2.length;
-                  while (++i < n) map[names2[i].toLowerCase()] = i;
-                  return map;
+                  var map2 = {}, i = -1, n = names2.length;
+                  while (++i < n) map2[names2[i].toLowerCase()] = i;
+                  return map2;
                 }
                 function parseWeekdayNumberSunday(d, string, i) {
                   var n = numberRe.exec(string.slice(i, i + 1));
@@ -8275,9 +8284,9 @@ export default require => {
                 function identity2(x) {
                   return x;
                 }
-                var map = Array.prototype.map, prefixes = ["y", "z", "a", "f", "p", "n", "\xB5", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y"];
+                var map2 = Array.prototype.map, prefixes = ["y", "z", "a", "f", "p", "n", "\xB5", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y"];
                 function formatLocale(locale2) {
-                  var group = locale2.grouping === void 0 || locale2.thousands === void 0 ? identity2 : formatGroup(map.call(locale2.grouping, Number), locale2.thousands + ""), currencyPrefix = locale2.currency === void 0 ? "" : locale2.currency[0] + "", currencySuffix = locale2.currency === void 0 ? "" : locale2.currency[1] + "", decimal = locale2.decimal === void 0 ? "." : locale2.decimal + "", numerals = locale2.numerals === void 0 ? identity2 : formatNumerals(map.call(locale2.numerals, String)), percent = locale2.percent === void 0 ? "%" : locale2.percent + "", minus = locale2.minus === void 0 ? "-" : locale2.minus + "", nan = locale2.nan === void 0 ? "NaN" : locale2.nan + "";
+                  var group = locale2.grouping === void 0 || locale2.thousands === void 0 ? identity2 : formatGroup(map2.call(locale2.grouping, Number), locale2.thousands + ""), currencyPrefix = locale2.currency === void 0 ? "" : locale2.currency[0] + "", currencySuffix = locale2.currency === void 0 ? "" : locale2.currency[1] + "", decimal = locale2.decimal === void 0 ? "." : locale2.decimal + "", numerals = locale2.numerals === void 0 ? identity2 : formatNumerals(map2.call(locale2.numerals, String)), percent = locale2.percent === void 0 ? "%" : locale2.percent + "", minus = locale2.minus === void 0 ? "-" : locale2.minus + "", nan = locale2.nan === void 0 ? "NaN" : locale2.nan + "";
                   function newFormat(specifier) {
                     specifier = formatSpecifier(specifier);
                     var fill = specifier.fill, align = specifier.align, sign = specifier.sign, symbol = specifier.symbol, zero2 = specifier.zero, width = specifier.width, comma = specifier.comma, precision = specifier.precision, trim = specifier.trim, type = specifier.type;
@@ -10257,6 +10266,12 @@ export default require => {
                   dflt: "closest",
                   editType: "modebar"
                 },
+                hoversort: {
+                  valType: "enumerated",
+                  values: ["trace", "value descending", "value ascending"],
+                  dflt: "trace",
+                  editType: "none"
+                },
                 hoversubplots: {
                   valType: "enumerated",
                   values: ["single", "overlaying", "axis"],
@@ -10690,13 +10705,13 @@ export default require => {
           var require_regex = __commonJS2({
             "src/lib/regex.js"(exports2) {
               "use strict";
-              exports2.counter = function (head2, tail2, openEnded, matchBeginning) {
-                var fullTail = (tail2 || "") + (openEnded ? "" : "$");
+              exports2.counter = function (head3, tail3, openEnded, matchBeginning) {
+                var fullTail = (tail3 || "") + (openEnded ? "" : "$");
                 var startWithPrefix = matchBeginning === false ? "" : "^";
-                if (head2 === "xy") {
+                if (head3 === "xy") {
                   return new RegExp(startWithPrefix + "x([2-9]|[1-9][0-9]+)?y([2-9]|[1-9][0-9]+)?" + fullTail);
                 }
-                return new RegExp(startWithPrefix + head2 + "([2-9]|[1-9][0-9]+)?" + fullTail);
+                return new RegExp(startWithPrefix + head3 + "([2-9]|[1-9][0-9]+)?" + fullTail);
               };
             }
           });
@@ -16152,40 +16167,40 @@ export default require => {
                 return arrayAttributes;
               };
               exports2.getTraceValObject = function (trace, parts) {
-                var head2 = parts[0];
+                var head3 = parts[0];
                 var i = 1;
                 var moduleAttrs, valObject;
                 var _module = trace._module;
                 if (!_module) _module = (Registry.modules[trace.type || baseAttributes.type.dflt] || ({}))._module;
                 if (!_module) return false;
                 moduleAttrs = _module.attributes;
-                valObject = moduleAttrs && moduleAttrs[head2];
+                valObject = moduleAttrs && moduleAttrs[head3];
                 if (!valObject) {
                   var subplotModule = _module.basePlotModule;
                   if (subplotModule && subplotModule.attributes) {
-                    valObject = subplotModule.attributes[head2];
+                    valObject = subplotModule.attributes[head3];
                   }
                 }
-                if (!valObject) valObject = baseAttributes[head2];
+                if (!valObject) valObject = baseAttributes[head3];
                 return recurseIntoValObject(valObject, parts, i);
               };
               exports2.getLayoutValObject = function (fullLayout, parts) {
                 var valObject = layoutHeadAttr(fullLayout, parts[0]);
                 return recurseIntoValObject(valObject, parts, 1);
               };
-              function layoutHeadAttr(fullLayout, head2) {
+              function layoutHeadAttr(fullLayout, head3) {
                 var i, key, _module, attributes;
                 var basePlotModules = fullLayout._basePlotModules;
                 if (basePlotModules) {
                   var out;
                   for (i = 0; i < basePlotModules.length; i++) {
                     _module = basePlotModules[i];
-                    if (_module.attrRegex && _module.attrRegex.test(head2)) {
+                    if (_module.attrRegex && _module.attrRegex.test(head3)) {
                       if (_module.layoutAttrOverrides) return _module.layoutAttrOverrides;
                       if (!out && _module.layoutAttributes) out = _module.layoutAttributes;
                     }
                     var baseOverrides = _module.baseLayoutAttrOverrides;
-                    if (baseOverrides && (head2 in baseOverrides)) return baseOverrides[head2];
+                    if (baseOverrides && (head3 in baseOverrides)) return baseOverrides[head3];
                   }
                   if (out) return out;
                 }
@@ -16193,20 +16208,20 @@ export default require => {
                 if (modules) {
                   for (i = 0; i < modules.length; i++) {
                     attributes = modules[i].layoutAttributes;
-                    if (attributes && (head2 in attributes)) {
-                      return attributes[head2];
+                    if (attributes && (head3 in attributes)) {
+                      return attributes[head3];
                     }
                   }
                 }
                 for (key in Registry.componentsRegistry) {
                   _module = Registry.componentsRegistry[key];
-                  if (_module.name === "colorscale" && head2.indexOf("coloraxis") === 0) {
-                    return _module.layoutAttributes[head2];
-                  } else if (!_module.schema && head2 === _module.name) {
+                  if (_module.name === "colorscale" && head3.indexOf("coloraxis") === 0) {
+                    return _module.layoutAttributes[head3];
+                  } else if (!_module.schema && head3 === _module.name) {
                     return _module.layoutAttributes;
                   }
                 }
-                if ((head2 in baseLayoutAttributes)) return baseLayoutAttributes[head2];
+                if ((head3 in baseLayoutAttributes)) return baseLayoutAttributes[head3];
                 return false;
               }
               function recurseIntoValObject(valObject, parts, i) {
@@ -16345,7 +16360,7 @@ export default require => {
               function formatAttributes(attrs) {
                 mergeValTypeAndRole(attrs);
                 formatArrayContainers(attrs);
-                stringify2(attrs);
+                stringify3(attrs);
                 return attrs;
               }
               function mergeValTypeAndRole(attrs) {
@@ -16380,7 +16395,7 @@ export default require => {
                 }
                 exports2.crawl(attrs, callback);
               }
-              function stringify2(attrs) {
+              function stringify3(attrs) {
                 function walk(attr) {
                   for (var k in attr) {
                     if (isPlainObject(attr[k])) {
@@ -17901,7 +17916,7 @@ export default require => {
                     coerce("legendwidth");
                     coerce("legendgroup");
                     coerce("legendgrouptitle.text");
-                    coerce("legendrank");
+                    Lib.coerce(traceIn, traceOut, _module.attributes.legend ? _module.attributes : plots.attributes, "legendrank");
                     traceOut._dfltShowLegend = true;
                   } else {
                     traceOut._dfltShowLegend = false;
@@ -24685,20 +24700,21 @@ export default require => {
                   var axrev = rng[1] < rng[0];
                   if (axrev) rng.reverse();
                   var bounds = Lib.simpleMap([minallowed, maxallowed], ax.r2l);
-                  if (minallowed !== void 0 && rng[0] < bounds[0]) range[axrev ? 1 : 0] = minallowed;
-                  if (maxallowed !== void 0 && rng[1] > bounds[1]) range[axrev ? 0 : 1] = maxallowed;
-                  if (range[0] === range[1]) {
-                    var minL = ax.l2r(minallowed);
-                    var maxL = ax.l2r(maxallowed);
+                  if (minallowed !== void 0 && rng[0] < bounds[0]) {
+                    range[axrev ? 1 : 0] = minallowed;
+                    rng[0] = bounds[0];
+                  }
+                  if (maxallowed !== void 0 && rng[1] > bounds[1]) {
+                    range[axrev ? 0 : 1] = maxallowed;
+                    rng[1] = bounds[1];
+                  }
+                  if (rng[0] >= rng[1]) {
                     if (minallowed !== void 0) {
-                      var _max = minL + 1;
-                      if (maxallowed !== void 0) _max = Math.min(_max, maxL);
-                      range[axrev ? 1 : 0] = _max;
-                    }
-                    if (maxallowed !== void 0) {
-                      var _min = maxL + 1;
-                      if (minallowed !== void 0) _min = Math.max(_min, minL);
-                      range[axrev ? 0 : 1] = _min;
+                      var _max = bounds[0] + 1;
+                      if (maxallowed !== void 0) _max = Math.min(_max, bounds[1]);
+                      range[axrev ? 0 : 1] = ax.l2r(_max);
+                    } else if (maxallowed !== void 0) {
+                      range[axrev ? 1 : 0] = ax.l2r(bounds[1] - 1);
                     }
                   }
                 };
@@ -26054,7 +26070,8 @@ export default require => {
                 return binStart;
               }
               axes.prepMinorTicks = function (mockAx, ax, opts) {
-                if (!ax.minor.dtick) {
+                var _a, _b;
+                if (!((_a = ax.minor) == null ? void 0 : _a.dtick)) {
                   delete mockAx.dtick;
                   var hasMajor = ax.dtick && isNumeric(ax._tmin);
                   var mockMinorRange;
@@ -26111,7 +26128,7 @@ export default require => {
                   }
                   mockAx.range = ax.range;
                 }
-                if (ax.minor._tick0Init === void 0) {
+                if (((_b = ax.minor) == null ? void 0 : _b._tick0Init) === void 0) {
                   mockAx.tick0 = ax.tick0;
                 }
               };
@@ -26287,16 +26304,19 @@ export default require => {
                 var minorTickVals = [];
                 var allTicklabelVals = [];
                 var hasMinor = ax.minor && (ax.minor.ticks || ax.minor.showgrid);
-                for (var major = 1; major >= (hasMinor ? 0 : 1); major--) {
+                var calcMinor = hasMinor || ticklabelIndex;
+                for (var major = 1; major >= (calcMinor ? 0 : 1); major--) {
                   var isMinor = !major;
                   if (major) {
                     ax._dtickInit = ax.dtick;
                     ax._tick0Init = ax.tick0;
-                  } else {
+                  } else if (calcMinor) {
                     ax.minor._dtickInit = ax.minor.dtick;
                     ax.minor._tick0Init = ax.minor.tick0;
                   }
-                  var mockAx = major ? ax : Lib.extendFlat({}, ax, ax.minor);
+                  var mockAx = major ? ax : Lib.extendFlat({}, ax, calcMinor ? ax.minor : {
+                    "minor": {}
+                  });
                   if (isMinor) {
                     axes.prepMinorTicks(mockAx, ax, opts);
                   } else {
@@ -26355,9 +26375,9 @@ export default require => {
                       x = axes.tickIncrement(x, dtick, !axrev, calendar);
                     }
                   }
-                  if (major && isPeriod) {
+                  if ((major || ticklabelIndex) && isPeriod) {
                     x = axes.tickIncrement(x, dtick, !axrev, calendar);
-                    majorId--;
+                    if (major) majorId--;
                   }
                   for (; axrev ? x >= endTick : x <= endTick; x = axes.tickIncrement(x, dtick, axrev, calendar)) {
                     if (major) majorId++;
@@ -26386,12 +26406,13 @@ export default require => {
                     }
                   }
                 }
-                if (!minorTickVals || minorTickVals.length < 2) {
+                if (!minorTickVals || minorTickVals.length < 3) {
                   ticklabelIndex = false;
                 } else {
-                  var diff = (minorTickVals[1].value - minorTickVals[0].value) * (isReversed ? -1 : 1);
+                  var diff = (minorTickVals[2].value - minorTickVals[1].value) * (isReversed ? -1 : 1);
                   if (!periodCompatibleWithTickformat(diff, ax.tickformat)) {
                     ticklabelIndex = false;
+                    minorTickVals = minorTickVals.slice(1);
                   }
                 }
                 if (!ticklabelIndex) {
@@ -26418,6 +26439,9 @@ export default require => {
                         Lib.pushUnique(allTicklabelVals, allTickVals[minorIdx]);
                       }
                     });
+                  });
+                  tickVals.forEach(function (tick) {
+                    tick.skipLabel = allTicklabelVals.indexOf(tick) === -1;
                   });
                 }
                 if (hasMinor) {
@@ -26509,11 +26533,14 @@ export default require => {
                   } else {
                     lastVisibleHead = ax._prevDateHead;
                     t = setTickLabel(ax, tickVals[i]);
-                    if (tickVals[i].skipLabel || ticklabelIndex && allTicklabelVals.indexOf(tickVals[i]) === -1) {
+                    if (tickVals[i].skipLabel) {
                       hideLabel(t);
                     }
                     ticksOut.push(t);
                   }
+                }
+                if (isPeriod && ticklabelIndex && minorTicks.length) {
+                  minorTicks[0].noTick = true;
                 }
                 ticksOut = ticksOut.concat(minorTicks);
                 ax._inCalcTicks = false;
@@ -29565,10 +29592,8 @@ export default require => {
                 var toggleGroup = groupClick === "togglegroup";
                 var hiddenSlices = fullLayout.hiddenlabels ? fullLayout.hiddenlabels.slice() : [];
                 var fullData = gd._fullData;
-                var shapesWithLegend = (fullLayout.shapes || []).filter(function (d2) {
-                  return d2.showlegend;
-                });
-                var allLegendItems = fullData.concat(shapesWithLegend);
+                const shapesInLegend = (fullLayout.shapes || []).filter(d2 => d2.showlegend || d2.legendgroup);
+                var allLegendItems = fullData.concat(shapesInLegend);
                 var fullTrace = legendItem.trace;
                 if (fullTrace._isShape) {
                   fullTrace = fullTrace._fullInput;
@@ -29755,10 +29780,8 @@ export default require => {
                 const fullLayout = gd._fullLayout;
                 const fullData = gd._fullData;
                 const legendId = helpers.getId(legendObj);
-                const shapesWithLegend = (fullLayout.shapes || []).filter(function (d) {
-                  return d.showlegend;
-                });
-                const allLegendItems = fullData.concat(shapesWithLegend);
+                const shapesInLegend = (fullLayout.shapes || []).filter(d => d.showlegend || d.legendgroup);
+                const allLegendItems = fullData.concat(shapesInLegend);
                 function isInLegend(item) {
                   return (item.legend || "legend") === legendId;
                 }
@@ -29836,6 +29859,7 @@ export default require => {
           var require_get_legend_data = __commonJS2({
             "src/components/legend/get_legend_data.js"(exports2, module2) {
               "use strict";
+              var {isArrayOrTypedArray} = require_array();
               var Registry = require_registry();
               var helpers = require_helpers3();
               module2.exports = function getLegendData(calcdata, opts, hasMultipleLegends) {
@@ -29916,7 +29940,8 @@ export default require => {
                 for (i = 0; i < legendData.length; i++) {
                   var groupMinRank = Infinity;
                   for (j = 0; j < legendData[i].length; j++) {
-                    var rank = legendData[i][j].trace.legendrank;
+                    var legendrank = legendData[i][j].trace.legendrank;
+                    var rank = isArrayOrTypedArray(legendrank) ? Math.min(legendrank) : legendrank;
                     if (groupMinRank > rank) groupMinRank = rank;
                   }
                   legendData[i][0]._groupMinRank = groupMinRank;
@@ -29926,7 +29951,9 @@ export default require => {
                   return a[0]._groupMinRank - b[0]._groupMinRank || a[0]._preGroupSort - b[0]._preGroupSort;
                 };
                 var orderFn2 = function (a, b) {
-                  return a.trace.legendrank - b.trace.legendrank || a._preSort - b._preSort;
+                  var a_rank = isArrayOrTypedArray(a.trace.legendrank) ? a.trace.legendrank[a.i] : a.trace.legendrank;
+                  var b_rank = isArrayOrTypedArray(b.trace.legendrank) ? b.trace.legendrank[b.i] : b.trace.legendrank;
+                  return a_rank - b_rank || a._preSort - b._preSort;
                 };
                 legendData.forEach(function (a, k) {
                   a[0]._preGroupSort = k;
@@ -32251,6 +32278,15 @@ export default require => {
                     mockLegend.entries.push([pt]);
                   }
                   mockLegend.entries.sort(function (a, b) {
+                    var hoversort = fullLayout.hoversort;
+                    if (hoversort === "value descending" || hoversort === "value ascending") {
+                      var valueLetter = hovermode.charAt(0) === "x" ? "y" : "x";
+                      var aVal = a[0][valueLetter + "LabelVal"];
+                      var bVal = b[0][valueLetter + "LabelVal"];
+                      if (aVal !== bVal) {
+                        return hoversort === "value descending" ? bVal - aVal : aVal - bVal;
+                      }
+                    }
                     return a[0].trace.index - b[0].trace.index;
                   });
                   mockLegend.layer = container;
@@ -33163,6 +33199,9 @@ export default require => {
                 if (hoverMode) {
                   coerce("hoverdistance");
                   coerce("spikedistance");
+                  if (hoverMode.indexOf("unified") !== -1) {
+                    coerce("hoversort");
+                  }
                 }
                 var dragMode = coerce("dragmode");
                 if (dragMode === "select") coerce("selectdirection");
@@ -34547,6 +34586,7 @@ export default require => {
                   return segmentType + paramString;
                 });
               }
+              exports2.getPixelShift = getPixelShift;
               function getPixelShift(axis, shift) {
                 shift = shift || 0;
                 var shiftPixels = 0;
@@ -34640,16 +34680,28 @@ export default require => {
                   const xRefType1 = Axes.getRefType(isArrayXref ? options.xref[1] : options.xref);
                   const yRefType0 = Axes.getRefType(isArrayYref ? options.yref[0] : options.yref);
                   const yRefType1 = Axes.getRefType(isArrayYref ? options.yref[1] : options.yref);
-                  const x2p = function (v, shift, xa, xRefType) {
-                    return helpers.getDataToPixel(gd, xa, shift, false, xRefType)(v);
-                  };
-                  const y2p = function (v, shift, ya, yRefType) {
-                    return helpers.getDataToPixel(gd, ya, shift, true, yRefType)(v);
-                  };
-                  shapex0 = x2p(options.x0, options.x0shift, xa0, xRefType0);
-                  shapex1 = x2p(options.x1, options.x1shift, xa1, xRefType1);
-                  shapey0 = y2p(options.y0, options.y0shift, ya0, yRefType0);
-                  shapey1 = y2p(options.y1, options.y1shift, ya1, yRefType1);
+                  const x2p = (v, shift, xa, xRefType) => helpers.getDataToPixel(gd, xa, shift, false, xRefType)(v);
+                  const y2p = (v, shift, ya, yRefType) => helpers.getDataToPixel(gd, ya, shift, true, yRefType)(v);
+                  if (options.xsizemode === "pixel") {
+                    const xAnchorPos = x2p(options.xanchor, void 0, xa0, xRefType0);
+                    const xShift0 = helpers.getPixelShift(xa0, options.x0shift);
+                    const xShift1 = helpers.getPixelShift(xa0, options.x1shift);
+                    shapex0 = xAnchorPos + options.x0 + xShift0;
+                    shapex1 = xAnchorPos + options.x1 + xShift1;
+                  } else {
+                    shapex0 = x2p(options.x0, options.x0shift, xa0, xRefType0);
+                    shapex1 = x2p(options.x1, options.x1shift, xa1, xRefType1);
+                  }
+                  if (options.ysizemode === "pixel") {
+                    const yAnchorPos = y2p(options.yanchor, void 0, ya0, yRefType0);
+                    const yShift0 = helpers.getPixelShift(ya0, options.y0shift);
+                    const yShift1 = helpers.getPixelShift(ya0, options.y1shift);
+                    shapey0 = yAnchorPos - options.y0 + yShift0;
+                    shapey1 = yAnchorPos - options.y1 + yShift1;
+                  } else {
+                    shapey0 = y2p(options.y0, options.y0shift, ya0, yRefType0);
+                    shapey1 = y2p(options.y1, options.y1shift, ya1, yRefType1);
+                  }
                 }
                 var textangle = options.label.textangle;
                 if (textangle === "auto") {
@@ -35101,6 +35153,7 @@ export default require => {
               var Drawing = require_drawing();
               var arrayEditor = require_plot_template().arrayEditor;
               var dragElement = require_dragelement();
+              var Fx = require_fx();
               var setCursor = require_setcursor();
               var constants = require_constants5();
               var helpers = require_helpers8();
@@ -35211,7 +35264,37 @@ export default require => {
                   path.node().addEventListener("click", function () {
                     return activateShape(gd, path);
                   });
+                  forwardHoverClickAnywhere(gd, path, plotinfo);
                 }
+              }
+              function forwardHoverClickAnywhere(gd, path, plotinfo) {
+                if (!(plotinfo == null ? void 0 : plotinfo.id)) return;
+                const node = path.node();
+                function patchedEvt(evt) {
+                  var _a;
+                  const mainPlot = plotinfo.mainplotinfo || plotinfo;
+                  const nsew = (_a = mainPlot == null ? void 0 : mainPlot.draglayer) == null ? void 0 : _a.select(".nsewdrag").node();
+                  if (!nsew) return null;
+                  return {
+                    clientX: evt.clientX,
+                    clientY: evt.clientY,
+                    target: nsew
+                  };
+                }
+                node.addEventListener("mousemove", evt => {
+                  if (gd._dragging) return;
+                  if (gd._fullLayout.hoveranywhere) {
+                    const e = patchedEvt(evt);
+                    if (e) Fx.hover(gd, e, plotinfo.id);
+                  }
+                });
+                node.addEventListener("click", evt => {
+                  if (gd._dragged) return;
+                  if (gd._fullLayout.clickanywhere) {
+                    const e = patchedEvt(evt);
+                    if (e) Fx.click(gd, e, plotinfo.id);
+                  }
+                });
               }
               function setClipPath(shapePath, gd, shapeOptions) {
                 const xref = shapeOptions.xref;
@@ -38721,17 +38804,17 @@ export default require => {
                   }
                   for (var i = 0; i < chains.length; i++) {
                     var chain = chains[i];
-                    var head2 = chain[0];
+                    var head3 = chain[0];
                     var head22 = chain[1];
-                    var tail2 = chain[chain.length - 1];
+                    var tail3 = chain[chain.length - 1];
                     var tail22 = chain[chain.length - 2];
-                    if (eps.pointsSame(head2, pt1)) {
+                    if (eps.pointsSame(head3, pt1)) {
                       if (setMatch(i, true, true)) break;
-                    } else if (eps.pointsSame(head2, pt2)) {
+                    } else if (eps.pointsSame(head3, pt2)) {
                       if (setMatch(i, true, false)) break;
-                    } else if (eps.pointsSame(tail2, pt1)) {
+                    } else if (eps.pointsSame(tail3, pt1)) {
                       if (setMatch(i, false, true)) break;
-                    } else if (eps.pointsSame(tail2, pt2)) {
+                    } else if (eps.pointsSame(tail3, pt2)) {
                       if (setMatch(i, false, false)) break;
                     }
                   }
@@ -38791,17 +38874,17 @@ export default require => {
                   function appendChain(index1, index2) {
                     var chain1 = chains[index1];
                     var chain2 = chains[index2];
-                    var tail3 = chain1[chain1.length - 1];
+                    var tail32 = chain1[chain1.length - 1];
                     var tail222 = chain1[chain1.length - 2];
-                    var head3 = chain2[0];
+                    var head32 = chain2[0];
                     var head222 = chain2[1];
-                    if (eps.pointsCollinear(tail222, tail3, head3)) {
-                      if (buildLog) buildLog.chainRemoveTail(index1, tail3);
+                    if (eps.pointsCollinear(tail222, tail32, head32)) {
+                      if (buildLog) buildLog.chainRemoveTail(index1, tail32);
                       chain1.pop();
-                      tail3 = tail222;
+                      tail32 = tail222;
                     }
-                    if (eps.pointsCollinear(tail3, head3, head222)) {
-                      if (buildLog) buildLog.chainRemoveHead(index2, head3);
+                    if (eps.pointsCollinear(tail32, head32, head222)) {
+                      if (buildLog) buildLog.chainRemoveHead(index2, head32);
                       chain2.shift();
                     }
                     if (buildLog) buildLog.chainJoin(index1, index2);
@@ -42403,13 +42486,13 @@ export default require => {
                 }
                 if (!arrayStr) arrayStr = rootContainers[rootContainers.indexOf(rootPart)];
                 if (!arrayStr) return false;
-                var tail2 = astr.slice(arrayStr.length);
-                if (!tail2) return {
+                var tail3 = astr.slice(arrayStr.length);
+                if (!tail3) return {
                   array: arrayStr,
                   index: "",
                   property: ""
                 };
-                match = tail2.match(/^\[(0|[1-9][0-9]*)\](\.(.+))?$/);
+                match = tail3.match(/^\[(0|[1-9][0-9]*)\](\.(.+))?$/);
                 if (!match) return false;
                 return {
                   array: arrayStr,
@@ -42824,8 +42907,8 @@ export default require => {
               };
               var ATTR_TAIL_RE = /(\.[^\[\]\.]+|\[[^\[\]\.]+\])$/;
               function getParent(attr) {
-                var tail2 = attr.search(ATTR_TAIL_RE);
-                if (tail2 > 0) return attr.slice(0, tail2);
+                var tail3 = attr.search(ATTR_TAIL_RE);
+                if (tail3 > 0) return attr.slice(0, tail3);
               }
               exports2.hasParent = function (aobj, attr) {
                 var attrParent = getParent(attr);
@@ -44290,10 +44373,10 @@ export default require => {
                   var spec = patternSpecs[i];
                   var match = key.match(spec.pattern);
                   if (match) {
-                    var head2 = match[1] || "";
+                    var head3 = match[1] || "";
                     return {
-                      head: head2,
-                      tail: key.slice(head2.length + 1),
+                      head: head3,
+                      tail: key.slice(head3.length + 1),
                       attr: spec.attr
                     };
                   }
@@ -44333,16 +44416,16 @@ export default require => {
               }
               function applyUIRevisions(data, layout, oldFullData, oldFullLayout) {
                 var layoutPreGUI = oldFullLayout._preGUI;
-                var key, revAttr, oldRev, newRev, match, preGUIVal, newNP, newVal, head2, tail2;
+                var key, revAttr, oldRev, newRev, match, preGUIVal, newNP, newVal, head3, tail3;
                 var bothInheritAutorange = [];
                 var newAutorangeIn = {};
                 var newRangeAccepted = {};
                 for (key in layoutPreGUI) {
                   match = findUIPattern(key, layoutUIControlPatterns);
                   if (match) {
-                    head2 = match.head;
-                    tail2 = match.tail;
-                    revAttr = match.attr || head2 + ".uirevision";
+                    head3 = match.head;
+                    tail3 = match.tail;
+                    revAttr = match.attr || head3 + ".uirevision";
                     oldRev = nestedProperty(oldFullLayout, revAttr).get();
                     newRev = oldRev && getNewRev(revAttr, layout);
                     if (newRev && newRev === oldRev) {
@@ -44351,21 +44434,21 @@ export default require => {
                       newNP = nestedProperty(layout, key);
                       newVal = newNP.get();
                       if (valsMatch(newVal, preGUIVal)) {
-                        if (newVal === void 0 && tail2 === "autorange") {
-                          bothInheritAutorange.push(head2);
+                        if (newVal === void 0 && tail3 === "autorange") {
+                          bothInheritAutorange.push(head3);
                         }
                         newNP.set(undefinedToNull(nestedProperty(oldFullLayout, key).get()));
                         continue;
-                      } else if (tail2 === "autorange" || tail2.slice(0, 6) === "range[") {
-                        var pre0 = layoutPreGUI[head2 + ".range[0]"];
-                        var pre1 = layoutPreGUI[head2 + ".range[1]"];
-                        var preAuto = layoutPreGUI[head2 + ".autorange"];
+                      } else if (tail3 === "autorange" || tail3.slice(0, 6) === "range[") {
+                        var pre0 = layoutPreGUI[head3 + ".range[0]"];
+                        var pre1 = layoutPreGUI[head3 + ".range[1]"];
+                        var preAuto = layoutPreGUI[head3 + ".autorange"];
                         if (preAuto || preAuto === null && pre0 === null && pre1 === null) {
-                          if (!((head2 in newAutorangeIn))) {
-                            var newContainer = nestedProperty(layout, head2).get();
-                            newAutorangeIn[head2] = newContainer && (newContainer.autorange || newContainer.autorange !== false && (!newContainer.range || newContainer.range.length !== 2));
+                          if (!((head3 in newAutorangeIn))) {
+                            var newContainer = nestedProperty(layout, head3).get();
+                            newAutorangeIn[head3] = newContainer && (newContainer.autorange || newContainer.autorange !== false && (!newContainer.range || newContainer.range.length !== 2));
                           }
-                          if (newAutorangeIn[head2]) {
+                          if (newAutorangeIn[head3]) {
                             newNP.set(undefinedToNull(nestedProperty(oldFullLayout, key).get()));
                             continue;
                           }
@@ -49555,7 +49638,7 @@ export default require => {
                   hasMinor,
                   attributes: layoutAttributes
                 });
-                if (hasMinor && !containerOut.minor.ticks && !containerOut.minor.showgrid) {
+                if (hasMinor && containerOut.ticklabelindex == null && !containerOut.minor.ticks && !containerOut.minor.showgrid) {
                   delete containerOut.minor;
                 }
                 if (containerOut.showline || containerOut.ticks) coerce("mirror");
@@ -52147,10 +52230,10 @@ export default require => {
                 var visible = coerce("visible");
                 if (!visible) return;
                 var showlegend = coerce("showlegend");
+                coerce("legend");
+                coerce("legendgroup");
                 if (showlegend) {
-                  coerce("legend");
                   coerce("legendwidth");
-                  coerce("legendgroup");
                   coerce("legendgrouptitle.text");
                   Lib.coerceFont(coerce, "legendgrouptitle.font");
                   coerce("legendrank");
@@ -59613,6 +59696,8 @@ export default require => {
                   var q3 = coerce("q3");
                   traceOut._hasPreCompStats = q1 && q1.length && median && median.length && q3 && q3.length;
                   sLen = Math.min(Lib.minRowLength(q1), Lib.minRowLength(median), Lib.minRowLength(q3));
+                } else {
+                  traceOut._hasPreCompStats = false;
                 }
                 var yDims = getDims(y);
                 var xDims = getDims(x);
@@ -76950,11 +77035,11 @@ export default require => {
                 }
                 var str = "abcdefghijklmnopqrst";
                 var letters = str.split("");
-                var map = {};
+                var map2 = {};
                 for (var i = 0; i < letters.length; ++i) {
-                  map[letters[i]] = letters[i];
+                  map2[letters[i]] = letters[i];
                 }
-                var obj = Object.assign({}, map);
+                var obj = Object.assign({}, map2);
                 var actual = "";
                 for (var k in obj) {
                   actual += k;
@@ -77052,14 +77137,14 @@ export default require => {
                   object[name2] = value;
                 }
               };
-              var defineProperties = function (object, map) {
+              var defineProperties = function (object, map2) {
                 var predicates = arguments.length > 2 ? arguments[2] : {};
-                var props = keys(map);
+                var props = keys(map2);
                 if (hasSymbols) {
-                  props = concat.call(props, Object.getOwnPropertySymbols(map));
+                  props = concat.call(props, Object.getOwnPropertySymbols(map2));
                 }
                 for (var i = 0; i < props.length; i += 1) {
-                  defineProperty(object, props[i], map[props[i]], predicates[props[i]]);
+                  defineProperty(object, props[i], map2[props[i]], predicates[props[i]]);
                 }
               };
               defineProperties.supportsDescriptors = !!supportsDescriptors;
@@ -77218,9 +77303,9 @@ export default require => {
                 });
                 return array;
               };
-              var arrayFromMap = function arrayFromMap2(map) {
+              var arrayFromMap = function arrayFromMap2(map2) {
                 var array = [];
-                map.forEach(function (value, key) {
+                map2.forEach(function (value, key) {
                   return array.push([key, value]);
                 });
                 return array;
@@ -77572,11 +77657,11 @@ export default require => {
                 }
                 return true;
               }
-              function mapHasEqualEntry(set, map, key1, item1, strict, memo) {
+              function mapHasEqualEntry(set, map2, key1, item1, strict, memo) {
                 var setValues = arrayFromSet(set);
                 for (var i = 0; i < setValues.length; i++) {
                   var key2 = setValues[i];
-                  if (innerDeepEqual(key1, key2, strict, memo) && innerDeepEqual(item1, map.get(key2), strict, memo)) {
+                  if (innerDeepEqual(key1, key2, strict, memo) && innerDeepEqual(item1, map2.get(key2), strict, memo)) {
                     set.delete(key2);
                     return true;
                   }
@@ -80155,6 +80240,9 @@ export default require => {
                   arrayOk: true
                 }),
                 legend: extendFlat({}, baseAttrs.legend, {
+                  arrayOk: true
+                }),
+                legendrank: extendFlat({}, baseAttrs.legendrank, {
                   arrayOk: true
                 }),
                 title: {
@@ -107906,7 +107994,7 @@ export default require => {
                     module22.exports = tokenize;
                     var literals100 = __webpack_require__2(620), operators = __webpack_require__2(7827), builtins100 = __webpack_require__2(6852), literals300es = __webpack_require__2(7932), builtins300es = __webpack_require__2(3508);
                     var NORMAL = 999, TOKEN = 9999, BLOCK_COMMENT = 0, LINE_COMMENT = 1, PREPROCESSOR = 2, OPERATOR = 3, INTEGER = 4, FLOAT = 5, IDENT = 6, BUILTIN = 7, KEYWORD = 8, WHITESPACE = 9, EOF = 10, HEX = 11;
-                    var map = ["block-comment", "line-comment", "preprocessor", "operator", "integer", "float", "ident", "builtin", "keyword", "whitespace", "eof", "integer"];
+                    var map2 = ["block-comment", "line-comment", "preprocessor", "operator", "integer", "float", "ident", "builtin", "keyword", "whitespace", "eof", "integer"];
                     function tokenize(opt) {
                       var i = 0, total = 0, mode = NORMAL, c, last, content = [], tokens = [], token_idx = 0, token_offs = 0, line = 1, col = 0, start = 0, isnum = false, isoperator = false, input = "", len;
                       opt = opt || ({});
@@ -107931,7 +108019,7 @@ export default require => {
                       function token(data) {
                         if (data.length) {
                           tokens.push({
-                            type: map[mode],
+                            type: map2[mode],
                             data,
                             position: start,
                             line,
@@ -115703,11 +115791,11 @@ export default require => {
                       }
                       function heapPop() {
                         if (heapCount > 0) {
-                          var head2 = heap[0];
+                          var head3 = heap[0];
                           heapSwap(0, heapCount - 1);
                           heapCount -= 1;
                           heapDown(0);
-                          return head2;
+                          return head3;
                         }
                         return -1;
                       }
@@ -117436,7 +117524,7 @@ export default require => {
                     var TAG_sub = "sub";
                     var CHR_sub0 = "-";
                     var CHR_sub = "-1";
-                    function parseTag(tag, TAG_CHR, str, map) {
+                    function parseTag(tag, TAG_CHR, str, map2) {
                       var opnTag = "<" + tag + ">";
                       var clsTag = "</" + tag + ">";
                       var nOPN = opnTag.length;
@@ -117452,16 +117540,16 @@ export default require => {
                         if (b <= a) break;
                         for (var i = a; i < b + nCLS; ++i) {
                           if (i < a + nOPN || i >= b) {
-                            map[i] = null;
+                            map2[i] = null;
                             str = str.substr(0, i) + " " + str.substr(i + 1);
                           } else {
-                            if (map[i] !== null) {
-                              var pos = map[i].indexOf(TAG_CHR[0]);
+                            if (map2[i] !== null) {
+                              var pos = map2[i].indexOf(TAG_CHR[0]);
                               if (pos === -1) {
-                                map[i] += TAG_CHR;
+                                map2[i] += TAG_CHR;
                               } else {
                                 if (isRecursive) {
-                                  map[i] = map[i].substr(0, pos + 1) + (1 + parseInt(map[i][pos + 1])) + map[i].substr(pos + 2);
+                                  map2[i] = map2[i].substr(0, pos + 1) + (1 + parseInt(map2[i][pos + 1])) + map2[i].substr(pos + 2);
                                 }
                               }
                             }
@@ -117472,7 +117560,7 @@ export default require => {
                         var c = remainingStr.indexOf(opnTag);
                         if (c !== -1) a = c; else a = b + nCLS;
                       }
-                      return map;
+                      return map2;
                     }
                     function transformPositions(positions, options, size) {
                       var align = options.textAlign || "start";
@@ -117542,20 +117630,20 @@ export default require => {
                         rawString = rawString.replace(/\<br\>/g, " ");
                       }
                       var activeStyle = "";
-                      var map = [];
+                      var map2 = [];
                       for (j = 0; j < rawString.length; ++j) {
-                        map[j] = activeStyle;
+                        map2[j] = activeStyle;
                       }
-                      if (styletags.bolds === true) map = parseTag(TAG_bold, CHR_bold, rawString, map);
-                      if (styletags.italics === true) map = parseTag(TAG_italic, CHR_italic, rawString, map);
-                      if (styletags.superscripts === true) map = parseTag(TAG_super, CHR_super, rawString, map);
-                      if (styletags.subscripts === true) map = parseTag(TAG_sub, CHR_sub, rawString, map);
+                      if (styletags.bolds === true) map2 = parseTag(TAG_bold, CHR_bold, rawString, map2);
+                      if (styletags.italics === true) map2 = parseTag(TAG_italic, CHR_italic, rawString, map2);
+                      if (styletags.superscripts === true) map2 = parseTag(TAG_super, CHR_super, rawString, map2);
+                      if (styletags.subscripts === true) map2 = parseTag(TAG_sub, CHR_sub, rawString, map2);
                       var allStyles = [];
                       var plainText = "";
                       for (j = 0; j < rawString.length; ++j) {
-                        if (map[j] !== null) {
+                        if (map2[j] !== null) {
                           plainText += rawString[j];
-                          allStyles.push(map[j]);
+                          allStyles.push(map2[j]);
                         }
                       }
                       var allTexts = plainText.split("\n");
@@ -117773,9 +117861,9 @@ export default require => {
                       if (typeof ses !== "undefined" && ses.ok && !ses.ok()) {
                         return;
                       }
-                      function weakMapPermitHostObjects(map) {
-                        if (map.permitHostObjects___) {
-                          map.permitHostObjects___(weakMapPermitHostObjects);
+                      function weakMapPermitHostObjects(map2) {
+                        if (map2.permitHostObjects___) {
+                          map2.permitHostObjects___(weakMapPermitHostObjects);
                         }
                       }
                       if (typeof ses !== "undefined") {
@@ -127322,7 +127410,7 @@ export default require => {
                 }
                 var array = Array.prototype;
                 var slice = array.slice;
-                var map = array.map;
+                var map2 = array.map;
                 function constant(x) {
                   return function () {
                     return x;
@@ -127421,7 +127509,7 @@ export default require => {
                   return value0 + (value1 - value0) * (i - i0);
                 }
                 function freedmanDiaconis(values, min2, max2) {
-                  values = map.call(values, number).sort(ascending);
+                  values = map2.call(values, number).sort(ascending);
                   return Math.ceil((max2 - min2) / (2 * (quantile(values, 0.75) - quantile(values, 0.25)) * Math.pow(values.length, -1 / 3)));
                 }
                 function scott(values, min2, max2) {
@@ -128037,21 +128125,21 @@ export default require => {
                     return x;
                   };
                 }
-                function compose(a, b) {
-                  function compose2(x, y) {
+                function compose2(a, b) {
+                  function compose22(x, y) {
                     return (x = a(x, y), b(x[0], x[1]));
                   }
-                  if (a.invert && b.invert) compose2.invert = function (x, y) {
+                  if (a.invert && b.invert) compose22.invert = function (x, y) {
                     return (x = b.invert(x, y), x && a.invert(x[0], x[1]));
                   };
-                  return compose2;
+                  return compose22;
                 }
                 function rotationIdentity(lambda, phi) {
                   return [abs(lambda) > pi ? lambda + Math.round(-lambda / tau) * tau : lambda, phi];
                 }
                 rotationIdentity.invert = rotationIdentity;
                 function rotateRadians(deltaLambda, deltaPhi, deltaGamma) {
-                  return (deltaLambda %= tau) ? deltaPhi || deltaGamma ? compose(rotationLambda(deltaLambda), rotationPhiGamma(deltaPhi, deltaGamma)) : rotationLambda(deltaLambda) : deltaPhi || deltaGamma ? rotationPhiGamma(deltaPhi, deltaGamma) : rotationIdentity;
+                  return (deltaLambda %= tau) ? deltaPhi || deltaGamma ? compose2(rotationLambda(deltaLambda), rotationPhiGamma(deltaPhi, deltaGamma)) : rotationLambda(deltaLambda) : deltaPhi || deltaGamma ? rotationPhiGamma(deltaPhi, deltaGamma) : rotationIdentity;
                 }
                 function forwardRotationLambda(deltaLambda) {
                   return function (lambda, phi) {
@@ -129454,8 +129542,8 @@ export default require => {
                   function recenter() {
                     var center = scaleTranslateRotate(k, 0, 0, sx, sy, alpha).apply(null, project(lambda, phi)), transform2 = (alpha ? scaleTranslateRotate : scaleTranslate)(k, x - center[0], y - center[1], sx, sy, alpha);
                     rotate = rotateRadians(deltaLambda, deltaPhi, deltaGamma);
-                    projectTransform = compose(project, transform2);
-                    projectRotateTransform = compose(rotate, projectTransform);
+                    projectTransform = compose2(project, transform2);
+                    projectRotateTransform = compose2(rotate, projectTransform);
                     projectResample = resample(projectTransform, delta2);
                     return reset();
                   }
@@ -138531,11 +138619,11 @@ export default require => {
                 sortLinked(p);
               }
               function sortLinked(list2) {
-                var i, p, q, e, tail2, numMerges, pSize, qSize, inSize = 1;
+                var i, p, q, e, tail3, numMerges, pSize, qSize, inSize = 1;
                 do {
                   p = list2;
                   list2 = null;
-                  tail2 = null;
+                  tail3 = null;
                   numMerges = 0;
                   while (p) {
                     numMerges++;
@@ -138557,13 +138645,13 @@ export default require => {
                         q = q.nextZ;
                         qSize--;
                       }
-                      if (tail2) tail2.nextZ = e; else list2 = e;
-                      e.prevZ = tail2;
-                      tail2 = e;
+                      if (tail3) tail3.nextZ = e; else list2 = e;
+                      e.prevZ = tail3;
+                      tail3 = e;
                     }
                     p = q;
                   }
-                  tail2.nextZ = null;
+                  tail3.nextZ = null;
                   inSize *= 2;
                 } while (numMerges > 1);
                 return list2;
@@ -138816,12 +138904,12 @@ export default require => {
             "node_modules/es5-ext/object/is-object.js"(exports2, module2) {
               "use strict";
               var isValue = require_is_value();
-              var map = {
+              var map2 = {
                 function: true,
                 object: true
               };
               module2.exports = function (value) {
-                return isValue(value) && map[typeof value] || false;
+                return isValue(value) && map2[typeof value] || false;
               };
             }
           });
@@ -139892,7 +139980,7 @@ export default require => {
               var ensurePlainFunction = require_ensure2();
               var copy = require_copy2();
               var normalizeOptions = require_normalize_options();
-              var map = require_map();
+              var map2 = require_map();
               var bind = Function.prototype.bind;
               var defineProperty = Object.defineProperty;
               var hasOwnProperty2 = Object.prototype.hasOwnProperty;
@@ -139913,7 +140001,7 @@ export default require => {
               module2.exports = function (props) {
                 var options = normalizeOptions(arguments[1]);
                 if (isValue(options.resolveContext)) ensurePlainFunction(options.resolveContext);
-                return map(props, function (desc, name2) {
+                return map2(props, function (desc, name2) {
                   return define2(name2, desc, options);
                 });
               };
@@ -141704,7 +141792,7 @@ void main() {
                 }
                 return flat ? res : nest(res[0], res);
               }
-              function stringify2(arg, opts) {
+              function stringify3(arg, opts) {
                 if (opts && opts.flat) {
                   var escape2 = opts && opts.escape || "___";
                   var str = arg[0], prevStr;
@@ -141731,13 +141819,13 @@ void main() {
               }
               function parenthesis(arg, opts) {
                 if (Array.isArray(arg)) {
-                  return stringify2(arg, opts);
+                  return stringify3(arg, opts);
                 } else {
                   return parse2(arg, opts);
                 }
               }
               parenthesis.parse = parse2;
-              parenthesis.stringify = stringify2;
+              parenthesis.stringify = stringify3;
               module2.exports = parenthesis;
             }
           });
@@ -143919,12 +144007,12 @@ void main() {
                     var wrapS = info.wrapS;
                     var wrapT = info.wrapT;
                     if (("wrap" in options)) {
-                      var wrap = options.wrap;
-                      if (typeof wrap === "string") {
-                        wrapS = wrapT = wrapModes[wrap];
-                      } else if (Array.isArray(wrap)) {
-                        wrapS = wrapModes[wrap[0]];
-                        wrapT = wrapModes[wrap[1]];
+                      var wrap2 = options.wrap;
+                      if (typeof wrap2 === "string") {
+                        wrapS = wrapT = wrapModes[wrap2];
+                      } else if (Array.isArray(wrap2)) {
+                        wrapS = wrapModes[wrap2[0]];
+                        wrapT = wrapModes[wrap2[1]];
                       }
                     } else {
                       if (("wrapS" in options)) {
@@ -152263,12 +152351,12 @@ void main() {
                     var wrapS = info.wrapS;
                     var wrapT = info.wrapT;
                     if (("wrap" in options)) {
-                      var wrap = options.wrap;
-                      if (typeof wrap === "string") {
-                        wrapS = wrapT = wrapModes[wrap];
-                      } else if (Array.isArray(wrap)) {
-                        wrapS = wrapModes[wrap[0]];
-                        wrapT = wrapModes[wrap[1]];
+                      var wrap2 = options.wrap;
+                      if (typeof wrap2 === "string") {
+                        wrapS = wrapT = wrapModes[wrap2];
+                      } else if (Array.isArray(wrap2)) {
+                        wrapS = wrapModes[wrap2[0]];
+                        wrapT = wrapModes[wrap2[1]];
                       }
                     } else {
                       if (("wrapS" in options)) {
@@ -159102,16 +159190,16 @@ void main() {
             "src/lib/gup.js"(exports2, module2) {
               "use strict";
               var identity2 = require_identity2();
-              function wrap(d) {
+              function wrap2(d) {
                 return [d];
               }
               module2.exports = {
                 keyFun: function (d) {
                   return d.key;
                 },
-                repeat: wrap,
+                repeat: wrap2,
                 descend: identity2,
-                wrap,
+                wrap: wrap2,
                 unwrap: function (d) {
                   return d[0];
                 }
@@ -159625,7 +159713,7 @@ void main() {
               "use strict";
               var isArrayOrTypedArray = require_lib().isArrayOrTypedArray;
               var Colorscale = require_colorscale();
-              var wrap = require_gup().wrap;
+              var wrap2 = require_gup().wrap;
               module2.exports = function calc(gd, trace) {
                 var lineColor;
                 var cscale;
@@ -159641,7 +159729,7 @@ void main() {
                   lineColor = constHalf(trace._length);
                   cscale = [[0, trace.line.color], [1, trace.line.color]];
                 }
-                return wrap({
+                return wrap2({
                   lineColor,
                   cscale
                 });
@@ -161287,7 +161375,7 @@ void main() {
           var require_calc32 = __commonJS2({
             "src/traces/parcats/calc.js"(exports2, module2) {
               "use strict";
-              var wrap = require_gup().wrap;
+              var wrap2 = require_gup().wrap;
               var hasColorscale = require_helpers().hasColorscale;
               var colorscaleCalc = require_calc();
               var filterUnique = require_filter_unique();
@@ -161395,7 +161483,7 @@ void main() {
                     updateCategoryModel(cats[catInd], valueInd, count);
                   }
                 }
-                return wrap(createParcatsModel(dimensionModels, pathModels, totalCount));
+                return wrap2(createParcatsModel(dimensionModels, pathModels, totalCount));
               };
               function createParcatsModel(dimensions, paths, count) {
                 var maxCats = dimensions.map(function (d) {
@@ -163825,7 +163913,7 @@ void main() {
               proto.update = function update(calcTrace) {
                 var trace = calcTrace[0].trace;
                 var subplot = this.subplot;
-                var map = subplot.map;
+                var map2 = subplot.map;
                 var optsAll = convert(subplot.gd, calcTrace);
                 var below = subplot.belowLookup["trace-" + this.uid];
                 var hasCluster = !!(trace.cluster && trace.cluster.enabled);
@@ -163844,9 +163932,9 @@ void main() {
                   var order = ORDER.cluster;
                   for (var i = order.length - 1; i >= 0; i--) {
                     var k = order[i];
-                    map.removeLayer(lThis.layerIds[k]);
+                    map2.removeLayer(lThis.layerIds[k]);
                   }
-                  if (!noSource) map.removeSource(lThis.sourceIds.circle);
+                  if (!noSource) map2.removeSource(lThis.sourceIds.circle);
                 }
                 function addNonCluster(noSource) {
                   var order = ORDER.nonCluster;
@@ -163861,8 +163949,8 @@ void main() {
                   var order = ORDER.nonCluster;
                   for (var i = order.length - 1; i >= 0; i--) {
                     var k = order[i];
-                    map.removeLayer(lThis.layerIds[k]);
-                    if (!noSource) map.removeSource(lThis.sourceIds[k]);
+                    map2.removeLayer(lThis.layerIds[k]);
+                    if (!noSource) map2.removeSource(lThis.sourceIds[k]);
                   }
                 }
                 function remove(noSource) {
@@ -163908,12 +163996,12 @@ void main() {
                 calcTrace[0].trace._glTrace = this;
               };
               proto.dispose = function dispose() {
-                var map = this.subplot.map;
+                var map2 = this.subplot.map;
                 var order = this.clusterEnabled ? ORDER.cluster : ORDER.nonCluster;
                 for (var i = order.length - 1; i >= 0; i--) {
                   var k = order[i];
-                  map.removeLayer(this.layerIds[k]);
-                  map.removeSource(this.sourceIds[k]);
+                  map2.removeLayer(this.layerIds[k]);
+                  map2.removeSource(this.sourceIds[k]);
                 }
               };
               module2.exports = function createScatterMapbox(subplot, calcTrace) {
@@ -164381,7 +164469,7 @@ void main() {
                   function clamp2(n, min, max) {
                     return Math.min(max, Math.max(min, n));
                   }
-                  function wrap(n, min, max) {
+                  function wrap2(n, min, max) {
                     var d = max - min;
                     var w = ((n - min) % d + d) % d + min;
                     return w === min ? max : w;
@@ -167929,7 +168017,7 @@ void main() {
                   var ValueType = {
                     kind: "value"
                   };
-                  var ErrorType = {
+                  var ErrorType2 = {
                     kind: "error"
                   };
                   var CollatorType = {
@@ -170809,7 +170897,7 @@ void main() {
                     };
                   }
                   CompoundExpression.register(expressions, {
-                    "error": [ErrorType, [StringType], function (ctx, ref) {
+                    "error": [ErrorType2, [StringType], function (ctx, ref) {
                       var v = ref[0];
                       throw new RuntimeError(v.evaluate(ctx));
                     }],
@@ -175543,9 +175631,9 @@ void main() {
                     }
                     return positions;
                   };
-                  FeaturePositionMap.serialize = function serialize2(map, transferables) {
-                    var ids = new Float64Array(map.ids);
-                    var positions = new Uint32Array(map.positions);
+                  FeaturePositionMap.serialize = function serialize2(map2, transferables) {
+                    var ids = new Float64Array(map2.ids);
+                    var positions = new Uint32Array(map2.positions);
                     sort(ids, positions, 0, ids.length - 1);
                     if (transferables) {
                       transferables.push(ids.buffer, positions.buffer);
@@ -175556,11 +175644,11 @@ void main() {
                     };
                   };
                   FeaturePositionMap.deserialize = function deserialize2(obj) {
-                    var map = new FeaturePositionMap();
-                    map.ids = obj.ids;
-                    map.positions = obj.positions;
-                    map.indexed = true;
-                    return map;
+                    var map2 = new FeaturePositionMap();
+                    map2.ids = obj.ids;
+                    map2.positions = obj.positions;
+                    map2.indexed = true;
+                    return map2;
                   };
                   var MAX_SAFE_INTEGER$1 = Math.pow(2, 53) - 1;
                   function getNumericId(value) {
@@ -177732,11 +177820,11 @@ void main() {
                     sortLinked(p);
                   }
                   function sortLinked(list2) {
-                    var i, p, q, e, tail2, numMerges, pSize, qSize, inSize = 1;
+                    var i, p, q, e, tail3, numMerges, pSize, qSize, inSize = 1;
                     do {
                       p = list2;
                       list2 = null;
-                      tail2 = null;
+                      tail3 = null;
                       numMerges = 0;
                       while (p) {
                         numMerges++;
@@ -177760,17 +177848,17 @@ void main() {
                             q = q.nextZ;
                             qSize--;
                           }
-                          if (tail2) {
-                            tail2.nextZ = e;
+                          if (tail3) {
+                            tail3.nextZ = e;
                           } else {
                             list2 = e;
                           }
-                          e.prevZ = tail2;
-                          tail2 = e;
+                          e.prevZ = tail3;
+                          tail3 = e;
                         }
                         p = q;
                       }
-                      tail2.nextZ = null;
+                      tail3.nextZ = null;
                       inSize *= 2;
                     } while (numMerges > 1);
                     return list2;
@@ -183471,14 +183559,14 @@ void main() {
                     CustomStyleLayer2.prototype.updateTransitions = function updateTransitions() {};
                     CustomStyleLayer2.prototype.hasTransition = function hasTransition() {};
                     CustomStyleLayer2.prototype.serialize = function serialize2() {};
-                    CustomStyleLayer2.prototype.onAdd = function onAdd(map) {
+                    CustomStyleLayer2.prototype.onAdd = function onAdd(map2) {
                       if (this.implementation.onAdd) {
-                        this.implementation.onAdd(map, map.painter.context.gl);
+                        this.implementation.onAdd(map2, map2.painter.context.gl);
                       }
                     };
-                    CustomStyleLayer2.prototype.onRemove = function onRemove(map) {
+                    CustomStyleLayer2.prototype.onRemove = function onRemove(map2) {
                       if (this.implementation.onRemove) {
-                        this.implementation.onRemove(map, map.painter.context.gl);
+                        this.implementation.onRemove(map2, map2.painter.context.gl);
                       }
                     };
                     return CustomStyleLayer2;
@@ -183548,7 +183636,7 @@ void main() {
                       gl2.generateMipmap(gl2.TEXTURE_2D);
                     }
                   };
-                  Texture.prototype.bind = function bind(filter2, wrap2, minFilter) {
+                  Texture.prototype.bind = function bind(filter2, wrap22, minFilter) {
                     var ref = this;
                     var context2 = ref.context;
                     var gl2 = context2.gl;
@@ -183561,10 +183649,10 @@ void main() {
                       gl2.texParameteri(gl2.TEXTURE_2D, gl2.TEXTURE_MIN_FILTER, minFilter || filter2);
                       this.filter = filter2;
                     }
-                    if (wrap2 !== this.wrap) {
-                      gl2.texParameteri(gl2.TEXTURE_2D, gl2.TEXTURE_WRAP_S, wrap2);
-                      gl2.texParameteri(gl2.TEXTURE_2D, gl2.TEXTURE_WRAP_T, wrap2);
-                      this.wrap = wrap2;
+                    if (wrap22 !== this.wrap) {
+                      gl2.texParameteri(gl2.TEXTURE_2D, gl2.TEXTURE_WRAP_S, wrap22);
+                      gl2.texParameteri(gl2.TEXTURE_2D, gl2.TEXTURE_WRAP_T, wrap22);
+                      this.wrap = wrap22;
                     }
                   };
                   Texture.prototype.isSizePowerOfTwo = function isSizePowerOfTwo() {
@@ -183864,7 +183952,7 @@ void main() {
                     }
                   };
                   LngLat.prototype.wrap = function wrap$1() {
-                    return new LngLat(wrap(this.lng, -180, 180), this.lat);
+                    return new LngLat(wrap2(this.lng, -180, 180), this.lat);
                   };
                   LngLat.prototype.toArray = function toArray() {
                     return [this.lng, this.lat];
@@ -183965,16 +184053,16 @@ void main() {
                   CanonicalTileID.prototype.toString = function toString2() {
                     return this.z + "/" + this.x + "/" + this.y;
                   };
-                  var UnwrappedTileID = function UnwrappedTileID2(wrap2, canonical) {
-                    this.wrap = wrap2;
+                  var UnwrappedTileID = function UnwrappedTileID2(wrap22, canonical) {
+                    this.wrap = wrap22;
                     this.canonical = canonical;
-                    this.key = calculateKey(wrap2, canonical.z, canonical.z, canonical.x, canonical.y);
+                    this.key = calculateKey(wrap22, canonical.z, canonical.z, canonical.x, canonical.y);
                   };
-                  var OverscaledTileID = function OverscaledTileID2(overscaledZ, wrap2, z, x, y) {
+                  var OverscaledTileID = function OverscaledTileID2(overscaledZ, wrap22, z, x, y) {
                     this.overscaledZ = overscaledZ;
-                    this.wrap = wrap2;
+                    this.wrap = wrap22;
                     this.canonical = new CanonicalTileID(z, +x, +y);
-                    this.key = calculateKey(wrap2, overscaledZ, z, x, y);
+                    this.key = calculateKey(wrap22, overscaledZ, z, x, y);
                   };
                   OverscaledTileID.prototype.equals = function equals2(id2) {
                     return this.overscaledZ === id2.overscaledZ && this.wrap === id2.wrap && this.canonical.equals(id2.canonical);
@@ -184038,8 +184126,8 @@ void main() {
                   OverscaledTileID.prototype.wrapped = function wrapped() {
                     return new OverscaledTileID(this.overscaledZ, 0, this.canonical.z, this.canonical.x, this.canonical.y);
                   };
-                  OverscaledTileID.prototype.unwrapTo = function unwrapTo(wrap2) {
-                    return new OverscaledTileID(this.overscaledZ, wrap2, this.canonical.z, this.canonical.x, this.canonical.y);
+                  OverscaledTileID.prototype.unwrapTo = function unwrapTo(wrap22) {
+                    return new OverscaledTileID(this.overscaledZ, wrap22, this.canonical.z, this.canonical.x, this.canonical.y);
                   };
                   OverscaledTileID.prototype.overscaleFactor = function overscaleFactor() {
                     return Math.pow(2, this.overscaledZ - this.canonical.z);
@@ -184053,13 +184141,13 @@ void main() {
                   OverscaledTileID.prototype.getTilePoint = function getTilePoint(coord) {
                     return this.canonical.getTilePoint(new MercatorCoordinate(coord.x - this.wrap, coord.y));
                   };
-                  function calculateKey(wrap2, overscaledZ, z, x, y) {
-                    wrap2 *= 2;
-                    if (wrap2 < 0) {
-                      wrap2 = wrap2 * -1 - 1;
+                  function calculateKey(wrap22, overscaledZ, z, x, y) {
+                    wrap22 *= 2;
+                    if (wrap22 < 0) {
+                      wrap22 = wrap22 * -1 - 1;
                     }
                     var dim = 1 << z;
-                    return (dim * dim * wrap2 + dim * y + x).toString(36) + z.toString(36) + overscaledZ.toString(36);
+                    return (dim * dim * wrap22 + dim * y + x).toString(36) + z.toString(36) + overscaledZ.toString(36);
                   }
                   function getQuadkey(z, x, y) {
                     var quadkey = "", mask;
@@ -185020,11 +185108,11 @@ void main() {
                   exports22.warnOnce = warnOnce;
                   exports22.webpSupported = exported$1;
                   exports22.window = window$1;
-                  exports22.wrap = wrap;
+                  exports22.wrap = wrap2;
                 });
                 define2(["./shared"], function (performance2) {
                   "use strict";
-                  function stringify2(obj) {
+                  function stringify3(obj) {
                     var type = typeof obj;
                     if (type === "number" || type === "boolean" || type === "string" || obj === void 0 || obj === null) {
                       return JSON.stringify(obj);
@@ -185033,14 +185121,14 @@ void main() {
                       var str$1 = "[";
                       for (var i$1 = 0, list2 = obj; i$1 < list2.length; i$1 += 1) {
                         var val = list2[i$1];
-                        str$1 += stringify2(val) + ",";
+                        str$1 += stringify3(val) + ",";
                       }
                       return str$1 + "]";
                     }
                     var keys = Object.keys(obj).sort();
                     var str = "{";
                     for (var i = 0; i < keys.length; i++) {
-                      str += JSON.stringify(keys[i]) + ":" + stringify2(obj[keys[i]]) + ",";
+                      str += JSON.stringify(keys[i]) + ":" + stringify3(obj[keys[i]]) + ",";
                     }
                     return str + "}";
                   }
@@ -185048,7 +185136,7 @@ void main() {
                     var key = "";
                     for (var i = 0, list2 = performance2.refProperties; i < list2.length; i += 1) {
                       var k = list2[i];
-                      key += "/" + stringify2(layer[k]);
+                      key += "/" + stringify3(layer[k]);
                     }
                     return key;
                   }
@@ -186672,7 +186760,7 @@ void main() {
                     out.push(1);
                     return t;
                   }
-                  function wrap(features, options) {
+                  function wrap2(features, options) {
                     var buffer = options.buffer / options.extent;
                     var merged = features;
                     var left = clip(features, 1, -1 - buffer, buffer, 0, -1, 2, options);
@@ -186898,7 +186986,7 @@ void main() {
                       this.stats = {};
                       this.total = 0;
                     }
-                    features = wrap(features, options);
+                    features = wrap2(features, options);
                     if (features.length) {
                       this.splitTile(features, 0, 0, 0);
                     }
@@ -187324,7 +187412,7 @@ void main() {
                       callback();
                     }
                   };
-                  Worker2.prototype.loadWorkerSource = function loadWorkerSource(map, params, callback) {
+                  Worker2.prototype.loadWorkerSource = function loadWorkerSource(map2, params, callback) {
                     try {
                       this.self.importScripts(params.url);
                       callback();
@@ -187332,7 +187420,7 @@ void main() {
                       callback(e.toString());
                     }
                   };
-                  Worker2.prototype.syncRTLPluginState = function syncRTLPluginState(map, state, callback) {
+                  Worker2.prototype.syncRTLPluginState = function syncRTLPluginState(map2, state, callback) {
                     try {
                       performance2.plugin.setState(state);
                       var pluginURL = performance2.plugin.getPluginURL();
@@ -188640,8 +188728,8 @@ void main() {
                     VectorTileSource2.prototype.hasTile = function hasTile(tileID) {
                       return !this.tileBounds || this.tileBounds.contains(tileID.canonical);
                     };
-                    VectorTileSource2.prototype.onAdd = function onAdd(map) {
-                      this.map = map;
+                    VectorTileSource2.prototype.onAdd = function onAdd(map2) {
+                      this.map = map2;
                       this.load();
                     };
                     VectorTileSource2.prototype.setSourceProperty = function setSourceProperty(callback) {
@@ -188804,8 +188892,8 @@ void main() {
                     RasterTileSource2.prototype.loaded = function loaded() {
                       return this._loaded;
                     };
-                    RasterTileSource2.prototype.onAdd = function onAdd(map) {
-                      this.map = map;
+                    RasterTileSource2.prototype.onAdd = function onAdd(map2) {
+                      this.map = map2;
                       this.load();
                     };
                     RasterTileSource2.prototype.onRemove = function onRemove() {
@@ -189082,8 +189170,8 @@ void main() {
                         this$1.fire(new performance2.Event("data", data));
                       });
                     };
-                    GeoJSONSource2.prototype.onAdd = function onAdd(map) {
-                      this.map = map;
+                    GeoJSONSource2.prototype.onAdd = function onAdd(map2) {
+                      this.map = map2;
                       this.load();
                     };
                     GeoJSONSource2.prototype.setData = function setData(data) {
@@ -189295,8 +189383,8 @@ void main() {
                         }));
                       }
                     };
-                    ImageSource2.prototype.onAdd = function onAdd(map) {
-                      this.map = map;
+                    ImageSource2.prototype.onAdd = function onAdd(map2) {
+                      this.map = map2;
                       this.load();
                     };
                     ImageSource2.prototype.setCoordinates = function setCoordinates(coordinates) {
@@ -189447,11 +189535,11 @@ void main() {
                     VideoSource2.prototype.getVideo = function getVideo() {
                       return this.video;
                     };
-                    VideoSource2.prototype.onAdd = function onAdd(map) {
+                    VideoSource2.prototype.onAdd = function onAdd(map2) {
                       if (this.map) {
                         return;
                       }
-                      this.map = map;
+                      this.map = map2;
                       this.load();
                       if (this.video) {
                         this.video.play();
@@ -189549,8 +189637,8 @@ void main() {
                     CanvasSource2.prototype.getCanvas = function getCanvas() {
                       return this.canvas;
                     };
-                    CanvasSource2.prototype.onAdd = function onAdd(map) {
-                      this.map = map;
+                    CanvasSource2.prototype.onAdd = function onAdd(map2) {
+                      this.map = map2;
                       this.load();
                       if (this.canvas) {
                         if (this.animate) {
@@ -191017,16 +191105,16 @@ void main() {
                     if (Evented) SourceCache2.__proto__ = Evented;
                     SourceCache2.prototype = Object.create(Evented && Evented.prototype);
                     SourceCache2.prototype.constructor = SourceCache2;
-                    SourceCache2.prototype.onAdd = function onAdd(map) {
-                      this.map = map;
-                      this._maxTileCacheSize = map ? map._maxTileCacheSize : null;
+                    SourceCache2.prototype.onAdd = function onAdd(map2) {
+                      this.map = map2;
+                      this._maxTileCacheSize = map2 ? map2._maxTileCacheSize : null;
                       if (this._source && this._source.onAdd) {
-                        this._source.onAdd(map);
+                        this._source.onAdd(map2);
                       }
                     };
-                    SourceCache2.prototype.onRemove = function onRemove(map) {
+                    SourceCache2.prototype.onRemove = function onRemove(map2) {
                       if (this._source && this._source.onRemove) {
-                        this._source.onRemove(map);
+                        this._source.onRemove(map2);
                       }
                     };
                     SourceCache2.prototype.loaded = function loaded() {
@@ -191748,13 +191836,13 @@ void main() {
                   }
                   function derefLayers(layers) {
                     layers = layers.slice();
-                    var map = Object.create(null);
+                    var map2 = Object.create(null);
                     for (var i = 0; i < layers.length; i++) {
-                      map[layers[i].id] = layers[i];
+                      map2[layers[i].id] = layers[i];
                     }
                     for (var i$1 = 0; i$1 < layers.length; i$1++) {
                       if (("ref" in layers[i$1])) {
-                        layers[i$1] = deref(layers[i$1], map[layers[i$1].ref]);
+                        layers[i$1] = deref(layers[i$1], map2[layers[i$1].ref]);
                       }
                     }
                     return layers;
@@ -193867,15 +193955,15 @@ void main() {
                   var ignoredDiffOperations = performance2.pick(operations, ["setCenter", "setZoom", "setBearing", "setPitch"]);
                   var empty = emptyStyle();
                   var Style = (function (Evented) {
-                    function Style2(map, options) {
+                    function Style2(map2, options) {
                       var this$1 = this;
                       if (options === void 0) options = {};
                       Evented.call(this);
-                      this.map = map;
+                      this.map = map2;
                       this.dispatcher = new Dispatcher(getGlobalWorkerPool(), this);
                       this.imageManager = new ImageManager();
                       this.imageManager.setEventedParent(this);
-                      this.glyphManager = new GlyphManager(map._requestManager, options.localIdeographFontFamily);
+                      this.glyphManager = new GlyphManager(map2._requestManager, options.localIdeographFontFamily);
                       this.lineAtlas = new LineAtlas(256, 512);
                       this.crossTileSymbolIndex = new CrossTileSymbolIndex();
                       this._layers = {};
@@ -197670,13 +197758,13 @@ void main() {
                       minZoom = z;
                     }
                     var radiusOfMaxLvlLodInTiles = 3;
-                    var newRootTile = function (wrap) {
+                    var newRootTile = function (wrap2) {
                       return {
-                        aabb: new Aabb([wrap * numTiles, 0, 0], [(wrap + 1) * numTiles, numTiles, 0]),
+                        aabb: new Aabb([wrap2 * numTiles, 0, 0], [(wrap2 + 1) * numTiles, numTiles, 0]),
                         zoom: 0,
                         x: 0,
                         y: 0,
-                        wrap,
+                        wrap: wrap2,
                         fullyVisible: false
                       };
                     };
@@ -198006,8 +198094,8 @@ void main() {
                     performance2.bindAll(["_getCurrentHash", "_onHashChange", "_updateHash"], this);
                     this._updateHash = throttle(this._updateHashUnthrottled.bind(this), 30 * 1e3 / 100);
                   };
-                  Hash.prototype.addTo = function addTo(map) {
-                    this._map = map;
+                  Hash.prototype.addTo = function addTo(map2) {
+                    this._map = map2;
                     performance2.window.addEventListener("hashchange", this._onHashChange, false);
                     this._map.on("moveend", this._updateHash);
                     return this;
@@ -198111,8 +198199,8 @@ void main() {
                     deceleration: 1e3,
                     maxSpeed: 90
                   }, defaultInertiaOptions);
-                  var HandlerInertia = function HandlerInertia2(map) {
-                    this._map = map;
+                  var HandlerInertia = function HandlerInertia2(map2) {
+                    this._map = map2;
                     this.clear();
                   };
                   HandlerInertia.prototype.clear = function clear() {
@@ -198212,17 +198300,17 @@ void main() {
                     };
                   }
                   var MapMouseEvent = (function (Event) {
-                    function MapMouseEvent2(type, map, originalEvent, data) {
+                    function MapMouseEvent2(type, map2, originalEvent, data) {
                       if (data === void 0) data = {};
-                      var point = DOM.mousePos(map.getCanvasContainer(), originalEvent);
-                      var lngLat = map.unproject(point);
+                      var point = DOM.mousePos(map2.getCanvasContainer(), originalEvent);
+                      var lngLat = map2.unproject(point);
                       Event.call(this, type, performance2.extend({
                         point,
                         lngLat,
                         originalEvent
                       }, data));
                       this._defaultPrevented = false;
-                      this.target = map;
+                      this.target = map2;
                     }
                     if (Event) MapMouseEvent2.__proto__ = Event;
                     MapMouseEvent2.prototype = Object.create(Event && Event.prototype);
@@ -198242,16 +198330,16 @@ void main() {
                     return MapMouseEvent2;
                   })(performance2.Event);
                   var MapTouchEvent = (function (Event) {
-                    function MapTouchEvent2(type, map, originalEvent) {
+                    function MapTouchEvent2(type, map2, originalEvent) {
                       var touches = type === "touchend" ? originalEvent.changedTouches : originalEvent.touches;
-                      var points = DOM.touchPos(map.getCanvasContainer(), touches);
+                      var points = DOM.touchPos(map2.getCanvasContainer(), touches);
                       var lngLats = points.map(function (t) {
-                        return map.unproject(t);
+                        return map2.unproject(t);
                       });
                       var point = points.reduce(function (prev, curr, i, arr) {
                         return prev.add(curr.div(arr.length));
                       }, new performance2.Point(0, 0));
-                      var lngLat = map.unproject(point);
+                      var lngLat = map2.unproject(point);
                       Event.call(this, type, {
                         points,
                         point,
@@ -198279,7 +198367,7 @@ void main() {
                     return MapTouchEvent2;
                   })(performance2.Event);
                   var MapWheelEvent = (function (Event) {
-                    function MapWheelEvent2(type, map, originalEvent) {
+                    function MapWheelEvent2(type, map2, originalEvent) {
                       Event.call(this, type, {
                         originalEvent
                       });
@@ -198302,8 +198390,8 @@ void main() {
                     Object.defineProperties(MapWheelEvent2.prototype, prototypeAccessors$2);
                     return MapWheelEvent2;
                   })(performance2.Event);
-                  var MapEventHandler = function MapEventHandler2(map, options) {
-                    this._map = map;
+                  var MapEventHandler = function MapEventHandler2(map2, options) {
+                    this._map = map2;
                     this._clickTolerance = options.clickTolerance;
                   };
                   MapEventHandler.prototype.reset = function reset() {
@@ -198360,8 +198448,8 @@ void main() {
                   };
                   MapEventHandler.prototype.enable = function enable() {};
                   MapEventHandler.prototype.disable = function disable() {};
-                  var BlockableMapEventHandler = function BlockableMapEventHandler2(map) {
-                    this._map = map;
+                  var BlockableMapEventHandler = function BlockableMapEventHandler2(map2) {
+                    this._map = map2;
                   };
                   BlockableMapEventHandler.prototype.reset = function reset() {
                     this._delayContextMenu = false;
@@ -198398,10 +198486,10 @@ void main() {
                   };
                   BlockableMapEventHandler.prototype.enable = function enable() {};
                   BlockableMapEventHandler.prototype.disable = function disable() {};
-                  var BoxZoomHandler = function BoxZoomHandler2(map, options) {
-                    this._map = map;
-                    this._el = map.getCanvasContainer();
-                    this._container = map.getContainer();
+                  var BoxZoomHandler = function BoxZoomHandler2(map2, options) {
+                    this._map = map2;
+                    this._el = map2.getCanvasContainer();
+                    this._container = map2.getContainer();
                     this._clickTolerance = options.clickTolerance || 1;
                   };
                   BoxZoomHandler.prototype.isEnabled = function isEnabled() {
@@ -198471,8 +198559,8 @@ void main() {
                         originalEvent: e
                       }));
                       return {
-                        cameraAnimation: function (map) {
-                          return map.fitScreenCoordinates(p0, p1, this$1._map.getBearing(), {
+                        cameraAnimation: function (map2) {
+                          return map2.fitScreenCoordinates(p0, p1, this$1._map.getBearing(), {
                             linear: true
                           });
                         }
@@ -198641,11 +198729,11 @@ void main() {
                         return this$1.reset();
                       }, 0);
                       return {
-                        cameraAnimation: function (map) {
-                          return map.easeTo({
+                        cameraAnimation: function (map2) {
+                          return map2.easeTo({
                             duration: 300,
-                            zoom: map.getZoom() + 1,
-                            around: map.unproject(zoomInPoint)
+                            zoom: map2.getZoom() + 1,
+                            around: map2.unproject(zoomInPoint)
                           }, {
                             originalEvent: e
                           });
@@ -198658,11 +198746,11 @@ void main() {
                         return this$1.reset();
                       }, 0);
                       return {
-                        cameraAnimation: function (map) {
-                          return map.easeTo({
+                        cameraAnimation: function (map2) {
+                          return map2.easeTo({
                             duration: 300,
-                            zoom: map.getZoom() - 1,
-                            around: map.unproject(zoomOutPoint)
+                            zoom: map2.getZoom() - 1,
+                            around: map2.unproject(zoomOutPoint)
                           }, {
                             originalEvent: e
                           });
@@ -199204,17 +199292,17 @@ void main() {
                       pitchDir = 0;
                     }
                     return {
-                      cameraAnimation: function (map) {
-                        var zoom = map.getZoom();
-                        map.easeTo({
+                      cameraAnimation: function (map2) {
+                        var zoom = map2.getZoom();
+                        map2.easeTo({
                           duration: 300,
                           easeId: "keyboardHandler",
                           easing: easeOut,
                           zoom: zoomDir ? Math.round(zoom) + zoomDir * (e.shiftKey ? 2 : 1) : zoom,
-                          bearing: map.getBearing() + bearingDir * this$1._bearingStep,
-                          pitch: map.getPitch() + pitchDir * this$1._pitchStep,
+                          bearing: map2.getBearing() + bearingDir * this$1._bearingStep,
+                          pitch: map2.getPitch() + pitchDir * this$1._pitchStep,
                           offset: [-xDir * this$1._panStep, -yDir * this$1._panStep],
-                          center: map.getCenter()
+                          center: map2.getCenter()
                         }, {
                           originalEvent: e
                         });
@@ -199247,9 +199335,9 @@ void main() {
                   var defaultZoomRate = 1 / 100;
                   var wheelZoomRate = 1 / 450;
                   var maxScalePerFrame = 2;
-                  var ScrollZoomHandler = function ScrollZoomHandler2(map, handler) {
-                    this._map = map;
-                    this._el = map.getCanvasContainer();
+                  var ScrollZoomHandler = function ScrollZoomHandler2(map2, handler) {
+                    this._map = map2;
+                    this._el = map2.getCanvasContainer();
                     this._handler = handler;
                     this._delta = 0;
                     this._defaultZoomRate = defaultZoomRate;
@@ -199454,11 +199542,11 @@ void main() {
                   ClickZoomHandler.prototype.dblclick = function dblclick(e, point) {
                     e.preventDefault();
                     return {
-                      cameraAnimation: function (map) {
-                        map.easeTo({
+                      cameraAnimation: function (map2) {
+                        map2.easeTo({
                           duration: 300,
-                          zoom: map.getZoom() + (e.shiftKey ? -1 : 1),
-                          around: map.unproject(point)
+                          zoom: map2.getZoom() + (e.shiftKey ? -1 : 1),
+                          around: map2.unproject(point)
                         }, {
                           originalEvent: e
                         });
@@ -199647,13 +199735,13 @@ void main() {
                   function hasChange(result) {
                     return result.panDelta && result.panDelta.mag() || result.zoomDelta || result.bearingDelta || result.pitchDelta;
                   }
-                  var HandlerManager = function HandlerManager2(map, options) {
-                    this._map = map;
+                  var HandlerManager = function HandlerManager2(map2, options) {
+                    this._map = map2;
                     this._el = this._map.getCanvasContainer();
                     this._handlers = [];
                     this._handlersById = {};
                     this._changes = [];
-                    this._inertia = new HandlerInertia(map);
+                    this._inertia = new HandlerInertia(map2);
                     this._bearingSnap = options.bearingSnap;
                     this._previousActiveHandlers = {};
                     this._eventsInProgress = {};
@@ -199689,44 +199777,44 @@ void main() {
                     }
                   };
                   HandlerManager.prototype._addDefaultHandlers = function _addDefaultHandlers(options) {
-                    var map = this._map;
-                    var el = map.getCanvasContainer();
-                    this._add("mapEvent", new MapEventHandler(map, options));
-                    var boxZoom = map.boxZoom = new BoxZoomHandler(map, options);
+                    var map2 = this._map;
+                    var el = map2.getCanvasContainer();
+                    this._add("mapEvent", new MapEventHandler(map2, options));
+                    var boxZoom = map2.boxZoom = new BoxZoomHandler(map2, options);
                     this._add("boxZoom", boxZoom);
                     var tapZoom = new TapZoomHandler();
                     var clickZoom = new ClickZoomHandler();
-                    map.doubleClickZoom = new DoubleClickZoomHandler(clickZoom, tapZoom);
+                    map2.doubleClickZoom = new DoubleClickZoomHandler(clickZoom, tapZoom);
                     this._add("tapZoom", tapZoom);
                     this._add("clickZoom", clickZoom);
                     var tapDragZoom = new TapDragZoomHandler();
                     this._add("tapDragZoom", tapDragZoom);
-                    var touchPitch = map.touchPitch = new TouchPitchHandler();
+                    var touchPitch = map2.touchPitch = new TouchPitchHandler();
                     this._add("touchPitch", touchPitch);
                     var mouseRotate = new MouseRotateHandler(options);
                     var mousePitch = new MousePitchHandler(options);
-                    map.dragRotate = new DragRotateHandler(options, mouseRotate, mousePitch);
+                    map2.dragRotate = new DragRotateHandler(options, mouseRotate, mousePitch);
                     this._add("mouseRotate", mouseRotate, ["mousePitch"]);
                     this._add("mousePitch", mousePitch, ["mouseRotate"]);
                     var mousePan = new MousePanHandler(options);
                     var touchPan = new TouchPanHandler(options);
-                    map.dragPan = new DragPanHandler(el, mousePan, touchPan);
+                    map2.dragPan = new DragPanHandler(el, mousePan, touchPan);
                     this._add("mousePan", mousePan);
                     this._add("touchPan", touchPan, ["touchZoom", "touchRotate"]);
                     var touchRotate = new TouchRotateHandler();
                     var touchZoom = new TouchZoomHandler();
-                    map.touchZoomRotate = new TouchZoomRotateHandler(el, touchZoom, touchRotate, tapDragZoom);
+                    map2.touchZoomRotate = new TouchZoomRotateHandler(el, touchZoom, touchRotate, tapDragZoom);
                     this._add("touchRotate", touchRotate, ["touchPan", "touchZoom"]);
                     this._add("touchZoom", touchZoom, ["touchPan", "touchRotate"]);
-                    var scrollZoom = map.scrollZoom = new ScrollZoomHandler(map, this);
+                    var scrollZoom = map2.scrollZoom = new ScrollZoomHandler(map2, this);
                     this._add("scrollZoom", scrollZoom, ["mousePan"]);
-                    var keyboard = map.keyboard = new KeyboardHandler();
+                    var keyboard = map2.keyboard = new KeyboardHandler();
                     this._add("keyboard", keyboard);
-                    this._add("blockableMapEvent", new BlockableMapEventHandler(map));
+                    this._add("blockableMapEvent", new BlockableMapEventHandler(map2));
                     for (var i = 0, list2 = ["boxZoom", "doubleClickZoom", "tapDragZoom", "touchPitch", "dragRotate", "dragPan", "touchZoomRotate", "scrollZoom", "keyboard"]; i < list2.length; i += 1) {
                       var name2 = list2[i];
                       if (options.interactive && options[name2]) {
-                        map[name2].enable(options[name2]);
+                        map2[name2].enable(options[name2]);
                       }
                     }
                   };
@@ -199915,8 +200003,8 @@ void main() {
                     this._changes = [];
                   };
                   HandlerManager.prototype._updateMapTransform = function _updateMapTransform(combinedResult, combinedEventsInProgress, deactivatedHandlers) {
-                    var map = this._map;
-                    var tr = map.transform;
+                    var map2 = this._map;
+                    var tr = map2.transform;
                     if (!hasChange(combinedResult)) {
                       return this._fireEvents(combinedEventsInProgress, deactivatedHandlers, true);
                     }
@@ -199929,8 +200017,8 @@ void main() {
                     if (pinchAround !== void 0) {
                       around = pinchAround;
                     }
-                    map._stop(true);
-                    around = around || map.transform.centerPoint;
+                    map2._stop(true);
+                    around = around || map2.transform.centerPoint;
                     var loc = tr.pointLocation(panDelta ? around.sub(panDelta) : around);
                     if (bearingDelta) {
                       tr.bearing += bearingDelta;
@@ -200543,9 +200631,9 @@ void main() {
                   AttributionControl.prototype.getDefaultPosition = function getDefaultPosition() {
                     return "bottom-right";
                   };
-                  AttributionControl.prototype.onAdd = function onAdd(map) {
+                  AttributionControl.prototype.onAdd = function onAdd(map2) {
                     var compact = this.options && this.options.compact;
-                    this._map = map;
+                    this._map = map2;
                     this._container = DOM.create("div", "mapboxgl-ctrl mapboxgl-ctrl-attrib");
                     this._compactButton = DOM.create("button", "mapboxgl-ctrl-attrib-button", this._container);
                     this._compactButton.addEventListener("click", this._toggleAttribution);
@@ -200689,8 +200777,8 @@ void main() {
                     performance2.bindAll(["_updateLogo"], this);
                     performance2.bindAll(["_updateCompact"], this);
                   };
-                  LogoControl.prototype.onAdd = function onAdd(map) {
-                    this._map = map;
+                  LogoControl.prototype.onAdd = function onAdd(map2) {
+                    this._map = map2;
                     this._container = DOM.create("div", "mapboxgl-ctrl");
                     var anchor = DOM.create("a", "mapboxgl-ctrl-logo");
                     anchor.target = "_blank";
@@ -201958,8 +202046,8 @@ void main() {
                     var rotate = this.options.visualizePitch ? "scale(" + 1 / Math.pow(Math.cos(this._map.transform.pitch * (Math.PI / 180)), 0.5) + ") rotateX(" + this._map.transform.pitch + "deg) rotateZ(" + this._map.transform.angle * (180 / Math.PI) + "deg)" : "rotate(" + this._map.transform.angle * (180 / Math.PI) + "deg)";
                     this._compassIcon.style.transform = rotate;
                   };
-                  NavigationControl.prototype.onAdd = function onAdd(map) {
-                    this._map = map;
+                  NavigationControl.prototype.onAdd = function onAdd(map2) {
+                    this._map = map2;
                     if (this.options.showZoom) {
                       this._setButtonTitle(this._zoomInButton, "ZoomIn");
                       this._setButtonTitle(this._zoomOutButton, "ZoomOut");
@@ -202003,17 +202091,17 @@ void main() {
                     button.title = str;
                     button.setAttribute("aria-label", str);
                   };
-                  var MouseRotateWrapper = function MouseRotateWrapper2(map, element, pitch) {
+                  var MouseRotateWrapper = function MouseRotateWrapper2(map2, element, pitch) {
                     if (pitch === void 0) pitch = false;
                     this._clickTolerance = 10;
                     this.element = element;
                     this.mouseRotate = new MouseRotateHandler({
-                      clickTolerance: map.dragRotate._mouseRotate._clickTolerance
+                      clickTolerance: map2.dragRotate._mouseRotate._clickTolerance
                     });
-                    this.map = map;
+                    this.map = map2;
                     if (pitch) {
                       this.mousePitch = new MousePitchHandler({
-                        clickTolerance: map.dragRotate._mousePitch._clickTolerance
+                        clickTolerance: map2.dragRotate._mousePitch._clickTolerance
                       });
                     }
                     performance2.bindAll(["mousedown", "mousemove", "mouseup", "touchstart", "touchmove", "touchend", "reset"], this);
@@ -202033,15 +202121,15 @@ void main() {
                     DOM.disableDrag();
                   };
                   MouseRotateWrapper.prototype.move = function move(e, point) {
-                    var map = this.map;
+                    var map2 = this.map;
                     var r = this.mouseRotate.mousemoveWindow(e, point);
                     if (r && r.bearingDelta) {
-                      map.setBearing(map.getBearing() + r.bearingDelta);
+                      map2.setBearing(map2.getBearing() + r.bearingDelta);
                     }
                     if (this.mousePitch) {
                       var p = this.mousePitch.mousemoveWindow(e, point);
                       if (p && p.pitchDelta) {
-                        map.setPitch(map.getPitch() + p.pitchDelta);
+                        map2.setPitch(map2.getPitch() + p.pitchDelta);
                       }
                     }
                   };
@@ -202297,12 +202385,12 @@ void main() {
                     if (Evented) Marker2.__proto__ = Evented;
                     Marker2.prototype = Object.create(Evented && Evented.prototype);
                     Marker2.prototype.constructor = Marker2;
-                    Marker2.prototype.addTo = function addTo(map) {
+                    Marker2.prototype.addTo = function addTo(map2) {
                       this.remove();
-                      this._map = map;
-                      map.getCanvasContainer().appendChild(this._element);
-                      map.on("move", this._update);
-                      map.on("moveend", this._update);
+                      this._map = map2;
+                      map2.getCanvasContainer().appendChild(this._element);
+                      map2.on("move", this._update);
+                      map2.on("moveend", this._update);
                       this.setDraggable(this._draggable);
                       this._update();
                       this._map.on("click", this._onMapClick);
@@ -202564,8 +202652,8 @@ void main() {
                     if (Evented) GeolocateControl2.__proto__ = Evented;
                     GeolocateControl2.prototype = Object.create(Evented && Evented.prototype);
                     GeolocateControl2.prototype.constructor = GeolocateControl2;
-                    GeolocateControl2.prototype.onAdd = function onAdd(map) {
-                      this._map = map;
+                    GeolocateControl2.prototype.onAdd = function onAdd(map2) {
+                      this._map = map2;
                       this._container = DOM.create("div", "mapboxgl-ctrl mapboxgl-ctrl-group");
                       checkGeolocationSupport(this._setupUI);
                       return this._container;
@@ -202886,9 +202974,9 @@ void main() {
                   ScaleControl.prototype._onMove = function _onMove() {
                     updateScale(this._map, this._container, this.options);
                   };
-                  ScaleControl.prototype.onAdd = function onAdd(map) {
-                    this._map = map;
-                    this._container = DOM.create("div", "mapboxgl-ctrl mapboxgl-ctrl-scale", map.getContainer());
+                  ScaleControl.prototype.onAdd = function onAdd(map2) {
+                    this._map = map2;
+                    this._container = DOM.create("div", "mapboxgl-ctrl mapboxgl-ctrl-scale", map2.getContainer());
                     this._map.on("move", this._onMove);
                     this._onMove();
                     return this._container;
@@ -202902,27 +202990,27 @@ void main() {
                     this.options.unit = unit;
                     updateScale(this._map, this._container, this.options);
                   };
-                  function updateScale(map, container, options) {
+                  function updateScale(map2, container, options) {
                     var maxWidth = options && options.maxWidth || 100;
-                    var y = map._container.clientHeight / 2;
-                    var left = map.unproject([0, y]);
-                    var right = map.unproject([maxWidth, y]);
+                    var y = map2._container.clientHeight / 2;
+                    var left = map2.unproject([0, y]);
+                    var right = map2.unproject([maxWidth, y]);
                     var maxMeters = left.distanceTo(right);
                     if (options && options.unit === "imperial") {
                       var maxFeet = 3.2808 * maxMeters;
                       if (maxFeet > 5280) {
                         var maxMiles = maxFeet / 5280;
-                        setScale(container, maxWidth, maxMiles, map._getUIString("ScaleControl.Miles"));
+                        setScale(container, maxWidth, maxMiles, map2._getUIString("ScaleControl.Miles"));
                       } else {
-                        setScale(container, maxWidth, maxFeet, map._getUIString("ScaleControl.Feet"));
+                        setScale(container, maxWidth, maxFeet, map2._getUIString("ScaleControl.Feet"));
                       }
                     } else if (options && options.unit === "nautical") {
                       var maxNauticals = maxMeters / 1852;
-                      setScale(container, maxWidth, maxNauticals, map._getUIString("ScaleControl.NauticalMiles"));
+                      setScale(container, maxWidth, maxNauticals, map2._getUIString("ScaleControl.NauticalMiles"));
                     } else if (maxMeters >= 1e3) {
-                      setScale(container, maxWidth, maxMeters / 1e3, map._getUIString("ScaleControl.Kilometers"));
+                      setScale(container, maxWidth, maxMeters / 1e3, map2._getUIString("ScaleControl.Kilometers"));
                     } else {
-                      setScale(container, maxWidth, maxMeters, map._getUIString("ScaleControl.Meters"));
+                      setScale(container, maxWidth, maxMeters, map2._getUIString("ScaleControl.Meters"));
                     }
                   }
                   function setScale(container, maxWidth, maxDistance, unit) {
@@ -202961,8 +203049,8 @@ void main() {
                       this._fullscreenchange = "MSFullscreenChange";
                     }
                   };
-                  FullscreenControl.prototype.onAdd = function onAdd(map) {
-                    this._map = map;
+                  FullscreenControl.prototype.onAdd = function onAdd(map2) {
+                    this._map = map2;
                     if (!this._container) {
                       this._container = this._map.getContainer();
                     }
@@ -203049,11 +203137,11 @@ void main() {
                     if (Evented) Popup2.__proto__ = Evented;
                     Popup2.prototype = Object.create(Evented && Evented.prototype);
                     Popup2.prototype.constructor = Popup2;
-                    Popup2.prototype.addTo = function addTo(map) {
+                    Popup2.prototype.addTo = function addTo(map2) {
                       if (this._map) {
                         this.remove();
                       }
-                      this._map = map;
+                      this._map = map2;
                       if (this.options.closeOnClick) {
                         this._map.on("click", this._onClose);
                       }
@@ -203424,8 +203512,8 @@ void main() {
                 this.visible = isVisible(opts);
               };
               proto.needsNewImage = function (opts) {
-                var map = this.subplot.map;
-                return map.getSource(this.idSource) && this.sourceType === "image" && opts.sourcetype === "image" && (this.source !== opts.source || JSON.stringify(this.coordinates) !== JSON.stringify(opts.coordinates));
+                var map2 = this.subplot.map;
+                return map2.getSource(this.idSource) && this.sourceType === "image" && opts.sourcetype === "image" && (this.source !== opts.source || JSON.stringify(this.coordinates) !== JSON.stringify(opts.coordinates));
               };
               proto.needsNewSource = function (opts) {
                 return this.sourceType !== opts.sourcetype || JSON.stringify(this.source) !== JSON.stringify(opts.source) || this.layerType !== opts.type;
@@ -203437,8 +203525,8 @@ void main() {
                 return this.subplot.belowLookup["layout-" + this.index];
               };
               proto.updateImage = function (opts) {
-                var map = this.subplot.map;
-                map.getSource(this.idSource).updateImage({
+                var map2 = this.subplot.map;
+                map2.getSource(this.idSource).updateImage({
                   url: opts.source,
                   coordinates: opts.coordinates
                 });
@@ -203448,13 +203536,13 @@ void main() {
                 }
               };
               proto.updateSource = function (opts) {
-                var map = this.subplot.map;
-                if (map.getSource(this.idSource)) map.removeSource(this.idSource);
+                var map2 = this.subplot.map;
+                if (map2.getSource(this.idSource)) map2.removeSource(this.idSource);
                 this.sourceType = opts.sourcetype;
                 this.source = opts.source;
                 if (!isVisible(opts)) return;
                 var sourceOpts = convertSourceOpts(opts);
-                map.addSource(this.idSource, sourceOpts);
+                map2.addSource(this.idSource, sourceOpts);
               };
               proto.findFollowingMapboxLayerId = function (below) {
                 if (below === "traces") {
@@ -203498,15 +203586,15 @@ void main() {
                 }
               };
               proto.removeLayer = function () {
-                var map = this.subplot.map;
-                if (map.getLayer(this.idLayer)) {
-                  map.removeLayer(this.idLayer);
+                var map2 = this.subplot.map;
+                if (map2.getLayer(this.idLayer)) {
+                  map2.removeLayer(this.idLayer);
                 }
               };
               proto.dispose = function () {
-                var map = this.subplot.map;
-                if (map.getLayer(this.idLayer)) map.removeLayer(this.idLayer);
-                if (map.getSource(this.idSource)) map.removeSource(this.idSource);
+                var map2 = this.subplot.map;
+                if (map2.getLayer(this.idLayer)) map2.removeLayer(this.idLayer);
+                if (map2.getSource(this.idSource)) map2.removeSource(this.idSource);
               };
               function isVisible(opts) {
                 if (!opts.visible) return false;
@@ -203678,7 +203766,7 @@ void main() {
                 self2.accessToken = opts.accesstoken;
                 var bounds = opts.bounds;
                 var maxBounds = bounds ? [[bounds.west, bounds.south], [bounds.east, bounds.north]] : null;
-                var map = self2.map = new mapboxgl.Map({
+                var map2 = self2.map = new mapboxgl.Map({
                   container: self2.div,
                   style: styleObj.style,
                   center: convertCenter(opts.center),
@@ -203694,15 +203782,15 @@ void main() {
                 }).addControl(new mapboxgl.AttributionControl({
                   compact: true
                 }));
-                map._canvas.style.left = "0px";
-                map._canvas.style.top = "0px";
+                map2._canvas.style.left = "0px";
+                map2._canvas.style.top = "0px";
                 self2.rejectOnError(reject);
                 if (!self2.isStatic) {
                   self2.initFx(calcData, fullLayout);
                 }
                 var promises = [];
                 promises.push(new Promise(function (resolve2) {
-                  map.once("load", resolve2);
+                  map2.once("load", resolve2);
                 }));
                 promises = promises.concat(geoUtils.fetchTraceGeoData(calcData));
                 Promise.all(promises).then(function () {
@@ -203714,17 +203802,17 @@ void main() {
               };
               proto.updateMap = function (calcData, fullLayout, resolve, reject) {
                 var self2 = this;
-                var map = self2.map;
+                var map2 = self2.map;
                 var opts = fullLayout[this.id];
                 self2.rejectOnError(reject);
                 var promises = [];
                 var styleObj = getStyleObj(opts.style, fullLayout);
                 if (JSON.stringify(self2.styleObj) !== JSON.stringify(styleObj)) {
                   self2.styleObj = styleObj;
-                  map.setStyle(styleObj.style);
+                  map2.setStyle(styleObj.style);
                   self2.traceHash = {};
                   promises.push(new Promise(function (resolve2) {
-                    map.once("styledata", resolve2);
+                    map2.once("styledata", resolve2);
                   }));
                 }
                 promises = promises.concat(geoUtils.fetchTraceGeoData(calcData));
@@ -203836,43 +203924,43 @@ void main() {
                 }
               };
               proto.updateLayout = function (fullLayout) {
-                var map = this.map;
+                var map2 = this.map;
                 var opts = fullLayout[this.id];
                 if (!this.dragging && !this.wheeling) {
-                  map.setCenter(convertCenter(opts.center));
-                  map.setZoom(opts.zoom);
-                  map.setBearing(opts.bearing);
-                  map.setPitch(opts.pitch);
+                  map2.setCenter(convertCenter(opts.center));
+                  map2.setZoom(opts.zoom);
+                  map2.setBearing(opts.bearing);
+                  map2.setPitch(opts.pitch);
                 }
                 this.updateLayers(fullLayout);
                 this.updateFramework(fullLayout);
                 this.updateFx(fullLayout);
                 this.map.resize();
                 if (this.gd._context._scrollZoom.mapbox) {
-                  map.scrollZoom.enable();
+                  map2.scrollZoom.enable();
                 } else {
-                  map.scrollZoom.disable();
+                  map2.scrollZoom.disable();
                 }
               };
               proto.resolveOnRender = function (resolve) {
-                var map = this.map;
-                map.on("render", function onRender() {
-                  if (map.loaded()) {
-                    map.off("render", onRender);
+                var map2 = this.map;
+                map2.on("render", function onRender() {
+                  if (map2.loaded()) {
+                    map2.off("render", onRender);
                     setTimeout(resolve, 10);
                   }
                 });
               };
               proto.rejectOnError = function (reject) {
-                var map = this.map;
+                var map2 = this.map;
                 function handler() {
                   reject(new Error(constants.mapOnErrorMsg));
                 }
-                map.once("error", handler);
-                map.once("style.error", handler);
-                map.once("source.error", handler);
-                map.once("tile.error", handler);
-                map.once("layer.error", handler);
+                map2.once("error", handler);
+                map2.once("style.error", handler);
+                map2.once("source.error", handler);
+                map2.once("tile.error", handler);
+                map2.once("layer.error", handler);
               };
               proto.createFramework = function (fullLayout) {
                 var self2 = this;
@@ -203903,8 +203991,8 @@ void main() {
               proto.initFx = function (calcData, fullLayout) {
                 var self2 = this;
                 var gd = self2.gd;
-                var map = self2.map;
-                map.on("moveend", function (evt) {
+                var map2 = self2.map;
+                map2.on("moveend", function (evt) {
                   if (!self2.map) return;
                   var fullLayoutNow = gd._fullLayout;
                   if (evt.originalEvent || self2.wheeling) {
@@ -203926,20 +204014,20 @@ void main() {
                     fullLayoutNow._rehover();
                   }
                 });
-                map.on("wheel", function () {
+                map2.on("wheel", function () {
                   self2.wheeling = true;
                 });
-                map.on("mousemove", function (evt) {
+                map2.on("mousemove", function (evt) {
                   var bb = self2.div.getBoundingClientRect();
                   var xy = [evt.originalEvent.offsetX, evt.originalEvent.offsetY];
                   evt.target.getBoundingClientRect = function () {
                     return bb;
                   };
                   self2.xaxis.p2c = function () {
-                    return map.unproject(xy).lng;
+                    return map2.unproject(xy).lng;
                   };
                   self2.yaxis.p2c = function () {
-                    return map.unproject(xy).lat;
+                    return map2.unproject(xy).lat;
                   };
                   gd._fullLayout._rehover = function () {
                     if (gd._fullLayout._hoversubplot === self2.id && gd._fullLayout[self2.id]) {
@@ -203952,28 +204040,28 @@ void main() {
                 function unhover() {
                   Fx.loneUnhover(fullLayout._hoverlayer);
                 }
-                map.on("dragstart", function () {
+                map2.on("dragstart", function () {
                   self2.dragging = true;
                   unhover();
                 });
-                map.on("zoomstart", unhover);
-                map.on("mouseout", function () {
+                map2.on("zoomstart", unhover);
+                map2.on("mouseout", function () {
                   gd._fullLayout._hoversubplot = null;
                 });
                 function emitUpdate() {
                   var viewNow = self2.getView();
                   gd.emit("plotly_relayouting", self2.getViewEditsWithDerived(viewNow));
                 }
-                map.on("drag", emitUpdate);
-                map.on("zoom", emitUpdate);
-                map.on("dblclick", function () {
+                map2.on("drag", emitUpdate);
+                map2.on("zoom", emitUpdate);
+                map2.on("dblclick", function () {
                   var optsNow = gd._fullLayout[self2.id];
                   Registry.call("_storeDirectGUIEdit", gd.layout, gd._fullLayout._preGUI, self2.getViewEdits(optsNow));
                   var viewInitial = self2.viewInitial;
-                  map.setCenter(convertCenter(viewInitial.center));
-                  map.setZoom(viewInitial.zoom);
-                  map.setBearing(viewInitial.bearing);
-                  map.setPitch(viewInitial.pitch);
+                  map2.setCenter(convertCenter(viewInitial.center));
+                  map2.setZoom(viewInitial.zoom);
+                  map2.setBearing(viewInitial.bearing);
+                  map2.setPitch(viewInitial.pitch);
                   var viewNow = self2.getView();
                   optsNow._input.center = optsNow.center = viewNow.center;
                   optsNow._input.zoom = optsNow.zoom = viewNow.zoom;
@@ -204000,7 +204088,7 @@ void main() {
               };
               proto.updateFx = function (fullLayout) {
                 var self2 = this;
-                var map = self2.map;
+                var map2 = self2.map;
                 var gd = self2.gd;
                 if (self2.isStatic) return;
                 function invert2(pxpy) {
@@ -204034,22 +204122,22 @@ void main() {
                   yaxes: [self2.yaxis],
                   subplot: self2.id
                 });
-                map.off("click", self2.onClickInPanHandler);
+                map2.off("click", self2.onClickInPanHandler);
                 if (selectMode(dragMode) || drawMode(dragMode)) {
-                  map.dragPan.disable();
-                  map.on("zoomstart", self2.clearOutline);
+                  map2.dragPan.disable();
+                  map2.on("zoomstart", self2.clearOutline);
                   self2.dragOptions.prepFn = function (e, startX, startY) {
                     prepSelect(e, startX, startY, self2.dragOptions, dragMode);
                   };
                   dragElement.init(self2.dragOptions);
                 } else {
-                  map.dragPan.enable();
-                  map.off("zoomstart", self2.clearOutline);
+                  map2.dragPan.enable();
+                  map2.off("zoomstart", self2.clearOutline);
                   self2.div.onmousedown = null;
                   self2.div.ontouchstart = null;
                   self2.div.removeEventListener("touchstart", self2.div._ontouchstart);
                   self2.onClickInPanHandler = self2.onClickInPanFn(self2.dragOptions);
-                  map.on("click", self2.onClickInPanHandler);
+                  map2.on("click", self2.onClickInPanHandler);
                 }
               };
               proto.updateFramework = function (fullLayout) {
@@ -204104,45 +204192,45 @@ void main() {
                 return this.map.getStyle().layers;
               };
               proto.addLayer = function (opts, below) {
-                var map = this.map;
+                var map2 = this.map;
                 if (typeof below === "string") {
                   if (below === "") {
-                    map.addLayer(opts, below);
+                    map2.addLayer(opts, below);
                     return;
                   }
                   var mapLayers = this.getMapLayers();
                   for (var i = 0; i < mapLayers.length; i++) {
                     if (below === mapLayers[i].id) {
-                      map.addLayer(opts, below);
+                      map2.addLayer(opts, below);
                       return;
                     }
                   }
                   Lib.warn(["Trying to add layer with *below* value", below, "referencing a layer that does not exist", "or that does not yet exist."].join(" "));
                 }
-                map.addLayer(opts);
+                map2.addLayer(opts);
               };
               proto.project = function (v) {
                 return this.map.project(new mapboxgl.LngLat(v[0], v[1]));
               };
               proto.getView = function () {
-                var map = this.map;
-                var mapCenter = map.getCenter();
+                var map2 = this.map;
+                var mapCenter = map2.getCenter();
                 var lon = mapCenter.lng;
                 var lat = mapCenter.lat;
                 var center = {
                   lon,
                   lat
                 };
-                var canvas = map.getCanvas();
+                var canvas = map2.getCanvas();
                 var w = parseInt(canvas.style.width);
                 var h = parseInt(canvas.style.height);
                 return {
                   center,
-                  zoom: map.getZoom(),
-                  bearing: map.getBearing(),
-                  pitch: map.getPitch(),
+                  zoom: map2.getZoom(),
+                  bearing: map2.getBearing(),
+                  pitch: map2.getPitch(),
                   _derived: {
-                    coordinates: [map.unproject([0, 0]).toArray(), map.unproject([w, 0]).toArray(), map.unproject([w, h]).toArray(), map.unproject([0, h]).toArray()]
+                    coordinates: [map2.unproject([0, 0]).toArray(), map2.unproject([w, 0]).toArray(), map2.unproject([w, h]).toArray(), map2.unproject([0, h]).toArray()]
                   }
                 };
               };
@@ -204827,16 +204915,16 @@ void main() {
                 }
               };
               proto._removeLayers = function () {
-                var map = this.subplot.map;
+                var map2 = this.subplot.map;
                 var layerList = this.layerList;
                 for (var i = layerList.length - 1; i >= 0; i--) {
-                  map.removeLayer(layerList[i][1]);
+                  map2.removeLayer(layerList[i][1]);
                 }
               };
               proto.dispose = function () {
-                var map = this.subplot.map;
+                var map2 = this.subplot.map;
                 this._removeLayers();
-                map.removeSource(this.sourceId);
+                map2.removeSource(this.sourceId);
               };
               module2.exports = function createChoroplethMapbox(subplot, calcTrace) {
                 var trace = calcTrace[0].trace;
@@ -205149,16 +205237,16 @@ void main() {
                 }
               };
               proto._removeLayers = function () {
-                var map = this.subplot.map;
+                var map2 = this.subplot.map;
                 var layerList = this.layerList;
                 for (var i = layerList.length - 1; i >= 0; i--) {
-                  map.removeLayer(layerList[i][1]);
+                  map2.removeLayer(layerList[i][1]);
                 }
               };
               proto.dispose = function () {
-                var map = this.subplot.map;
+                var map2 = this.subplot.map;
                 this._removeLayers();
-                map.removeSource(this.sourceId);
+                map2.removeSource(this.sourceId);
               };
               module2.exports = function createDensityMapbox(subplot, calcTrace) {
                 var trace = calcTrace[0].trace;
@@ -208296,7 +208384,7 @@ void main() {
               proto.update = function update(calcTrace) {
                 var trace = calcTrace[0].trace;
                 var subplot = this.subplot;
-                var map = subplot.map;
+                var map2 = subplot.map;
                 var optsAll = convert(subplot.gd, calcTrace);
                 var below = subplot.belowLookup["trace-" + this.uid];
                 var hasCluster = !!(trace.cluster && trace.cluster.enabled);
@@ -208315,9 +208403,9 @@ void main() {
                   var order = ORDER.cluster;
                   for (var i = order.length - 1; i >= 0; i--) {
                     var k = order[i];
-                    map.removeLayer(lThis.layerIds[k]);
+                    map2.removeLayer(lThis.layerIds[k]);
                   }
-                  if (!noSource) map.removeSource(lThis.sourceIds.circle);
+                  if (!noSource) map2.removeSource(lThis.sourceIds.circle);
                 }
                 function addNonCluster(noSource) {
                   var order = ORDER.nonCluster;
@@ -208332,8 +208420,8 @@ void main() {
                   var order = ORDER.nonCluster;
                   for (var i = order.length - 1; i >= 0; i--) {
                     var k = order[i];
-                    map.removeLayer(lThis.layerIds[k]);
-                    if (!noSource) map.removeSource(lThis.sourceIds[k]);
+                    map2.removeLayer(lThis.layerIds[k]);
+                    if (!noSource) map2.removeSource(lThis.sourceIds[k]);
                   }
                 }
                 function remove(noSource) {
@@ -208379,12 +208467,12 @@ void main() {
                 calcTrace[0].trace._glTrace = this;
               };
               proto.dispose = function dispose() {
-                var map = this.subplot.map;
+                var map2 = this.subplot.map;
                 var order = this.clusterEnabled ? ORDER.cluster : ORDER.nonCluster;
                 for (var i = order.length - 1; i >= 0; i--) {
                   var k = order[i];
-                  map.removeLayer(this.layerIds[k]);
-                  map.removeSource(this.sourceIds[k]);
+                  map2.removeLayer(this.layerIds[k]);
+                  map2.removeSource(this.sourceIds[k]);
                 }
               };
               module2.exports = function createScatterMap(subplot, calcTrace) {
@@ -233109,8 +233197,8 @@ uniform ${i3} ${a3} u_${s3};
                 this.visible = isVisible(opts);
               };
               proto.needsNewImage = function (opts) {
-                var map = this.subplot.map;
-                return map.getSource(this.idSource) && this.sourceType === "image" && opts.sourcetype === "image" && (this.source !== opts.source || JSON.stringify(this.coordinates) !== JSON.stringify(opts.coordinates));
+                var map2 = this.subplot.map;
+                return map2.getSource(this.idSource) && this.sourceType === "image" && opts.sourcetype === "image" && (this.source !== opts.source || JSON.stringify(this.coordinates) !== JSON.stringify(opts.coordinates));
               };
               proto.needsNewSource = function (opts) {
                 return this.sourceType !== opts.sourcetype || JSON.stringify(this.source) !== JSON.stringify(opts.source) || this.layerType !== opts.type;
@@ -233122,8 +233210,8 @@ uniform ${i3} ${a3} u_${s3};
                 return this.subplot.belowLookup["layout-" + this.index];
               };
               proto.updateImage = function (opts) {
-                var map = this.subplot.map;
-                map.getSource(this.idSource).updateImage({
+                var map2 = this.subplot.map;
+                map2.getSource(this.idSource).updateImage({
                   url: opts.source,
                   coordinates: opts.coordinates
                 });
@@ -233133,13 +233221,13 @@ uniform ${i3} ${a3} u_${s3};
                 }
               };
               proto.updateSource = function (opts) {
-                var map = this.subplot.map;
-                if (map.getSource(this.idSource)) map.removeSource(this.idSource);
+                var map2 = this.subplot.map;
+                if (map2.getSource(this.idSource)) map2.removeSource(this.idSource);
                 this.sourceType = opts.sourcetype;
                 this.source = opts.source;
                 if (!isVisible(opts)) return;
                 var sourceOpts = convertSourceOpts(opts);
-                map.addSource(this.idSource, sourceOpts);
+                map2.addSource(this.idSource, sourceOpts);
               };
               proto.findFollowingMapLayerId = function (below) {
                 if (below === "traces") {
@@ -233183,15 +233271,15 @@ uniform ${i3} ${a3} u_${s3};
                 }
               };
               proto.removeLayer = function () {
-                var map = this.subplot.map;
-                if (map.getLayer(this.idLayer)) {
-                  map.removeLayer(this.idLayer);
+                var map2 = this.subplot.map;
+                if (map2.getLayer(this.idLayer)) {
+                  map2.removeLayer(this.idLayer);
                 }
               };
               proto.dispose = function () {
-                var map = this.subplot.map;
-                if (map.getLayer(this.idLayer)) map.removeLayer(this.idLayer);
-                if (map.getSource(this.idSource)) map.removeSource(this.idSource);
+                var map2 = this.subplot.map;
+                if (map2.getLayer(this.idLayer)) map2.removeLayer(this.idLayer);
+                if (map2.getSource(this.idSource)) map2.removeSource(this.idSource);
               };
               function isVisible(opts) {
                 if (!opts.visible) return false;
@@ -233353,7 +233441,7 @@ uniform ${i3} ${a3} u_${s3};
                 var styleObj = self2.styleObj = getStyleObj(opts.style);
                 var bounds = opts.bounds;
                 var maxBounds = bounds ? [[bounds.west, bounds.south], [bounds.east, bounds.north]] : null;
-                var map = self2.map = new maplibregl.Map({
+                var map2 = self2.map = new maplibregl.Map({
                   container: self2.div,
                   style: styleObj.style,
                   center: convertCenter(opts.center),
@@ -233370,19 +233458,19 @@ uniform ${i3} ${a3} u_${s3};
                   compact: true
                 }));
                 var requestedIcons = {};
-                map.on("styleimagemissing", function (e) {
+                map2.on("styleimagemissing", function (e) {
                   var id = e.id;
                   if (!requestedIcons[id] && id.includes("-15")) {
                     requestedIcons[id] = true;
                     var img = new Image(15, 15);
                     img.onload = function () {
-                      map.addImage(id, img);
+                      map2.addImage(id, img);
                     };
                     img.crossOrigin = "Anonymous";
                     img.src = "https://unpkg.com/maki@2.1.0/icons/" + id + ".svg";
                   }
                 });
-                map.setTransformRequest(function (url) {
+                map2.setTransformRequest(function (url) {
                   url = url.replace("https://fonts.openmaptiles.org/Open Sans Extrabold", "https://fonts.openmaptiles.org/Open Sans Extra Bold");
                   url = url.replace("https://tiles.basemaps.cartocdn.com/fonts/Open Sans Extrabold", "https://fonts.openmaptiles.org/Open Sans Extra Bold");
                   url = url.replace("https://fonts.openmaptiles.org/Open Sans Regular,Arial Unicode MS Regular", "https://fonts.openmaptiles.org/Klokantech Noto Sans Regular");
@@ -233390,15 +233478,15 @@ uniform ${i3} ${a3} u_${s3};
                     url
                   };
                 });
-                map._canvas.style.left = "0px";
-                map._canvas.style.top = "0px";
+                map2._canvas.style.left = "0px";
+                map2._canvas.style.top = "0px";
                 self2.rejectOnError(reject);
                 if (!self2.isStatic) {
                   self2.initFx(calcData, fullLayout);
                 }
                 var promises = [];
                 promises.push(new Promise(function (resolve2) {
-                  map.once("load", resolve2);
+                  map2.once("load", resolve2);
                 }));
                 promises = promises.concat(geoUtils.fetchTraceGeoData(calcData));
                 Promise.all(promises).then(function () {
@@ -233410,17 +233498,17 @@ uniform ${i3} ${a3} u_${s3};
               };
               proto.updateMap = function (calcData, fullLayout, resolve, reject) {
                 var self2 = this;
-                var map = self2.map;
+                var map2 = self2.map;
                 var opts = fullLayout[this.id];
                 self2.rejectOnError(reject);
                 var promises = [];
                 var styleObj = getStyleObj(opts.style);
                 if (JSON.stringify(self2.styleObj) !== JSON.stringify(styleObj)) {
                   self2.styleObj = styleObj;
-                  map.setStyle(styleObj.style);
+                  map2.setStyle(styleObj.style);
                   self2.traceHash = {};
                   promises.push(new Promise(function (resolve2) {
-                    map.once("styledata", resolve2);
+                    map2.once("styledata", resolve2);
                   }));
                 }
                 promises = promises.concat(geoUtils.fetchTraceGeoData(calcData));
@@ -233532,43 +233620,43 @@ uniform ${i3} ${a3} u_${s3};
                 }
               };
               proto.updateLayout = function (fullLayout) {
-                var map = this.map;
+                var map2 = this.map;
                 var opts = fullLayout[this.id];
                 if (!this.dragging && !this.wheeling) {
-                  map.setCenter(convertCenter(opts.center));
-                  map.setZoom(opts.zoom);
-                  map.setBearing(opts.bearing);
-                  map.setPitch(opts.pitch);
+                  map2.setCenter(convertCenter(opts.center));
+                  map2.setZoom(opts.zoom);
+                  map2.setBearing(opts.bearing);
+                  map2.setPitch(opts.pitch);
                 }
                 this.updateLayers(fullLayout);
                 this.updateFramework(fullLayout);
                 this.updateFx(fullLayout);
                 this.map.resize();
                 if (this.gd._context._scrollZoom.map) {
-                  map.scrollZoom.enable();
+                  map2.scrollZoom.enable();
                 } else {
-                  map.scrollZoom.disable();
+                  map2.scrollZoom.disable();
                 }
               };
               proto.resolveOnRender = function (resolve) {
-                var map = this.map;
-                map.on("render", function onRender() {
-                  if (map.loaded()) {
-                    map.off("render", onRender);
+                var map2 = this.map;
+                map2.on("render", function onRender() {
+                  if (map2.loaded()) {
+                    map2.off("render", onRender);
                     setTimeout(resolve, 10);
                   }
                 });
               };
               proto.rejectOnError = function (reject) {
-                var map = this.map;
+                var map2 = this.map;
                 function handler() {
                   reject(new Error(constants.mapOnErrorMsg));
                 }
-                map.once("error", handler);
-                map.once("style.error", handler);
-                map.once("source.error", handler);
-                map.once("tile.error", handler);
-                map.once("layer.error", handler);
+                map2.once("error", handler);
+                map2.once("style.error", handler);
+                map2.once("source.error", handler);
+                map2.once("tile.error", handler);
+                map2.once("layer.error", handler);
               };
               proto.createFramework = function (fullLayout) {
                 var self2 = this;
@@ -233599,8 +233687,8 @@ uniform ${i3} ${a3} u_${s3};
               proto.initFx = function (calcData, fullLayout) {
                 var self2 = this;
                 var gd = self2.gd;
-                var map = self2.map;
-                map.on("moveend", function (evt) {
+                var map2 = self2.map;
+                map2.on("moveend", function (evt) {
                   if (!self2.map) return;
                   var fullLayoutNow = gd._fullLayout;
                   if (evt.originalEvent || self2.wheeling) {
@@ -233622,20 +233710,20 @@ uniform ${i3} ${a3} u_${s3};
                     fullLayoutNow._rehover();
                   }
                 });
-                map.on("wheel", function () {
+                map2.on("wheel", function () {
                   self2.wheeling = true;
                 });
-                map.on("mousemove", function (evt) {
+                map2.on("mousemove", function (evt) {
                   var bb = self2.div.getBoundingClientRect();
                   var xy = [evt.originalEvent.offsetX, evt.originalEvent.offsetY];
                   evt.target.getBoundingClientRect = function () {
                     return bb;
                   };
                   self2.xaxis.p2c = function () {
-                    return map.unproject(xy).lng;
+                    return map2.unproject(xy).lng;
                   };
                   self2.yaxis.p2c = function () {
-                    return map.unproject(xy).lat;
+                    return map2.unproject(xy).lat;
                   };
                   gd._fullLayout._rehover = function () {
                     if (gd._fullLayout._hoversubplot === self2.id && gd._fullLayout[self2.id]) {
@@ -233648,28 +233736,28 @@ uniform ${i3} ${a3} u_${s3};
                 function unhover() {
                   Fx.loneUnhover(fullLayout._hoverlayer);
                 }
-                map.on("dragstart", function () {
+                map2.on("dragstart", function () {
                   self2.dragging = true;
                   unhover();
                 });
-                map.on("zoomstart", unhover);
-                map.on("mouseout", function () {
+                map2.on("zoomstart", unhover);
+                map2.on("mouseout", function () {
                   gd._fullLayout._hoversubplot = null;
                 });
                 function emitUpdate() {
                   var viewNow = self2.getView();
                   gd.emit("plotly_relayouting", self2.getViewEditsWithDerived(viewNow));
                 }
-                map.on("drag", emitUpdate);
-                map.on("zoom", emitUpdate);
-                map.on("dblclick", function () {
+                map2.on("drag", emitUpdate);
+                map2.on("zoom", emitUpdate);
+                map2.on("dblclick", function () {
                   var optsNow = gd._fullLayout[self2.id];
                   Registry.call("_storeDirectGUIEdit", gd.layout, gd._fullLayout._preGUI, self2.getViewEdits(optsNow));
                   var viewInitial = self2.viewInitial;
-                  map.setCenter(convertCenter(viewInitial.center));
-                  map.setZoom(viewInitial.zoom);
-                  map.setBearing(viewInitial.bearing);
-                  map.setPitch(viewInitial.pitch);
+                  map2.setCenter(convertCenter(viewInitial.center));
+                  map2.setZoom(viewInitial.zoom);
+                  map2.setBearing(viewInitial.bearing);
+                  map2.setPitch(viewInitial.pitch);
                   var viewNow = self2.getView();
                   optsNow._input.center = optsNow.center = viewNow.center;
                   optsNow._input.zoom = optsNow.zoom = viewNow.zoom;
@@ -233696,7 +233784,7 @@ uniform ${i3} ${a3} u_${s3};
               };
               proto.updateFx = function (fullLayout) {
                 var self2 = this;
-                var map = self2.map;
+                var map2 = self2.map;
                 var gd = self2.gd;
                 if (self2.isStatic) return;
                 function invert2(pxpy) {
@@ -233730,22 +233818,22 @@ uniform ${i3} ${a3} u_${s3};
                   yaxes: [self2.yaxis],
                   subplot: self2.id
                 });
-                map.off("click", self2.onClickInPanHandler);
+                map2.off("click", self2.onClickInPanHandler);
                 if (selectMode(dragMode) || drawMode(dragMode)) {
-                  map.dragPan.disable();
-                  map.on("zoomstart", self2.clearOutline);
+                  map2.dragPan.disable();
+                  map2.on("zoomstart", self2.clearOutline);
                   self2.dragOptions.prepFn = function (e, startX, startY) {
                     prepSelect(e, startX, startY, self2.dragOptions, dragMode);
                   };
                   dragElement.init(self2.dragOptions);
                 } else {
-                  map.dragPan.enable();
-                  map.off("zoomstart", self2.clearOutline);
+                  map2.dragPan.enable();
+                  map2.off("zoomstart", self2.clearOutline);
                   self2.div.onmousedown = null;
                   self2.div.ontouchstart = null;
                   self2.div.removeEventListener("touchstart", self2.div._ontouchstart);
                   self2.onClickInPanHandler = self2.onClickInPanFn(self2.dragOptions);
-                  map.on("click", self2.onClickInPanHandler);
+                  map2.on("click", self2.onClickInPanHandler);
                 }
               };
               proto.updateFramework = function (fullLayout) {
@@ -233800,45 +233888,45 @@ uniform ${i3} ${a3} u_${s3};
                 return this.map.getStyle().layers;
               };
               proto.addLayer = function (opts, below) {
-                var map = this.map;
+                var map2 = this.map;
                 if (typeof below === "string") {
                   if (below === "") {
-                    map.addLayer(opts, below);
+                    map2.addLayer(opts, below);
                     return;
                   }
                   var mapLayers = this.getMapLayers();
                   for (var i = 0; i < mapLayers.length; i++) {
                     if (below === mapLayers[i].id) {
-                      map.addLayer(opts, below);
+                      map2.addLayer(opts, below);
                       return;
                     }
                   }
                   Lib.warn(["Trying to add layer with *below* value", below, "referencing a layer that does not exist", "or that does not yet exist."].join(" "));
                 }
-                map.addLayer(opts);
+                map2.addLayer(opts);
               };
               proto.project = function (v) {
                 return this.map.project(new maplibregl.LngLat(v[0], v[1]));
               };
               proto.getView = function () {
-                var map = this.map;
-                var mapCenter = map.getCenter();
+                var map2 = this.map;
+                var mapCenter = map2.getCenter();
                 var lon = mapCenter.lng;
                 var lat = mapCenter.lat;
                 var center = {
                   lon,
                   lat
                 };
-                var canvas = map.getCanvas();
+                var canvas = map2.getCanvas();
                 var w = parseInt(canvas.style.width);
                 var h = parseInt(canvas.style.height);
                 return {
                   center,
-                  zoom: map.getZoom(),
-                  bearing: map.getBearing(),
-                  pitch: map.getPitch(),
+                  zoom: map2.getZoom(),
+                  bearing: map2.getBearing(),
+                  pitch: map2.getPitch(),
                   _derived: {
-                    coordinates: [map.unproject([0, 0]).toArray(), map.unproject([w, 0]).toArray(), map.unproject([w, h]).toArray(), map.unproject([0, h]).toArray()]
+                    coordinates: [map2.unproject([0, 0]).toArray(), map2.unproject([w, 0]).toArray(), map2.unproject([w, h]).toArray(), map2.unproject([0, h]).toArray()]
                   }
                 };
               };
@@ -234013,20 +234101,20 @@ uniform ${i3} ${a3} u_${s3};
                   var id = mapIds[i];
                   var subplotCalcData = getSubplotCalcData(calcData, MAP, id);
                   var opts = fullLayout[id];
-                  var map = opts._subplot;
-                  if (!map) {
-                    map = new Map2(gd, id);
-                    fullLayout[id]._subplot = map;
+                  var map2 = opts._subplot;
+                  if (!map2) {
+                    map2 = new Map2(gd, id);
+                    fullLayout[id]._subplot = map2;
                   }
-                  if (!map.viewInitial) {
-                    map.viewInitial = {
+                  if (!map2.viewInitial) {
+                    map2.viewInitial = {
                       center: Lib.extendFlat({}, opts.center),
                       zoom: opts.zoom,
                       bearing: opts.bearing,
                       pitch: opts.pitch
                     };
                   }
-                  map.plot(subplotCalcData, fullLayout, gd._promises);
+                  map2.plot(subplotCalcData, fullLayout, gd._promises);
                 }
               };
               exports2.clean = function (newFullData, newFullLayout, oldFullData, oldFullLayout) {
@@ -234045,8 +234133,8 @@ uniform ${i3} ${a3} u_${s3};
                 for (var i = 0; i < subplotIds.length; i++) {
                   var opts = fullLayout[subplotIds[i]];
                   var domain = opts.domain;
-                  var map = opts._subplot;
-                  var imageData = map.toImage("png");
+                  var map2 = opts._subplot;
+                  var imageData = map2.toImage("png");
                   var image = fullLayout._glimages.append("svg:image");
                   image.attr({
                     xmlns: xmlnsNamespaces.svg,
@@ -234437,16 +234525,16 @@ uniform ${i3} ${a3} u_${s3};
                 }
               };
               proto._removeLayers = function () {
-                var map = this.subplot.map;
+                var map2 = this.subplot.map;
                 var layerList = this.layerList;
                 for (var i = layerList.length - 1; i >= 0; i--) {
-                  map.removeLayer(layerList[i][1]);
+                  map2.removeLayer(layerList[i][1]);
                 }
               };
               proto.dispose = function () {
-                var map = this.subplot.map;
+                var map2 = this.subplot.map;
                 this._removeLayers();
-                map.removeSource(this.sourceId);
+                map2.removeSource(this.sourceId);
               };
               module2.exports = function createChoroplethMap(subplot, calcTrace) {
                 var trace = calcTrace[0].trace;
@@ -234758,16 +234846,16 @@ uniform ${i3} ${a3} u_${s3};
                 }
               };
               proto._removeLayers = function () {
-                var map = this.subplot.map;
+                var map2 = this.subplot.map;
                 var layerList = this.layerList;
                 for (var i = layerList.length - 1; i >= 0; i--) {
-                  map.removeLayer(layerList[i][1]);
+                  map2.removeLayer(layerList[i][1]);
                 }
               };
               proto.dispose = function () {
-                var map = this.subplot.map;
+                var map2 = this.subplot.map;
                 this._removeLayers();
-                map.removeSource(this.sourceId);
+                map2.removeSource(this.sourceId);
               };
               module2.exports = function createDensityMap(subplot, calcTrace) {
                 var trace = calcTrace[0].trace;
@@ -235275,7 +235363,7 @@ uniform ${i3} ${a3} u_${s3};
               "use strict";
               var tarjan = require_scc();
               var Lib = require_lib();
-              var wrap = require_gup().wrap;
+              var wrap2 = require_gup().wrap;
               var isArrayOrTypedArray = Lib.isArrayOrTypedArray;
               var isIndex = Lib.isIndex;
               var Colorscale = require_colorscale();
@@ -235406,7 +235494,7 @@ uniform ${i3} ${a3} u_${s3};
               }
               module2.exports = function calc(gd, trace) {
                 var result = convertToD3Sankey(trace);
-                return wrap({
+                return wrap2({
                   circular: result.circular,
                   _nodes: result.nodes,
                   _links: result.links,
@@ -235698,7 +235786,7 @@ uniform ${i3} ${a3} u_${s3};
                 "use strict";
                 var prefix = "$";
                 function Map2() {}
-                Map2.prototype = map.prototype = {
+                Map2.prototype = map2.prototype = {
                   constructor: Map2,
                   has: function (key) {
                     return (prefix + key in this);
@@ -235748,15 +235836,15 @@ uniform ${i3} ${a3} u_${s3};
                     for (var property in this) if (property[0] === prefix) f(this[property], property.slice(1), this);
                   }
                 };
-                function map(object, f) {
-                  var map2 = new Map2();
+                function map2(object, f) {
+                  var map22 = new Map2();
                   if (object instanceof Map2) object.each(function (value, key2) {
-                    map2.set(key2, value);
+                    map22.set(key2, value);
                   }); else if (Array.isArray(object)) {
                     var i = -1, n = object.length, o;
-                    if (f == null) while (++i < n) map2.set(i, object[i]); else while (++i < n) map2.set(f(o = object[i], i, object), o);
-                  } else if (object) for (var key in object) map2.set(key, object[key]);
-                  return map2;
+                    if (f == null) while (++i < n) map22.set(i, object[i]); else while (++i < n) map22.set(f(o = object[i], i, object), o);
+                  } else if (object) for (var key in object) map22.set(key, object[key]);
+                  return map22;
                 }
                 function nest() {
                   var keys2 = [], sortKeys = [], sortValues, rollup, nest2;
@@ -235765,7 +235853,7 @@ uniform ${i3} ${a3} u_${s3};
                       if (sortValues != null) array.sort(sortValues);
                       return rollup != null ? rollup(array) : array;
                     }
-                    var i = -1, n = array.length, key = keys2[depth++], keyValue, value, valuesByKey = map(), values2, result = createResult();
+                    var i = -1, n = array.length, key = keys2[depth++], keyValue, value, valuesByKey = map2(), values2, result = createResult();
                     while (++i < n) {
                       if (values2 = valuesByKey.get(keyValue = key(value = array[i]) + "")) {
                         values2.push(value);
@@ -235826,13 +235914,13 @@ uniform ${i3} ${a3} u_${s3};
                   object[key] = value;
                 }
                 function createMap() {
-                  return map();
+                  return map2();
                 }
                 function setMap(map$$1, key, value) {
                   map$$1.set(key, value);
                 }
                 function Set2() {}
-                var proto = map.prototype;
+                var proto = map2.prototype;
                 Set2.prototype = set.prototype = {
                   constructor: Set2,
                   has: proto.has,
@@ -235858,27 +235946,27 @@ uniform ${i3} ${a3} u_${s3};
                   }
                   return set2;
                 }
-                function keys(map2) {
+                function keys(map22) {
                   var keys2 = [];
-                  for (var key in map2) keys2.push(key);
+                  for (var key in map22) keys2.push(key);
                   return keys2;
                 }
-                function values(map2) {
+                function values(map22) {
                   var values2 = [];
-                  for (var key in map2) values2.push(map2[key]);
+                  for (var key in map22) values2.push(map22[key]);
                   return values2;
                 }
-                function entries(map2) {
+                function entries(map22) {
                   var entries2 = [];
-                  for (var key in map2) entries2.push({
+                  for (var key in map22) entries2.push({
                     key,
-                    value: map2[key]
+                    value: map22[key]
                   });
                   return entries2;
                 }
                 exports22.nest = nest;
                 exports22.set = set;
-                exports22.map = map;
+                exports22.map = map2;
                 exports22.keys = keys;
                 exports22.values = values;
                 exports22.entries = entries;
@@ -236390,7 +236478,7 @@ uniform ${i3} ${a3} u_${s3};
                 function manyBody() {
                   var nodes, node, alpha, strength = constant(-30), strengths, distanceMin2 = 1, distanceMax2 = Infinity, theta2 = 0.81;
                   function force(_) {
-                    var i, n = nodes.length, tree = d3Quadtree.quadtree(nodes, x$1, y$1).visitAfter(accumulate2);
+                    var i, n = nodes.length, tree = d3Quadtree.quadtree(nodes, x$1, y$1).visitAfter(accumulate3);
                     for ((alpha = _, i = 0); i < n; ++i) (node = nodes[i], tree.visit(apply));
                   }
                   function initialize() {
@@ -236399,7 +236487,7 @@ uniform ${i3} ${a3} u_${s3};
                     strengths = new Array(n);
                     for (i = 0; i < n; ++i) (node2 = nodes[i], strengths[node2.index] = +strength(node2, i, nodes));
                   }
-                  function accumulate2(quad) {
+                  function accumulate3(quad) {
                     var strength2 = 0, q, c, weight = 0, x2, y2, i;
                     if (quad.length) {
                       for (x2 = y2 = i = 0; i < 4; ++i) {
@@ -242180,9 +242268,9 @@ uniform ${i3} ${a3} u_${s3};
           var require_calc37 = __commonJS2({
             "src/traces/table/calc.js"(exports2, module2) {
               "use strict";
-              var wrap = require_gup().wrap;
+              var wrap2 = require_gup().wrap;
               module2.exports = function calc() {
-                return wrap({});
+                return wrap2({});
               };
             }
           });
@@ -245921,7 +246009,7 @@ uniform ${i3} ${a3} u_${s3};
                   Drawing.setClipUrl(plotGroup, carpet._clipPathId, gd);
                 });
               };
-              function mapPathinfo(pathinfo, map) {
+              function mapPathinfo(pathinfo, map2) {
                 var i, j, k, pi, pedgepaths, ppaths, pedgepath, ppath, path;
                 for (i = 0; i < pathinfo.length; i++) {
                   pi = pathinfo[i];
@@ -245931,7 +246019,7 @@ uniform ${i3} ${a3} u_${s3};
                     path = pi.edgepaths[j];
                     pedgepath = [];
                     for (k = 0; k < path.length; k++) {
-                      pedgepath[k] = map(path[k]);
+                      pedgepath[k] = map2(path[k]);
                     }
                     pedgepaths.push(pedgepath);
                   }
@@ -245939,7 +246027,7 @@ uniform ${i3} ${a3} u_${s3};
                     path = pi.paths[j];
                     ppath = [];
                     for (k = 0; k < path.length; k++) {
-                      ppath[k] = map(path[k]);
+                      ppath[k] = map2(path[k]);
                     }
                     ppaths.push(ppath);
                   }
@@ -253355,6 +253443,32 @@ uniform ${i3} ${a3} u_${s3};
   init_define_process();
   init_define_process();
   init_define_process();
+  var import_rttcErrors = __require("js-slang/dist/errors/rttcErrors");
+  var import_base = __require("js-slang/dist/errors/base");
+  init_define_process();
+  var import_rttc = __require("js-slang/dist/utils/rttc");
+  var import_operators = __require("js-slang/dist/utils/operators");
+  function hueToRgb(hue) {
+    const h = (hue % 1 + 1) % 1;
+    const i = Math.floor(h * 6);
+    const f = h * 6 - i;
+    const q = 1 - f;
+    switch (i) {
+      case 0:
+        return [255, Math.floor(f * 255), 0];
+      case 1:
+        return [Math.floor(q * 255), 255, 0];
+      case 2:
+        return [0, 255, Math.floor(f * 255)];
+      case 3:
+        return [0, Math.floor(q * 255), 255];
+      case 4:
+        return [Math.floor(f * 255), 0, 255];
+      default:
+        return [255, 0, Math.floor(q * 255)];
+    }
+  }
+  init_define_process();
   var Accidental;
   (function (Accidental2) {
     Accidental2["SHARP"] = "#";
@@ -253368,6 +253482,7 @@ uniform ${i3} ${a3} u_${s3};
   var FLAT = Accidental.FLAT;
   var NATURAL = Accidental.NATURAL;
   var import_list2 = __require("js-slang/dist/stdlib/list");
+  var import_stringify = __require("js-slang/dist/utils/stringify");
   function get_wave(sound) {
     return (0, import_list2.head)(sound);
   }
@@ -253375,22 +253490,22 @@ uniform ${i3} ${a3} u_${s3};
     return (0, import_list2.tail)(sound);
   }
   function is_sound(x) {
-    return (0, import_list2.is_pair)(x) && typeof get_wave(x) === "function" && typeof get_duration(x) === "number";
+    return (0, import_list2.is_pair)(x) && (0, import_rttc.isFunctionOfLength)((0, import_list2.head)(x), 1) && typeof (0, import_list2.tail)(x) === "number";
   }
   var import_context = __toESM(__require("js-slang/context"), 1);
+  var import_list3 = __require("js-slang/dist/stdlib/list");
   var import_plotly3 = __toESM(require_plotly(), 1);
   init_define_process();
   init_define_process();
   init_define_process();
   init_define_process();
   function clamp(value, bound1, bound2) {
-    if (bound2 == null) {
-      return Math.min(value, bound1);
-    }
+    if (bound2 == null) return Math.min(value, bound1);
     return Math.min(Math.max(value, bound1), bound2);
   }
   init_define_process();
-  var import_stringify = __require("js-slang/dist/utils/stringify");
+  var import_operators2 = __require("js-slang/dist/utils/operators");
+  var import_stringify2 = __require("js-slang/dist/utils/stringify");
   var Point = class {
     constructor(x, y, z, color) {
       this.x = x;
@@ -253500,14 +253615,55 @@ ${variableDeclaration2};`);
   };
   function throwIfNotPoint(obj, func_name) {
     if (!(obj instanceof Point)) {
-      throw new Error(`${func_name} expects a point as argument`);
+      throw new import_rttcErrors.InvalidParameterTypeError("Point", obj, func_name);
     }
   }
-  var CurveFunctions = class {
+  function throwIfNotCurve(obj, func_name, param_name) {
+    (0, import_rttc.assertFunctionOfLength)(obj, 1, func_name, "Curve", param_name);
+  }
+  function defineCurveTransformer(f, name2) {
+    const transformer = curve => {
+      throwIfNotCurve(curve, name2 !== null && name2 !== void 0 ? name2 : "CurveTransformer");
+      return f(t => (0, import_operators.callWithoutMetadata)(curve, t));
+    };
+    transformer.toReplString = () => "<CurveTransformer>";
+    if (name2 !== void 0) {
+      Object.defineProperty(transformer, "name", {
+        value: name2
+      });
+    }
+    return transformer;
+  }
+  var CurveFunctions = class _CurveFunctions {
     static make_point(x, y) {
+      (0, import_rttc.assertNumberWithinRange)(x, {
+        func_name: _CurveFunctions.make_point.name,
+        param_name: "x",
+        integer: false
+      });
+      (0, import_rttc.assertNumberWithinRange)(y, {
+        func_name: _CurveFunctions.make_point.name,
+        param_name: "y",
+        integer: false
+      });
       return new Point(x, y, 0, [0, 0, 0, 1]);
     }
     static make_3D_point(x, y, z) {
+      (0, import_rttc.assertNumberWithinRange)(x, {
+        func_name: _CurveFunctions.make_3D_point.name,
+        param_name: "x",
+        integer: false
+      });
+      (0, import_rttc.assertNumberWithinRange)(y, {
+        func_name: _CurveFunctions.make_3D_point.name,
+        param_name: "y",
+        integer: false
+      });
+      (0, import_rttc.assertNumberWithinRange)(z, {
+        func_name: _CurveFunctions.make_3D_point.name,
+        param_name: "z",
+        integer: false
+      });
       return new Point(x, y, z, [0, 0, 0, 1]);
     }
     static make_color_point(x, y, r, g, b) {
@@ -253523,30 +253679,75 @@ ${variableDeclaration2};`);
       return new Point(x, y, z, [r / 255, g / 255, b / 255, 1]);
     }
     static connect_ends(curve1, curve2) {
-      const startPointOfCurve2 = curve2(0);
-      const endPointOfCurve1 = curve1(1);
+      throwIfNotCurve(curve1, _CurveFunctions.connect_ends.name, "curve1");
+      throwIfNotCurve(curve2, _CurveFunctions.connect_ends.name, "curve2");
+      const startPointOfCurve2 = (0, import_operators.callWithoutMetadata)(curve2, 0);
+      const endPointOfCurve1 = (0, import_operators.callWithoutMetadata)(curve1, 1);
       return connect_rigidly(curve1, translate(x_of(endPointOfCurve1) - x_of(startPointOfCurve2), y_of(endPointOfCurve1) - y_of(startPointOfCurve2), z_of(endPointOfCurve1) - z_of(startPointOfCurve2))(curve2));
     }
     static connect_rigidly(curve1, curve2) {
-      return t => t < 1 / 2 ? curve1(2 * t) : curve2(2 * t - 1);
+      throwIfNotCurve(curve1, _CurveFunctions.connect_rigidly.name, "curve1");
+      throwIfNotCurve(curve2, _CurveFunctions.connect_rigidly.name, "curve2");
+      const c1 = t => (0, import_operators.callWithoutMetadata)(curve1, t);
+      const c2 = t => (0, import_operators.callWithoutMetadata)(curve2, t);
+      return t => t < 0.5 ? c1(2 * t) : c2(2 * t - 1);
     }
     static translate(x0, y0, z0) {
-      return curve => t => {
-        const ct = curve(t);
-        return new Point(x0 + ct.x, y0 + ct.y, z0 + ct.z, [ct.color[0], ct.color[1], ct.color[2], 1]);
-      };
+      (0, import_rttc.assertNumberWithinRange)(x0, {
+        func_name: _CurveFunctions.translate.name,
+        param_name: "x0",
+        integer: false
+      });
+      (0, import_rttc.assertNumberWithinRange)(y0, {
+        func_name: _CurveFunctions.translate.name,
+        param_name: "y0",
+        integer: false
+      });
+      (0, import_rttc.assertNumberWithinRange)(z0, {
+        func_name: _CurveFunctions.translate.name,
+        param_name: "z0",
+        integer: false
+      });
+      return defineCurveTransformer(curve => t => {
+        const pt = curve(t);
+        return make_3D_color_point(x0 + x_of(pt), y0 + y_of(pt), z0 + z_of(pt), r_of(pt), g_of(pt), b_of(pt));
+      });
+    }
+    static rainbow(repeats, phase) {
+      (0, import_rttc.assertNumberWithinRange)(repeats, _CurveFunctions.rainbow.name, 0, void 0, false, "repeats");
+      (0, import_rttc.assertNumberWithinRange)(phase, _CurveFunctions.rainbow.name, void 0, void 0, false, "phase");
+      return defineCurveTransformer(curve => t => {
+        const pt = curve(t);
+        const [r, g, b] = hueToRgb((t * repeats + phase) % 1);
+        return make_3D_color_point(x_of(pt), y_of(pt), z_of(pt), r, g, b);
+      }, "rainbow");
     }
     static rotate_around_origin_3D(a, b, c) {
+      (0, import_rttc.assertNumberWithinRange)(a, {
+        func_name: _CurveFunctions.rotate_around_origin_3D.name,
+        integer: false,
+        param_name: "a"
+      });
       const cthx = Math.cos(a);
       const sthx = Math.sin(a);
+      (0, import_rttc.assertNumberWithinRange)(b, {
+        func_name: _CurveFunctions.rotate_around_origin_3D.name,
+        integer: false,
+        param_name: "b"
+      });
       const cthy = Math.cos(b);
       const sthy = Math.sin(b);
+      (0, import_rttc.assertNumberWithinRange)(c, {
+        func_name: _CurveFunctions.rotate_around_origin_3D.name,
+        integer: false,
+        param_name: "c"
+      });
       const cthz = Math.cos(c);
       const sthz = Math.sin(c);
-      return curve => t => {
-        const ct = curve(t);
-        const coord = [ct.x, ct.y, ct.z];
-        const mat = [[cthz * cthy, cthz * sthy * sthx - sthz * cthx, cthz * sthy * cthx + sthz * sthx], [sthz * cthy, sthz * sthy * sthx + cthz * cthx, sthz * sthy * cthx - cthz * sthx], [-sthy, cthy * sthx, cthy * cthx]];
+      const mat = [[cthz * cthy, cthz * sthy * sthx - sthz * cthx, cthz * sthy * cthx + sthz * sthx], [sthz * cthy, sthz * sthy * sthx + cthz * cthx, sthz * sthy * cthx - cthz * sthx], [-sthy, cthy * sthx, cthy * cthx]];
+      return defineCurveTransformer(curve => t => {
+        const pt = curve(t);
+        const coord = [pt.x, pt.y, pt.z];
         let xf = 0;
         let yf = 0;
         let zf = 0;
@@ -253555,22 +253756,43 @@ ${variableDeclaration2};`);
           yf += mat[1][i] * coord[i];
           zf += mat[2][i] * coord[i];
         }
-        return new Point(xf, yf, zf, [ct.color[0], ct.color[1], ct.color[2], 1]);
-      };
+        return make_3D_color_point(xf, yf, zf, r_of(pt), g_of(pt), z_of(pt));
+      });
     }
     static rotate_around_origin(a) {
+      (0, import_rttc.assertNumberWithinRange)(a, {
+        func_name: _CurveFunctions.rotate_around_origin.name,
+        integer: false
+      });
       const cth = Math.cos(a);
       const sth = Math.sin(a);
-      return curve => t => {
-        const ct = curve(t);
-        return new Point(cth * ct.x - sth * ct.y, sth * ct.x + cth * ct.y, ct.z, [ct.color[0], ct.color[1], ct.color[2], 1]);
-      };
+      return defineCurveTransformer(curve => t => {
+        const pt = curve(t);
+        const pt_x = x_of(pt);
+        const pt_y = y_of(pt);
+        return make_3D_color_point(cth * pt_x - sth * pt_y, sth * pt_x + cth * pt_y, z_of(pt), r_of(pt), g_of(pt), b_of(pt));
+      });
     }
     static scale(x, y, z) {
-      return curve => t => {
-        const ct = curve(t);
-        return new Point(x * ct.x, y * ct.y, z * ct.z, [ct.color[0], ct.color[1], ct.color[2], 1]);
-      };
+      (0, import_rttc.assertNumberWithinRange)(x, {
+        func_name: _CurveFunctions.scale.name,
+        param_name: "x",
+        integer: false
+      });
+      (0, import_rttc.assertNumberWithinRange)(y, {
+        func_name: _CurveFunctions.scale.name,
+        param_name: "y",
+        integer: false
+      });
+      (0, import_rttc.assertNumberWithinRange)(z, {
+        func_name: _CurveFunctions.scale.name,
+        param_name: "z",
+        integer: false
+      });
+      return defineCurveTransformer(curve => t => {
+        const pt = curve(t);
+        return make_3D_color_point(x * x_of(pt), y * y_of(pt), z * z_of(pt), r_of(pt), g_of(pt), b_of(pt));
+      });
     }
     static scale_proportional(s) {
       return scale(s, s, s);
@@ -253600,11 +253822,15 @@ ${variableDeclaration2};`);
       return Math.floor(pt.color[2] * 255);
     }
     static unit_line_at(y) {
+      (0, import_rttc.assertNumberWithinRange)(y, {
+        func_name: _CurveFunctions.unit_line_at.name,
+        integer: false
+      });
       return t => make_point(t, y);
     }
   };
-  CurveFunctions.invert = original => t => original(1 - t);
-  CurveFunctions.put_in_standard_position = curve => {
+  CurveFunctions.invert = defineCurveTransformer(curve => t => curve(1 - t), "invert");
+  CurveFunctions.put_in_standard_position = defineCurveTransformer(curve => {
     const start_point = curve(0);
     const curve_started_at_origin = translate(-x_of(start_point), -y_of(start_point), 0)(curve);
     const new_end_point = curve_started_at_origin(1);
@@ -253612,21 +253838,26 @@ ${variableDeclaration2};`);
     const curve_ended_at_x_axis = rotate_around_origin_3D(0, 0, -theta)(curve_started_at_origin);
     const end_point_on_x_axis = x_of(curve_ended_at_x_axis(1));
     return scale_proportional(1 / end_point_on_x_axis)(curve_ended_at_x_axis);
-  };
-  CurveFunctions.unit_circle = t => {
-    return make_point(Math.cos(2 * Math.PI * t), Math.sin(2 * Math.PI * t));
-  };
+  }, "put_in_standard_position");
+  CurveFunctions.compose = (0, import_operators.wrap)((...transformers) => {
+    transformers.forEach((transformer, index) => {
+      (0, import_rttc.assertFunctionOfLength)(transformer, 1, CurveFunctions.compose.name, "CurveTransformer", `arg ${index}`);
+    });
+    return defineCurveTransformer(curve => {
+      return transformers.reduce((acc, transformer) => transformer(acc), curve);
+    });
+  }, true, "compose");
+  CurveFunctions.unit_circle = t => make_point(Math.cos(2 * Math.PI * t), Math.sin(2 * Math.PI * t));
   CurveFunctions.unit_line = t => make_point(t, 0);
-  CurveFunctions.arc = t => {
-    return make_point(Math.sin(Math.PI * t), Math.cos(Math.PI * t));
-  };
+  CurveFunctions.arc = t => make_point(Math.sin(Math.PI * t), Math.cos(Math.PI * t));
   __decorate2([functionDeclaration("x: number, y: number", "Point"), __metadata("design:type", Function), __metadata("design:paramtypes", [Number, Number]), __metadata("design:returntype", Point)], CurveFunctions, "make_point", null);
   __decorate2([functionDeclaration("x: number, y: number, z: number", "Point"), __metadata("design:type", Function), __metadata("design:paramtypes", [Number, Number, Number]), __metadata("design:returntype", Point)], CurveFunctions, "make_3D_point", null);
   __decorate2([functionDeclaration("x: number, y: number, r: number, g: number, b: number", "Point"), __metadata("design:type", Function), __metadata("design:paramtypes", [Number, Number, Number, Number, Number]), __metadata("design:returntype", Point)], CurveFunctions, "make_color_point", null);
   __decorate2([functionDeclaration("x: number, y: number, z: number, r: number, g: number, b: number", "Point"), __metadata("design:type", Function), __metadata("design:paramtypes", [Number, Number, Number, Number, Number, Number]), __metadata("design:returntype", Point)], CurveFunctions, "make_3D_color_point", null);
-  __decorate2([functionDeclaration("curve1: Curve, curve2: Curve", "Curve"), __metadata("design:type", Function), __metadata("design:paramtypes", [Object, Object]), __metadata("design:returntype", Object)], CurveFunctions, "connect_ends", null);
-  __decorate2([functionDeclaration("curve1: Curve, curve2: Curve", "Curve"), __metadata("design:type", Function), __metadata("design:paramtypes", [Object, Object]), __metadata("design:returntype", Object)], CurveFunctions, "connect_rigidly", null);
+  __decorate2([functionDeclaration("curve1: Curve, curve2: Curve", "Curve"), __metadata("design:type", Function), __metadata("design:paramtypes", [Function, Function]), __metadata("design:returntype", Function)], CurveFunctions, "connect_ends", null);
+  __decorate2([functionDeclaration("curve1: Curve, curve2: Curve", "Curve"), __metadata("design:type", Function), __metadata("design:paramtypes", [Function, Function]), __metadata("design:returntype", Function)], CurveFunctions, "connect_rigidly", null);
   __decorate2([functionDeclaration("x0: number, y0: number, z0: number", "(c: Curve) => Curve"), __metadata("design:type", Function), __metadata("design:paramtypes", [Number, Number, Number]), __metadata("design:returntype", Function)], CurveFunctions, "translate", null);
+  __decorate2([functionDeclaration("repeats: number, phase: number", "(c: Curve) => Curve"), __metadata("design:type", Function), __metadata("design:paramtypes", [Number, Number]), __metadata("design:returntype", Function)], CurveFunctions, "rainbow", null);
   __decorate2([functionDeclaration("curve: Curve", "Curve"), __metadata("design:type", Function)], CurveFunctions, "invert", void 0);
   __decorate2([functionDeclaration("curve: Curve", "Curve"), __metadata("design:type", Function)], CurveFunctions, "put_in_standard_position", void 0);
   __decorate2([functionDeclaration("a: number, b: number, c: number", "(c: Curve) => Curve"), __metadata("design:type", Function), __metadata("design:paramtypes", [Number, Number, Number]), __metadata("design:returntype", Function)], CurveFunctions, "rotate_around_origin_3D", null);
@@ -253639,10 +253870,10 @@ ${variableDeclaration2};`);
   __decorate2([functionDeclaration("p: Point", "number"), __metadata("design:type", Function), __metadata("design:paramtypes", [Point]), __metadata("design:returntype", Number)], CurveFunctions, "r_of", null);
   __decorate2([functionDeclaration("p: Point", "number"), __metadata("design:type", Function), __metadata("design:paramtypes", [Point]), __metadata("design:returntype", Number)], CurveFunctions, "g_of", null);
   __decorate2([functionDeclaration("p: Point", "number"), __metadata("design:type", Function), __metadata("design:paramtypes", [Point]), __metadata("design:returntype", Number)], CurveFunctions, "b_of", null);
-  __decorate2([functionDeclaration("t: number", "Point"), __metadata("design:type", Object)], CurveFunctions, "unit_circle", void 0);
-  __decorate2([functionDeclaration("t: number", "Point"), __metadata("design:type", Object)], CurveFunctions, "unit_line", void 0);
-  __decorate2([functionDeclaration("t: number", "Curve"), __metadata("design:type", Function), __metadata("design:paramtypes", [Number]), __metadata("design:returntype", Object)], CurveFunctions, "unit_line_at", null);
-  __decorate2([functionDeclaration("t: number", "Point"), __metadata("design:type", Object)], CurveFunctions, "arc", void 0);
+  __decorate2([functionDeclaration("t: number", "Point"), __metadata("design:type", Function)], CurveFunctions, "unit_circle", void 0);
+  __decorate2([functionDeclaration("t: number", "Point"), __metadata("design:type", Function)], CurveFunctions, "unit_line", void 0);
+  __decorate2([functionDeclaration("t: number", "Curve"), __metadata("design:type", Function), __metadata("design:paramtypes", [Number]), __metadata("design:returntype", Function)], CurveFunctions, "unit_line_at", null);
+  __decorate2([functionDeclaration("t: number", "Point"), __metadata("design:type", Function)], CurveFunctions, "arc", void 0);
   var make_point = CurveFunctions.make_point;
   var make_3D_point = CurveFunctions.make_3D_point;
   var make_color_point = CurveFunctions.make_color_point;
@@ -253655,10 +253886,12 @@ ${variableDeclaration2};`);
   var b_of = CurveFunctions.b_of;
   var invert = CurveFunctions.invert;
   var translate = CurveFunctions.translate;
+  var rainbow = CurveFunctions.rainbow;
   var rotate_around_origin_3D = CurveFunctions.rotate_around_origin_3D;
   var rotate_around_origin = CurveFunctions.rotate_around_origin;
   var scale = CurveFunctions.scale;
   var scale_proportional = CurveFunctions.scale_proportional;
+  var compose = CurveFunctions.compose;
   var put_in_standard_position = CurveFunctions.put_in_standard_position;
   var connect_rigidly = CurveFunctions.connect_rigidly;
   var connect_ends = CurveFunctions.connect_ends;
@@ -253695,7 +253928,7 @@ ${variableDeclaration2};`);
     const z_s = [];
     const color_s = [];
     for (let i = 0; i <= numPoints; i += 1) {
-      const point = func(i / numPoints);
+      const point = (0, import_operators.callWithoutMetadata)(func, i / numPoints);
       x_s.push(x_of(point));
       y_s.push(y_of(point));
       z_s.push(z_of(point));
@@ -253731,31 +253964,31 @@ ${variableDeclaration2};`);
     drawnPlots.push(new DrawnPlot(draw_new_plot_json, data));
   }
   function draw_new_plot(data, divId) {
-    const plotlyData = convert_to_plotly_data(data);
+    const plotlyData = {};
+    add_fields_to_data(plotlyData, data);
     import_plotly3.default.newPlot(divId, [plotlyData]);
   }
   function draw_new_plot_json(data, divId) {
     import_plotly3.default.newPlot(divId, data);
   }
-  function convert_to_plotly_data(data) {
-    const convertedData = {};
-    if (Array.isArray(data) && data.length === 2) {
-      add_fields_to_data(convertedData, data);
-    }
-    return convertedData;
-  }
   function add_fields_to_data(convertedData, data) {
-    if (Array.isArray(data) && data.length === 2 && data[0].length === 2) {
-      const field = data[0][0];
-      const value = data[0][1];
-      convertedData[field] = value;
-      add_fields_to_data(convertedData, data[1]);
-    }
+    (0, import_list3.accumulate)((entry, result) => {
+      if (!(0, import_list3.is_pair)(entry)) {
+        throw new import_base.GeneralRuntimeError(`${add_fields_to_data.name}: Expected list of pairs, got ${entry}`);
+      }
+      const field = (0, import_list3.head)(entry);
+      if (typeof field !== "string") {
+        throw new import_base.GeneralRuntimeError(`${add_fields_to_data.name}: Expected head of pair to be string, got ${field}`);
+      }
+      const value = (0, import_list3.tail)(entry);
+      result[field] = value;
+      return result;
+    }, convertedData, data);
   }
   function createPlotFunction(type, config, layout, is_colored = false) {
-    return numPoints => {
+    return num => {
       const func = curveFunction => {
-        const plotDrawn = generatePlot(type, numPoints, config, layout, is_colored, curveFunction);
+        const plotDrawn = generatePlot(type, num, config, layout, is_colored, curveFunction);
         drawnPlots.push(plotDrawn);
         return plotDrawn;
       };
@@ -253793,9 +254026,9 @@ ${variableDeclaration2};`);
   function draw_sound_2d(sound) {
     const FS = 44100;
     if (!is_sound(sound)) {
-      throw new Error(`draw_sound_2d is expecting sound, but encountered ${sound}`);
+      throw new import_rttcErrors.InvalidParameterTypeError("sound", sound, draw_sound_2d.name);
     } else if (get_duration(sound) < 0) {
-      throw new Error("draw_sound_2d: duration of sound is negative");
+      throw new import_base.GeneralRuntimeError(`${draw_sound_2d.name}: duration of sound is negative`);
     } else {
       const channel = [];
       const time_stamps = [];
@@ -253803,7 +254036,7 @@ ${variableDeclaration2};`);
       const wave = get_wave(sound);
       for (let i = 0; i < len; i += 1) {
         time_stamps[i] = i / FS;
-        channel[i] = wave(i / FS);
+        channel[i] = (0, import_operators.callWithoutMetadata)(wave, i / FS);
       }
       const x_s = [];
       const y_s = [];

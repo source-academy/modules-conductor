@@ -26,13 +26,22 @@ export default require => {
     if (typeof require !== "undefined") return require.apply(this, arguments);
     throw Error('Dynamic require of "' + x + '" is not supported');
   });
-  var __esm = (fn, res) => function __init() {
-    return (fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res);
+  var __esm = (fn, res, err) => function __init() {
+    if (err) throw err[0];
+    try {
+      return (fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res);
+    } catch (e) {
+      throw (err = [e], e);
+    }
   };
   var __commonJS = (cb, mod) => function __require2() {
-    return (mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = {
-      exports: {}
-    }).exports, mod), mod.exports);
+    try {
+      return (mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = {
+        exports: {}
+      }).exports, mod), mod.exports);
+    } catch (e) {
+      throw (mod = 0, e);
+    }
   };
   var __export = (target, all) => {
     for (var name in all) __defProp(target, name, {
@@ -79671,6 +79680,7 @@ export default require => {
   init_define_process();
   init_define_process();
   var import_context = __toESM(__require("js-slang/context"), 1);
+  var import_base = __require("js-slang/dist/errors/base");
   var import_list = __require("js-slang/dist/stdlib/list");
   var import_phaser = __toESM(require_phaser(), 1);
   init_define_process();
@@ -79750,20 +79760,19 @@ export default require => {
     };
   }
   function throw_error(message) {
-    throw new Error(`${arguments.callee.caller.name}: ${message}`);
+    throw new import_base.GeneralRuntimeError(`${arguments.callee.caller.name}: ${message}`);
   }
   function prepend_remote_url(asset_key) {
     return remotePath(asset_key);
   }
   function create_config(lst) {
     const config = {};
-    (0, import_list.accumulate)((xs, _) => {
+    (0, import_list.for_each)(xs => {
       if (!(0, import_list.is_pair)(xs)) {
         throw_error("config element is not a pair!");
       }
       config[(0, import_list.head)(xs)] = (0, import_list.tail)(xs);
-      return null;
-    }, null, lst);
+    }, lst);
     return config;
   }
   function create_text_config(font_family = "Courier", font_size = "16px", color = "#fff", stroke = "#fff", stroke_thickness = 0, align = "left") {

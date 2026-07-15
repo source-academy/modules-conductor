@@ -51,20 +51,27 @@ export default require => {
     sample_function: () => sample_function,
     test: () => test
   });
+  var import_rttcErrors = __require("js-slang/dist/errors/rttcErrors");
+  var import_base = __require("js-slang/dist/errors/base");
+  var import_rttc = __require("js-slang/dist/utils/rttc");
+  var import_operators = __require("js-slang/dist/utils/operators");
+  var globalThis_ = typeof globalThis === "object" && globalThis || typeof window === "object" && window || typeof self === "object" && self || typeof globalThis === "object" && globalThis || (function () {
+    return this;
+  })();
+  function isBuffer(x) {
+    return typeof globalThis_.Buffer !== "undefined" && globalThis_.Buffer.isBuffer(x);
+  }
   function getSymbols(object) {
     return Object.getOwnPropertySymbols(object).filter(symbol => Object.prototype.propertyIsEnumerable.call(object, symbol));
   }
   function getTag(value) {
-    if (value == null) {
-      return value === void 0 ? "[object Undefined]" : "[object Null]";
-    }
+    if (value == null) return value === void 0 ? "[object Undefined]" : "[object Null]";
     return Object.prototype.toString.call(value);
   }
   var regexpTag = "[object RegExp]";
   var stringTag = "[object String]";
   var numberTag = "[object Number]";
   var booleanTag = "[object Boolean]";
-  var argumentsTag = "[object Arguments]";
   var symbolTag = "[object Symbol]";
   var dateTag = "[object Date]";
   var mapTag = "[object Map]";
@@ -87,14 +94,9 @@ export default require => {
   var float32ArrayTag = "[object Float32Array]";
   var float64ArrayTag = "[object Float64Array]";
   function isPlainObject(value) {
-    if (!value || typeof value !== "object") {
-      return false;
-    }
+    if (!value || typeof value !== "object") return false;
     const proto = Object.getPrototypeOf(value);
-    const hasObjectPrototype = proto === null || proto === Object.prototype || Object.getPrototypeOf(proto) === null;
-    if (!hasObjectPrototype) {
-      return false;
-    }
+    if (!(proto === null || proto === Object.prototype || Object.getPrototypeOf(proto) === null)) return false;
     return Object.prototype.toString.call(value) === "[object Object]";
   }
   function isEqualsSameValueZero(value, other) {
@@ -105,99 +107,59 @@ export default require => {
   }
   function isEqualWithImpl(a, b, property, aParent, bParent, stack, areValuesEqual) {
     const result = areValuesEqual(a, b, property, aParent, bParent, stack);
-    if (result !== void 0) {
-      return result;
-    }
-    if (typeof a === typeof b) {
-      switch (typeof a) {
-        case "bigint":
-        case "string":
-        case "boolean":
-        case "symbol":
-        case "undefined":
-          {
-            return a === b;
-          }
-        case "number":
-          {
-            return a === b || Object.is(a, b);
-          }
-        case "function":
-          {
-            return a === b;
-          }
-        case "object":
-          {
-            return areObjectsEqual(a, b, stack, areValuesEqual);
-          }
-      }
+    if (result !== void 0) return result;
+    if (typeof a === typeof b) switch (typeof a) {
+      case "bigint":
+      case "string":
+      case "boolean":
+      case "symbol":
+      case "undefined":
+        return a === b;
+      case "number":
+        return a === b || Object.is(a, b);
+      case "function":
+        return a === b;
+      case "object":
+        return areObjectsEqual(a, b, stack, areValuesEqual);
     }
     return areObjectsEqual(a, b, stack, areValuesEqual);
   }
   function areObjectsEqual(a, b, stack, areValuesEqual) {
-    if (Object.is(a, b)) {
-      return true;
-    }
+    if (Object.is(a, b)) return true;
     let aTag = getTag(a);
     let bTag = getTag(b);
-    if (aTag === argumentsTag) {
-      aTag = objectTag;
-    }
-    if (bTag === argumentsTag) {
-      bTag = objectTag;
-    }
-    if (aTag !== bTag) {
-      return false;
-    }
+    if (aTag === "[object Arguments]") aTag = objectTag;
+    if (bTag === "[object Arguments]") bTag = objectTag;
+    if (aTag !== bTag) return false;
     switch (aTag) {
       case stringTag:
         return a.toString() === b.toString();
       case numberTag:
-        {
-          const x = a.valueOf();
-          const y = b.valueOf();
-          return isEqualsSameValueZero(x, y);
-        }
+        return isEqualsSameValueZero(a.valueOf(), b.valueOf());
       case booleanTag:
       case dateTag:
       case symbolTag:
         return Object.is(a.valueOf(), b.valueOf());
       case regexpTag:
-        {
-          return a.source === b.source && a.flags === b.flags;
-        }
+        return a.source === b.source && a.flags === b.flags;
       case functionTag:
-        {
-          return a === b;
-        }
+        return a === b;
     }
     stack = stack != null ? stack : new Map();
     const aStack = stack.get(a);
     const bStack = stack.get(b);
-    if (aStack != null && bStack != null) {
-      return aStack === b;
-    }
+    if (aStack != null && bStack != null) return aStack === b;
     stack.set(a, b);
     stack.set(b, a);
     try {
       switch (aTag) {
         case mapTag:
-          {
-            if (a.size !== b.size) {
-              return false;
-            }
-            for (const [key, value] of a.entries()) {
-              if (!b.has(key) || !isEqualWithImpl(value, b.get(key), key, a, b, stack, areValuesEqual)) {
-                return false;
-              }
-            }
-            return true;
-          }
+          if (a.size !== b.size) return false;
+          for (const [key, value] of a.entries()) if (!b.has(key) || !isEqualWithImpl(value, b.get(key), key, a, b, stack, areValuesEqual)) return false;
+          return true;
         case setTag:
           {
-            if (a.size !== b.size) {
-              return false;
-            }
+            if (a.size !== b.size) return false;
             const aValues = Array.from(a.values());
             const bValues = Array.from(b.values());
             for (let i = 0; i < aValues.length; i++) {
@@ -205,9 +167,7 @@ export default require => {
               const index = bValues.findIndex(bValue => {
                 return isEqualWithImpl(aValue, bValue, void 0, a, b, stack, areValuesEqual);
               });
-              if (index === -1) {
-                return false;
-              }
+              if (index === -1) return false;
               bValues.splice(index, 1);
             }
             return true;
@@ -224,66 +184,35 @@ export default require => {
         case bigInt64ArrayTag:
         case float32ArrayTag:
         case float64ArrayTag:
-          {
-            if (typeof Buffer !== "undefined" && Buffer.isBuffer(a) !== Buffer.isBuffer(b)) {
-              return false;
-            }
-            if (a.length !== b.length) {
-              return false;
-            }
-            for (let i = 0; i < a.length; i++) {
-              if (!isEqualWithImpl(a[i], b[i], i, a, b, stack, areValuesEqual)) {
-                return false;
-              }
-            }
-            return true;
-          }
+          if (isBuffer(a) !== isBuffer(b)) return false;
+          if (a.length !== b.length) return false;
+          for (let i = 0; i < a.length; i++) if (!isEqualWithImpl(a[i], b[i], i, a, b, stack, areValuesEqual)) return false;
+          return true;
         case arrayBufferTag:
-          {
-            if (a.byteLength !== b.byteLength) {
-              return false;
-            }
-            return areObjectsEqual(new Uint8Array(a), new Uint8Array(b), stack, areValuesEqual);
-          }
+          if (a.byteLength !== b.byteLength) return false;
+          return areObjectsEqual(new Uint8Array(a), new Uint8Array(b), stack, areValuesEqual);
         case dataViewTag:
-          {
-            if (a.byteLength !== b.byteLength || a.byteOffset !== b.byteOffset) {
-              return false;
-            }
-            return areObjectsEqual(new Uint8Array(a), new Uint8Array(b), stack, areValuesEqual);
-          }
+          if (a.byteLength !== b.byteLength || a.byteOffset !== b.byteOffset) return false;
+          return areObjectsEqual(new Uint8Array(a), new Uint8Array(b), stack, areValuesEqual);
         case errorTag:
-          {
-            return a.name === b.name && a.message === b.message;
-          }
+          return a.name === b.name && a.message === b.message;
         case objectTag:
           {
-            const areEqualInstances = areObjectsEqual(a.constructor, b.constructor, stack, areValuesEqual) || isPlainObject(a) && isPlainObject(b);
-            if (!areEqualInstances) {
-              return false;
-            }
+            if (!(areObjectsEqual(a.constructor, b.constructor, stack, areValuesEqual) || isPlainObject(a) && isPlainObject(b))) return false;
             const aKeys = [...Object.keys(a), ...getSymbols(a)];
             const bKeys = [...Object.keys(b), ...getSymbols(b)];
-            if (aKeys.length !== bKeys.length) {
-              return false;
-            }
+            if (aKeys.length !== bKeys.length) return false;
             for (let i = 0; i < aKeys.length; i++) {
               const propKey = aKeys[i];
               const aProp = a[propKey];
-              if (!Object.hasOwn(b, propKey)) {
-                return false;
-              }
+              if (!Object.hasOwn(b, propKey)) return false;
               const bProp = b[propKey];
-              if (!isEqualWithImpl(aProp, bProp, propKey, a, b, stack, areValuesEqual)) {
-                return false;
-              }
+              if (!isEqualWithImpl(aProp, bProp, propKey, a, b, stack, areValuesEqual)) return false;
             }
             return true;
           }
         default:
-          {
-            return false;
-          }
+          return false;
       }
     } finally {
       stack.delete(a);
@@ -292,15 +221,29 @@ export default require => {
   }
   var list = __toESM(__require("js-slang/dist/stdlib/list"), 1);
   var import_stringify = __require("js-slang/dist/utils/stringify");
+  var UnittestBundleInternalError = class extends import_base.InternalRuntimeError {};
+  var UnittestAssertionError = class extends import_base.RuntimeSourceError {
+    constructor(assertion) {
+      super(void 0);
+      this.assertion = assertion;
+    }
+    explain() {
+      return this.assertion;
+    }
+  };
   function assert(pred) {
+    if (!(0, import_rttc.isFunctionOfLength)(pred, 0)) {
+      throw new UnittestBundleInternalError(`${assert.name} expects a nullary function that returns a boolean!`);
+    }
     if (!pred()) {
-      throw new Error("Assert failed!");
+      throw new UnittestAssertionError("Assert failed!");
     }
   }
   function equalityComparer(expected, received) {
     if (typeof expected === "number") {
+      if (typeof received !== "number") return false;
       if (!Number.isInteger(expected) || !Number.isInteger(received)) {
-        return Math.abs(expected - received) <= 1e-3;
+        return Math.abs(expected - received) <= 1e-4;
       }
       return expected === received;
     }
@@ -328,21 +271,30 @@ export default require => {
       if (!isEqualWith(list.tail(expected), list.tail(received), equalityComparer)) return false;
       return true;
     }
+    if (Array.isArray(expected)) {
+      if (!Array.isArray(received) || received.length !== expected.length) return false;
+      for (let i = 0; i < expected.length; i++) {
+        const expectedItem = expected[i];
+        const receivedItem = received[i];
+        if (!isEqualWith(expectedItem, receivedItem, equalityComparer)) return false;
+      }
+      return true;
+    }
     return void 0;
   }
   function assert_equals(expected, received) {
     if (!isEqualWith(expected, received, equalityComparer)) {
-      throw new Error(`Expected \`${expected}\`, got \`${received}\`!`);
+      throw new UnittestAssertionError(`Expected \`${expected}\`, got \`${received}\`!`);
     }
   }
   function assert_not_equals(expected, received) {
     if (!isEqualWith(expected, received, equalityComparer)) {
-      throw new Error(`Expected \`${expected}\` to not equal \`${received}\`!`);
+      throw new UnittestAssertionError(`Expected \`${expected}\` to not equal \`${received}\`!`);
     }
   }
   function assert_contains(xs, toContain) {
     const fail = () => {
-      throw new Error(`Expected \`${(0, import_stringify.stringify)(xs)}\` to contain \`${toContain}\`.`);
+      throw new UnittestAssertionError(`Expected \`${(0, import_stringify.stringify)(xs)}\` to contain \`${toContain}\`.`);
     };
     function member(xs2, item) {
       if (list.is_null(xs2)) return false;
@@ -352,51 +304,59 @@ export default require => {
       }
       if (list.is_pair(xs2)) {
         if (isEqualWith(list.head(xs2), item, equalityComparer) || isEqualWith(list.tail(xs2), item, equalityComparer)) return true;
-        if (list.is_pair(list.head(xs2)) && member(list.head(xs2), item)) {
-          return true;
-        }
-        return list.is_pair(list.tail(xs2)) && member(list.tail(xs2), item);
+        const head_element = list.head(xs2);
+        if (list.is_pair(head_element) && member(head_element, item)) return true;
+        const tail_element = list.tail(xs2);
+        return list.is_pair(tail_element) && member(tail_element, item);
       }
-      throw new Error(`First argument to ${assert_contains.name} must be a list or a pair, got \`${(0, import_stringify.stringify)(xs2)}\`.`);
+      throw new UnittestAssertionError(`First argument to ${assert_contains.name} must be a list or a pair, got \`${(0, import_stringify.stringify)(xs2)}\`.`);
     }
     if (!member(xs, toContain)) fail();
   }
   function assert_length(xs, len) {
-    if (!list.is_list(xs)) throw new Error(`First argument to ${assert_length.name} must be a list.`);
-    if (!Number.isInteger(len)) throw new Error(`Second argument to ${assert_length.name} must be an integer.`);
-    assert_equals(list.length(xs), len);
+    (0, import_rttc.assertNumberWithinRange)(len, {
+      func_name: assert_length.name,
+      param_name: "len",
+      integer: true
+    });
+    if (list.is_list(xs)) {
+      assert_equals(list.length(xs), len);
+    } else if (Array.isArray(xs)) {
+      assert_equals(xs.length, len);
+    } else {
+      throw new UnittestAssertionError(`First argument to ${assert_length.name} must be a list or array.`);
+    }
   }
   function assert_greater(item, expected) {
     if (typeof expected !== "number") {
-      throw new Error(`${assert_greater.name}: Expected value should be a number!`);
+      throw new UnittestAssertionError(`${assert_greater.name}: Expected value should be a number!`);
     }
     if (typeof item !== "number") {
-      throw new Error(`Expected ${item} to be a number!`);
+      throw new UnittestAssertionError(`Expected ${item} to be a number!`);
     }
     if (item <= expected) {
-      throw new Error(`Expected ${item} to be greater than ${expected}`);
+      throw new UnittestAssertionError(`Expected ${item} to be greater than ${expected}`);
     }
   }
   function assert_greater_equals(item, expected) {
     if (typeof expected !== "number") {
-      throw new Error(`${assert_greater_equals.name}: Expected value should be a number!`);
+      throw new UnittestAssertionError(`${assert_greater_equals.name}: Expected value should be a number!`);
     }
     if (typeof item !== "number") {
-      throw new Error(`Expected ${item} to be a number!`);
+      throw new UnittestAssertionError(`Expected ${item} to be a number!`);
     }
     if (item < expected) {
-      throw new Error(`Expected ${item} to be greater than or equal to ${expected}`);
+      throw new UnittestAssertionError(`Expected ${item} to be greater than or equal to ${expected}`);
     }
   }
   var import_context = __toESM(__require("js-slang/context"), 1);
-  var UnitestBundleInternalError = class extends Error {};
   function getNewSuite(name) {
     return {
       name,
       results: []
     };
   }
-  var suiteResults = [];
+  var topLevelSuiteResults = [];
   var currentSuite = null;
   var currentTest = null;
   function handleErr(err) {
@@ -409,21 +369,24 @@ export default require => {
     throw err;
   }
   function runTest(name, funcName, func) {
+    if (!(0, import_rttc.isFunctionOfLength)(func, 0)) {
+      throw new UnittestBundleInternalError(`${funcName}: A test must be a nullary function!`);
+    }
     if (currentSuite === null) {
-      throw new UnitestBundleInternalError(`${funcName} must be called from within a test suite!`);
+      throw new UnittestBundleInternalError(`${funcName} must be called from within a test suite!`);
     }
     if (currentTest !== null) {
-      throw new UnitestBundleInternalError(`${funcName} cannot be called from within another test!`);
+      throw new UnittestBundleInternalError(`${funcName} cannot be called from within another test!`);
     }
     try {
       currentTest = name;
-      func();
+      (0, import_operators.callWithoutMetadata)(func);
       currentSuite.results.push({
         name,
         passed: true
       });
     } catch (err) {
-      if (err instanceof UnitestBundleInternalError) {
+      if (err instanceof UnittestBundleInternalError) {
         throw err;
       }
       const error = handleErr(err);
@@ -453,12 +416,18 @@ export default require => {
     return passedItems.length;
   }
   function describe(msg, func) {
-    const oldSuite = currentSuite;
+    if (!(0, import_rttc.isFunctionOfLength)(func, 0)) {
+      throw new UnittestBundleInternalError(`${describe.name}: A test suite must be a nullary function!`);
+    }
+    const parentSuite = currentSuite;
     const newSuite = getNewSuite(msg);
     currentSuite = newSuite;
     newSuite.startTime = performance.now();
-    func();
-    currentSuite = oldSuite;
+    try {
+      (0, import_operators.callWithoutMetadata)(func);
+    } finally {
+      currentSuite = parentSuite;
+    }
     const passCount = determinePassCount(newSuite.results);
     const suiteResult = {
       name: msg,
@@ -467,30 +436,30 @@ export default require => {
       passed: passCount === newSuite.results.length,
       runtime: performance.now() - newSuite.startTime
     };
-    if (oldSuite !== null) {
-      oldSuite.results.push(suiteResult);
+    if (parentSuite !== null) {
+      parentSuite.results.push(suiteResult);
     } else {
-      suiteResults.push(suiteResult);
+      topLevelSuiteResults.push(suiteResult);
     }
   }
   import_context.default.moduleContexts.unittest.state = {
-    suiteResults
+    suiteResults: topLevelSuiteResults
   };
   var import_list = __require("js-slang/dist/stdlib/list");
   var mockSymbol = Symbol();
-  function throwIfNotMockedFunction(obj, func_name) {
-    if (!((mockSymbol in obj))) {
-      throw new Error(`${func_name} expects a mocked function as argument`);
+  function throwIfNotMockedFunction(obj, func_name, param_name) {
+    if (typeof obj !== "function" || !((mockSymbol in obj))) {
+      throw new import_rttcErrors.InvalidCallbackError("mocked function", obj, func_name, param_name);
     }
   }
   function mock_function(fn) {
     if (typeof fn !== "function") {
-      throw new Error(`${mock_function.name} expects a function as argument`);
+      throw new import_rttcErrors.InvalidParameterTypeError("function", fn, mock_function.name);
     }
     const arglist = [];
     const retVals = [];
     function func(...args) {
-      arglist.push(args);
+      arglist.push((0, import_list.vector_to_list)(args));
       const retVal = fn.apply(fn, args);
       if (retVal !== void 0) {
         retVals.push(retVal);
@@ -501,7 +470,7 @@ export default require => {
       arglist,
       retVals
     };
-    func.toString = () => fn.toString();
+    func.toReplString = () => "<MockedFunction>";
     return func;
   }
   function get_num_calls(fn) {
@@ -511,10 +480,7 @@ export default require => {
   function get_arg_list(fn) {
     throwIfNotMockedFunction(fn, get_arg_list.name);
     const {arglist} = fn[mockSymbol];
-    return arglist.reduceRight((res, args) => {
-      const argsAsList = (0, import_list.vector_to_list)(args);
-      return (0, import_list.pair)(argsAsList, res);
-    }, null);
+    return (0, import_list.vector_to_list)(arglist);
   }
   function get_ret_vals(fn) {
     throwIfNotMockedFunction(fn, get_ret_vals.name);

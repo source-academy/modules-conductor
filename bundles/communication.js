@@ -29,13 +29,22 @@ export default require => {
     if (typeof require !== "undefined") return require.apply(this, arguments);
     throw Error('Dynamic require of "' + x + '" is not supported');
   });
-  var __esm = (fn, res) => function __init() {
-    return (fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res);
+  var __esm = (fn, res, err) => function __init() {
+    if (err) throw err[0];
+    try {
+      return (fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res);
+    } catch (e) {
+      throw (err = [e], e);
+    }
   };
   var __commonJS = (cb, mod) => function __require2() {
-    return (mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = {
-      exports: {}
-    }).exports, mod), mod.exports);
+    try {
+      return (mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = {
+        exports: {}
+      }).exports, mod), mod.exports);
+    } catch (e) {
+      throw (mod = 0, e);
+    }
   };
   var __export = (target, all) => {
     for (var name in all) __defProp(target, name, {
@@ -14983,6 +14992,9 @@ export default require => {
     }
   };
   init_define_process();
+  init_define_process();
+  var import_rttcErrors = __require("js-slang/dist/errors/rttcErrors");
+  var import_base = __require("js-slang/dist/errors/base");
   var import_context = __toESM(__require("js-slang/context"), 1);
   init_define_process();
   var GlobalStateController = class {
@@ -15182,14 +15194,19 @@ export default require => {
     }
   };
   function initCommunications(address, port, user, password) {
-    if (getModuleState() instanceof CommunicationModuleState) {
+    const {state: oldState} = import_context.default.moduleContexts.communication;
+    if (oldState instanceof CommunicationModuleState) {
       return;
     }
     const newModuleState = new CommunicationModuleState(address, port, user, password);
     import_context.default.moduleContexts.communication.state = newModuleState;
   }
-  function getModuleState() {
-    return import_context.default.moduleContexts.communication.state;
+  function getModuleState(func_name) {
+    const {state} = import_context.default.moduleContexts.communication;
+    if (state instanceof CommunicationModuleState) {
+      return state;
+    }
+    throw new import_base.GeneralRuntimeError(`${func_name}: Communication module not initialized.`);
   }
   var interval;
   function keepRunning() {
@@ -15202,70 +15219,44 @@ export default require => {
     }
   }
   function initGlobalState(topicHeader, callback) {
-    const moduleState = getModuleState();
-    if (moduleState instanceof CommunicationModuleState) {
-      if (moduleState.globalState instanceof GlobalStateController) {
-        return;
-      }
-      moduleState.globalState = new GlobalStateController(topicHeader, moduleState.multiUser, callback);
+    const moduleState = getModuleState(initGlobalState.name);
+    if (moduleState.globalState !== null) {
       return;
     }
-    throw new Error("Error: Communication module not initialized.");
+    moduleState.globalState = new GlobalStateController(topicHeader, moduleState.multiUser, callback);
   }
   function getGlobalState() {
     var _a;
-    const moduleState = getModuleState();
-    if (moduleState instanceof CommunicationModuleState) {
-      return (_a = moduleState.globalState) == null ? void 0 : _a.globalState;
-    }
-    throw new Error("Error: Communication module not initialized.");
+    const moduleState = getModuleState(getGlobalState.name);
+    return (_a = moduleState.globalState) == null ? void 0 : _a.globalState;
   }
   function updateGlobalState(path, updatedState) {
     var _a;
-    const moduleState = getModuleState();
-    if (moduleState instanceof CommunicationModuleState) {
-      (_a = moduleState.globalState) == null ? void 0 : _a.updateGlobalState(path, updatedState);
-      return;
-    }
-    throw new Error("Error: Communication module not initialized.");
+    const moduleState = getModuleState(updateGlobalState.name);
+    (_a = moduleState.globalState) == null ? void 0 : _a.updateGlobalState(path, updatedState);
   }
   function initRpc(topicHeader, userId) {
-    const moduleState = getModuleState();
-    if (moduleState instanceof CommunicationModuleState) {
-      moduleState.rpc = new RpcController(topicHeader, moduleState.multiUser, userId);
-      return;
-    }
-    throw new Error("Error: Communication module not initialized.");
+    const moduleState = getModuleState(initRpc.name);
+    moduleState.rpc = new RpcController(topicHeader, moduleState.multiUser, userId);
   }
   function getUserId() {
     var _a;
-    const moduleState = getModuleState();
-    if (moduleState instanceof CommunicationModuleState) {
-      const userId = (_a = moduleState.rpc) == null ? void 0 : _a.getUserId();
-      if (userId) {
-        return userId;
-      }
-      throw new Error("Error: UserID not found.");
+    const moduleState = getModuleState(getUserId.name);
+    const userId = (_a = moduleState.rpc) == null ? void 0 : _a.getUserId();
+    if (userId) {
+      return userId;
     }
-    throw new Error("Error: Communication module not initialized.");
+    throw new import_base.GeneralRuntimeError(`${getUserId.name}: UserID not found.`);
   }
   function expose(name, func) {
     var _a;
-    const moduleState = getModuleState();
-    if (moduleState instanceof CommunicationModuleState) {
-      (_a = moduleState.rpc) == null ? void 0 : _a.expose(name, func);
-      return;
-    }
-    throw new Error("Error: Communication module not initialized.");
+    const moduleState = getModuleState(expose.name);
+    (_a = moduleState.rpc) == null ? void 0 : _a.expose(name, func);
   }
   function callFunction(receiver, name, args, callback) {
     var _a;
-    const moduleState = getModuleState();
-    if (moduleState instanceof CommunicationModuleState) {
-      (_a = moduleState.rpc) == null ? void 0 : _a.callFunction(receiver, name, args, callback);
-      return;
-    }
-    throw new Error("Error: Communication module not initialized.");
+    const moduleState = getModuleState(callFunction.name);
+    (_a = moduleState.rpc) == null ? void 0 : _a.callFunction(receiver, name, args, callback);
   }
   return __toCommonJS(index_exports);
 };

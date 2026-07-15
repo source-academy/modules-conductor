@@ -18,6 +18,12 @@ export default require => {
     value,
     configurable: true
   });
+  var __require = (x => typeof require !== "undefined" ? require : typeof Proxy !== "undefined" ? new Proxy(x, {
+    get: (a2, b) => (typeof require !== "undefined" ? require : a2)[b]
+  }) : x)(function (x) {
+    if (typeof require !== "undefined") return require.apply(this, arguments);
+    throw Error('Dynamic require of "' + x + '" is not supported');
+  });
   var __export = (target, all) => {
     for (var name in all) __defProp(target, name, {
       get: all[name],
@@ -209,10 +215,12 @@ export default require => {
         for (const o3 of this.exportedNames) {
           const r = this[o3];
           if (!r.signature || "function" != typeof r || "string" != typeof o3) throw new s(`'${String(o3)}' is not an exportable method`);
-          const s3 = yield this.evaluator.closure_make(r.signature, r);
+          const s3 = r.bind(this);
+          s3.signature = r.signature;
+          const e2 = yield this.evaluator.closure_make(r.signature, s3);
           this.exports.push({
             symbol: o3,
-            value: s3,
+            value: e2,
             signature: r.signature
           });
         }
@@ -232,8 +240,15 @@ export default require => {
   !(function (N2) {
     (N2[N2.ONLINE = 0] = "ONLINE", N2[N2.EVAL_READY = 1] = "EVAL_READY", N2[N2.RUNNING = 2] = "RUNNING", N2[N2.WAITING = 3] = "WAITING", N2[N2.BREAKPOINT = 4] = "BREAKPOINT", N2[N2.STOPPED = 5] = "STOPPED", N2[N2.ERROR = 6] = "ERROR");
   })(N || (N = {}));
+  var import_rttcErrors = __require("js-slang/dist/errors/rttcErrors");
+  var import_base = __require("js-slang/dist/errors/base");
+  var import_rttc = __require("js-slang/dist/utils/rttc");
+  var import_operators = __require("js-slang/dist/utils/operators");
   function repeat(evaluator, func, n2) {
     return __asyncGenerator(this, null, function* () {
+      if (!Number.isInteger(n2.value) || n2.value < 0) {
+        throw new import_base.GeneralRuntimeError(`repeat: Expected integer \u2265 0, got ${n2.value}.`);
+      }
       function identity(x) {
         return __asyncGenerator(this, null, function* () {
           return x;

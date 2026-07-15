@@ -30,13 +30,22 @@ export default require => {
     if (typeof require !== "undefined") return require.apply(this, arguments);
     throw Error('Dynamic require of "' + x + '" is not supported');
   });
-  var __esm = (fn, res) => function __init() {
-    return (fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res);
+  var __esm = (fn, res, err) => function __init() {
+    if (err) throw err[0];
+    try {
+      return (fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res);
+    } catch (e) {
+      throw (err = [e], e);
+    }
   };
   var __commonJS = (cb, mod) => function __require2() {
-    return (mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = {
-      exports: {}
-    }).exports, mod), mod.exports);
+    try {
+      return (mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = {
+        exports: {}
+      }).exports, mod), mod.exports);
+    } catch (e) {
+      throw (mod = 0, e);
+    }
   };
   var __export = (target, all) => {
     for (var name2 in all) __defProp(target, name2, {
@@ -148,7 +157,7 @@ export default require => {
           var require_version = __commonJS2({
             "src/version.js"(exports2) {
               "use strict";
-              exports2.version = "3.5.0";
+              exports2.version = "3.6.0";
             }
           });
           var require_npo_src = __commonJS2({
@@ -10257,6 +10266,12 @@ export default require => {
                   dflt: "closest",
                   editType: "modebar"
                 },
+                hoversort: {
+                  valType: "enumerated",
+                  values: ["trace", "value descending", "value ascending"],
+                  dflt: "trace",
+                  editType: "none"
+                },
                 hoversubplots: {
                   valType: "enumerated",
                   values: ["single", "overlaying", "axis"],
@@ -17901,7 +17916,7 @@ export default require => {
                     coerce("legendwidth");
                     coerce("legendgroup");
                     coerce("legendgrouptitle.text");
-                    coerce("legendrank");
+                    Lib.coerce(traceIn, traceOut, _module.attributes.legend ? _module.attributes : plots.attributes, "legendrank");
                     traceOut._dfltShowLegend = true;
                   } else {
                     traceOut._dfltShowLegend = false;
@@ -24685,20 +24700,21 @@ export default require => {
                   var axrev = rng[1] < rng[0];
                   if (axrev) rng.reverse();
                   var bounds = Lib.simpleMap([minallowed, maxallowed], ax.r2l);
-                  if (minallowed !== void 0 && rng[0] < bounds[0]) range[axrev ? 1 : 0] = minallowed;
-                  if (maxallowed !== void 0 && rng[1] > bounds[1]) range[axrev ? 0 : 1] = maxallowed;
-                  if (range[0] === range[1]) {
-                    var minL = ax.l2r(minallowed);
-                    var maxL = ax.l2r(maxallowed);
+                  if (minallowed !== void 0 && rng[0] < bounds[0]) {
+                    range[axrev ? 1 : 0] = minallowed;
+                    rng[0] = bounds[0];
+                  }
+                  if (maxallowed !== void 0 && rng[1] > bounds[1]) {
+                    range[axrev ? 0 : 1] = maxallowed;
+                    rng[1] = bounds[1];
+                  }
+                  if (rng[0] >= rng[1]) {
                     if (minallowed !== void 0) {
-                      var _max = minL + 1;
-                      if (maxallowed !== void 0) _max = Math.min(_max, maxL);
-                      range[axrev ? 1 : 0] = _max;
-                    }
-                    if (maxallowed !== void 0) {
-                      var _min = maxL + 1;
-                      if (minallowed !== void 0) _min = Math.max(_min, minL);
-                      range[axrev ? 0 : 1] = _min;
+                      var _max = bounds[0] + 1;
+                      if (maxallowed !== void 0) _max = Math.min(_max, bounds[1]);
+                      range[axrev ? 0 : 1] = ax.l2r(_max);
+                    } else if (maxallowed !== void 0) {
+                      range[axrev ? 1 : 0] = ax.l2r(bounds[1] - 1);
                     }
                   }
                 };
@@ -26054,7 +26070,8 @@ export default require => {
                 return binStart;
               }
               axes.prepMinorTicks = function (mockAx, ax, opts) {
-                if (!ax.minor.dtick) {
+                var _a, _b;
+                if (!((_a = ax.minor) == null ? void 0 : _a.dtick)) {
                   delete mockAx.dtick;
                   var hasMajor = ax.dtick && isNumeric(ax._tmin);
                   var mockMinorRange;
@@ -26111,7 +26128,7 @@ export default require => {
                   }
                   mockAx.range = ax.range;
                 }
-                if (ax.minor._tick0Init === void 0) {
+                if (((_b = ax.minor) == null ? void 0 : _b._tick0Init) === void 0) {
                   mockAx.tick0 = ax.tick0;
                 }
               };
@@ -26287,16 +26304,19 @@ export default require => {
                 var minorTickVals = [];
                 var allTicklabelVals = [];
                 var hasMinor = ax.minor && (ax.minor.ticks || ax.minor.showgrid);
-                for (var major = 1; major >= (hasMinor ? 0 : 1); major--) {
+                var calcMinor = hasMinor || ticklabelIndex;
+                for (var major = 1; major >= (calcMinor ? 0 : 1); major--) {
                   var isMinor = !major;
                   if (major) {
                     ax._dtickInit = ax.dtick;
                     ax._tick0Init = ax.tick0;
-                  } else {
+                  } else if (calcMinor) {
                     ax.minor._dtickInit = ax.minor.dtick;
                     ax.minor._tick0Init = ax.minor.tick0;
                   }
-                  var mockAx = major ? ax : Lib.extendFlat({}, ax, ax.minor);
+                  var mockAx = major ? ax : Lib.extendFlat({}, ax, calcMinor ? ax.minor : {
+                    "minor": {}
+                  });
                   if (isMinor) {
                     axes.prepMinorTicks(mockAx, ax, opts);
                   } else {
@@ -26355,9 +26375,9 @@ export default require => {
                       x = axes.tickIncrement(x, dtick, !axrev, calendar);
                     }
                   }
-                  if (major && isPeriod) {
+                  if ((major || ticklabelIndex) && isPeriod) {
                     x = axes.tickIncrement(x, dtick, !axrev, calendar);
-                    majorId--;
+                    if (major) majorId--;
                   }
                   for (; axrev ? x >= endTick : x <= endTick; x = axes.tickIncrement(x, dtick, axrev, calendar)) {
                     if (major) majorId++;
@@ -26386,12 +26406,13 @@ export default require => {
                     }
                   }
                 }
-                if (!minorTickVals || minorTickVals.length < 2) {
+                if (!minorTickVals || minorTickVals.length < 3) {
                   ticklabelIndex = false;
                 } else {
-                  var diff = (minorTickVals[1].value - minorTickVals[0].value) * (isReversed ? -1 : 1);
+                  var diff = (minorTickVals[2].value - minorTickVals[1].value) * (isReversed ? -1 : 1);
                   if (!periodCompatibleWithTickformat(diff, ax.tickformat)) {
                     ticklabelIndex = false;
+                    minorTickVals = minorTickVals.slice(1);
                   }
                 }
                 if (!ticklabelIndex) {
@@ -26418,6 +26439,9 @@ export default require => {
                         Lib.pushUnique(allTicklabelVals, allTickVals[minorIdx]);
                       }
                     });
+                  });
+                  tickVals.forEach(function (tick) {
+                    tick.skipLabel = allTicklabelVals.indexOf(tick) === -1;
                   });
                 }
                 if (hasMinor) {
@@ -26509,11 +26533,14 @@ export default require => {
                   } else {
                     lastVisibleHead = ax._prevDateHead;
                     t = setTickLabel(ax, tickVals[i]);
-                    if (tickVals[i].skipLabel || ticklabelIndex && allTicklabelVals.indexOf(tickVals[i]) === -1) {
+                    if (tickVals[i].skipLabel) {
                       hideLabel(t);
                     }
                     ticksOut.push(t);
                   }
+                }
+                if (isPeriod && ticklabelIndex && minorTicks.length) {
+                  minorTicks[0].noTick = true;
                 }
                 ticksOut = ticksOut.concat(minorTicks);
                 ax._inCalcTicks = false;
@@ -29565,10 +29592,8 @@ export default require => {
                 var toggleGroup = groupClick === "togglegroup";
                 var hiddenSlices = fullLayout.hiddenlabels ? fullLayout.hiddenlabels.slice() : [];
                 var fullData = gd._fullData;
-                var shapesWithLegend = (fullLayout.shapes || []).filter(function (d2) {
-                  return d2.showlegend;
-                });
-                var allLegendItems = fullData.concat(shapesWithLegend);
+                const shapesInLegend = (fullLayout.shapes || []).filter(d2 => d2.showlegend || d2.legendgroup);
+                var allLegendItems = fullData.concat(shapesInLegend);
                 var fullTrace = legendItem.trace;
                 if (fullTrace._isShape) {
                   fullTrace = fullTrace._fullInput;
@@ -29755,10 +29780,8 @@ export default require => {
                 const fullLayout = gd._fullLayout;
                 const fullData = gd._fullData;
                 const legendId = helpers.getId(legendObj);
-                const shapesWithLegend = (fullLayout.shapes || []).filter(function (d) {
-                  return d.showlegend;
-                });
-                const allLegendItems = fullData.concat(shapesWithLegend);
+                const shapesInLegend = (fullLayout.shapes || []).filter(d => d.showlegend || d.legendgroup);
+                const allLegendItems = fullData.concat(shapesInLegend);
                 function isInLegend(item) {
                   return (item.legend || "legend") === legendId;
                 }
@@ -29836,6 +29859,7 @@ export default require => {
           var require_get_legend_data = __commonJS2({
             "src/components/legend/get_legend_data.js"(exports2, module2) {
               "use strict";
+              var {isArrayOrTypedArray} = require_array();
               var Registry = require_registry();
               var helpers = require_helpers3();
               module2.exports = function getLegendData(calcdata, opts, hasMultipleLegends) {
@@ -29916,7 +29940,8 @@ export default require => {
                 for (i = 0; i < legendData.length; i++) {
                   var groupMinRank = Infinity;
                   for (j = 0; j < legendData[i].length; j++) {
-                    var rank = legendData[i][j].trace.legendrank;
+                    var legendrank = legendData[i][j].trace.legendrank;
+                    var rank = isArrayOrTypedArray(legendrank) ? Math.min(legendrank) : legendrank;
                     if (groupMinRank > rank) groupMinRank = rank;
                   }
                   legendData[i][0]._groupMinRank = groupMinRank;
@@ -29926,7 +29951,9 @@ export default require => {
                   return a[0]._groupMinRank - b[0]._groupMinRank || a[0]._preGroupSort - b[0]._preGroupSort;
                 };
                 var orderFn2 = function (a, b) {
-                  return a.trace.legendrank - b.trace.legendrank || a._preSort - b._preSort;
+                  var a_rank = isArrayOrTypedArray(a.trace.legendrank) ? a.trace.legendrank[a.i] : a.trace.legendrank;
+                  var b_rank = isArrayOrTypedArray(b.trace.legendrank) ? b.trace.legendrank[b.i] : b.trace.legendrank;
+                  return a_rank - b_rank || a._preSort - b._preSort;
                 };
                 legendData.forEach(function (a, k) {
                   a[0]._preGroupSort = k;
@@ -32251,6 +32278,15 @@ export default require => {
                     mockLegend.entries.push([pt]);
                   }
                   mockLegend.entries.sort(function (a, b) {
+                    var hoversort = fullLayout.hoversort;
+                    if (hoversort === "value descending" || hoversort === "value ascending") {
+                      var valueLetter = hovermode.charAt(0) === "x" ? "y" : "x";
+                      var aVal = a[0][valueLetter + "LabelVal"];
+                      var bVal = b[0][valueLetter + "LabelVal"];
+                      if (aVal !== bVal) {
+                        return hoversort === "value descending" ? bVal - aVal : aVal - bVal;
+                      }
+                    }
                     return a[0].trace.index - b[0].trace.index;
                   });
                   mockLegend.layer = container;
@@ -33163,6 +33199,9 @@ export default require => {
                 if (hoverMode) {
                   coerce("hoverdistance");
                   coerce("spikedistance");
+                  if (hoverMode.indexOf("unified") !== -1) {
+                    coerce("hoversort");
+                  }
                 }
                 var dragMode = coerce("dragmode");
                 if (dragMode === "select") coerce("selectdirection");
@@ -34547,6 +34586,7 @@ export default require => {
                   return segmentType + paramString;
                 });
               }
+              exports2.getPixelShift = getPixelShift;
               function getPixelShift(axis, shift) {
                 shift = shift || 0;
                 var shiftPixels = 0;
@@ -34640,16 +34680,28 @@ export default require => {
                   const xRefType1 = Axes.getRefType(isArrayXref ? options.xref[1] : options.xref);
                   const yRefType0 = Axes.getRefType(isArrayYref ? options.yref[0] : options.yref);
                   const yRefType1 = Axes.getRefType(isArrayYref ? options.yref[1] : options.yref);
-                  const x2p = function (v, shift, xa, xRefType) {
-                    return helpers.getDataToPixel(gd, xa, shift, false, xRefType)(v);
-                  };
-                  const y2p = function (v, shift, ya, yRefType) {
-                    return helpers.getDataToPixel(gd, ya, shift, true, yRefType)(v);
-                  };
-                  shapex0 = x2p(options.x0, options.x0shift, xa0, xRefType0);
-                  shapex1 = x2p(options.x1, options.x1shift, xa1, xRefType1);
-                  shapey0 = y2p(options.y0, options.y0shift, ya0, yRefType0);
-                  shapey1 = y2p(options.y1, options.y1shift, ya1, yRefType1);
+                  const x2p = (v, shift, xa, xRefType) => helpers.getDataToPixel(gd, xa, shift, false, xRefType)(v);
+                  const y2p = (v, shift, ya, yRefType) => helpers.getDataToPixel(gd, ya, shift, true, yRefType)(v);
+                  if (options.xsizemode === "pixel") {
+                    const xAnchorPos = x2p(options.xanchor, void 0, xa0, xRefType0);
+                    const xShift0 = helpers.getPixelShift(xa0, options.x0shift);
+                    const xShift1 = helpers.getPixelShift(xa0, options.x1shift);
+                    shapex0 = xAnchorPos + options.x0 + xShift0;
+                    shapex1 = xAnchorPos + options.x1 + xShift1;
+                  } else {
+                    shapex0 = x2p(options.x0, options.x0shift, xa0, xRefType0);
+                    shapex1 = x2p(options.x1, options.x1shift, xa1, xRefType1);
+                  }
+                  if (options.ysizemode === "pixel") {
+                    const yAnchorPos = y2p(options.yanchor, void 0, ya0, yRefType0);
+                    const yShift0 = helpers.getPixelShift(ya0, options.y0shift);
+                    const yShift1 = helpers.getPixelShift(ya0, options.y1shift);
+                    shapey0 = yAnchorPos - options.y0 + yShift0;
+                    shapey1 = yAnchorPos - options.y1 + yShift1;
+                  } else {
+                    shapey0 = y2p(options.y0, options.y0shift, ya0, yRefType0);
+                    shapey1 = y2p(options.y1, options.y1shift, ya1, yRefType1);
+                  }
                 }
                 var textangle = options.label.textangle;
                 if (textangle === "auto") {
@@ -35101,6 +35153,7 @@ export default require => {
               var Drawing = require_drawing();
               var arrayEditor = require_plot_template().arrayEditor;
               var dragElement = require_dragelement();
+              var Fx = require_fx();
               var setCursor = require_setcursor();
               var constants = require_constants5();
               var helpers = require_helpers8();
@@ -35211,7 +35264,37 @@ export default require => {
                   path.node().addEventListener("click", function () {
                     return activateShape(gd, path);
                   });
+                  forwardHoverClickAnywhere(gd, path, plotinfo);
                 }
+              }
+              function forwardHoverClickAnywhere(gd, path, plotinfo) {
+                if (!(plotinfo == null ? void 0 : plotinfo.id)) return;
+                const node = path.node();
+                function patchedEvt(evt) {
+                  var _a;
+                  const mainPlot = plotinfo.mainplotinfo || plotinfo;
+                  const nsew = (_a = mainPlot == null ? void 0 : mainPlot.draglayer) == null ? void 0 : _a.select(".nsewdrag").node();
+                  if (!nsew) return null;
+                  return {
+                    clientX: evt.clientX,
+                    clientY: evt.clientY,
+                    target: nsew
+                  };
+                }
+                node.addEventListener("mousemove", evt => {
+                  if (gd._dragging) return;
+                  if (gd._fullLayout.hoveranywhere) {
+                    const e = patchedEvt(evt);
+                    if (e) Fx.hover(gd, e, plotinfo.id);
+                  }
+                });
+                node.addEventListener("click", evt => {
+                  if (gd._dragged) return;
+                  if (gd._fullLayout.clickanywhere) {
+                    const e = patchedEvt(evt);
+                    if (e) Fx.click(gd, e, plotinfo.id);
+                  }
+                });
               }
               function setClipPath(shapePath, gd, shapeOptions) {
                 const xref = shapeOptions.xref;
@@ -49555,7 +49638,7 @@ export default require => {
                   hasMinor,
                   attributes: layoutAttributes
                 });
-                if (hasMinor && !containerOut.minor.ticks && !containerOut.minor.showgrid) {
+                if (hasMinor && containerOut.ticklabelindex == null && !containerOut.minor.ticks && !containerOut.minor.showgrid) {
                   delete containerOut.minor;
                 }
                 if (containerOut.showline || containerOut.ticks) coerce("mirror");
@@ -52147,10 +52230,10 @@ export default require => {
                 var visible = coerce("visible");
                 if (!visible) return;
                 var showlegend = coerce("showlegend");
+                coerce("legend");
+                coerce("legendgroup");
                 if (showlegend) {
-                  coerce("legend");
                   coerce("legendwidth");
-                  coerce("legendgroup");
                   coerce("legendgrouptitle.text");
                   Lib.coerceFont(coerce, "legendgrouptitle.font");
                   coerce("legendrank");
@@ -59613,6 +59696,8 @@ export default require => {
                   var q3 = coerce("q3");
                   traceOut._hasPreCompStats = q1 && q1.length && median && median.length && q3 && q3.length;
                   sLen = Math.min(Lib.minRowLength(q1), Lib.minRowLength(median), Lib.minRowLength(q3));
+                } else {
+                  traceOut._hasPreCompStats = false;
                 }
                 var yDims = getDims(y);
                 var xDims = getDims(x);
@@ -80155,6 +80240,9 @@ export default require => {
                   arrayOk: true
                 }),
                 legend: extendFlat({}, baseAttrs.legend, {
+                  arrayOk: true
+                }),
+                legendrank: extendFlat({}, baseAttrs.legendrank, {
                   arrayOk: true
                 }),
                 title: {
