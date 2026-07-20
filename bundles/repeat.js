@@ -200,8 +200,8 @@ export default require => {
     (R2[R2.CALL = 0] = "CALL", R2[R2.RETURN = 1] = "RETURN", R2[R2.RETURN_ERR = 2] = "RETURN_ERR");
   })(R || (R = {}));
   var O;
-  !(function (O3) {
-    (O3[O3.PROTOCOL_VERSION = 0] = "PROTOCOL_VERSION", O3[O3.PROTOCOL_MIN_VERSION = 0] = "PROTOCOL_MIN_VERSION", O3[O3.SETUP_MESSAGES_BUFFER_SIZE = 10] = "SETUP_MESSAGES_BUFFER_SIZE");
+  !(function (O2) {
+    (O2[O2.PROTOCOL_VERSION = 0] = "PROTOCOL_VERSION", O2[O2.PROTOCOL_MIN_VERSION = 0] = "PROTOCOL_MIN_VERSION", O2[O2.SETUP_MESSAGES_BUFFER_SIZE = 10] = "SETUP_MESSAGES_BUFFER_SIZE");
   })(O || (O = {}));
   var o2 = class {
     constructor(t2, o3, r) {
@@ -228,10 +228,10 @@ export default require => {
     }
   };
   __publicField(o2, "channelAttach");
-  var O2;
-  !(function (O3) {
-    (O3[O3.VOID = 0] = "VOID", O3[O3.BOOLEAN = 1] = "BOOLEAN", O3[O3.NUMBER = 2] = "NUMBER", O3[O3.CONST_STRING = 3] = "CONST_STRING", O3[O3.EMPTY_LIST = 4] = "EMPTY_LIST", O3[O3.PAIR = 5] = "PAIR", O3[O3.ARRAY = 6] = "ARRAY", O3[O3.CLOSURE = 7] = "CLOSURE", O3[O3.OPAQUE = 8] = "OPAQUE", O3[O3.LIST = 9] = "LIST");
-  })(O2 || (O2 = {}));
+  var A;
+  !(function (A2) {
+    (A2[A2.VOID = 0] = "VOID", A2[A2.BOOLEAN = 1] = "BOOLEAN", A2[A2.NUMBER = 2] = "NUMBER", A2[A2.CONST_STRING = 3] = "CONST_STRING", A2[A2.EMPTY_LIST = 4] = "EMPTY_LIST", A2[A2.PAIR = 5] = "PAIR", A2[A2.ARRAY = 6] = "ARRAY", A2[A2.CLOSURE = 7] = "CLOSURE", A2[A2.OPAQUE = 8] = "OPAQUE", A2[A2.LIST = 9] = "LIST", A2[A2.ANY = 10] = "ANY");
+  })(A || (A = {}));
   var a;
   !(function (a2) {
     (a2[a2.HELLO = 0] = "HELLO", a2[a2.ABORT = 1] = "ABORT", a2[a2.ENTRY = 2] = "ENTRY");
@@ -257,7 +257,7 @@ export default require => {
       function composition(x) {
         return __asyncGenerator(this, null, function* () {
           const recursiveFunc = yield* __yieldStar(repeat(evaluator, func, {
-            type: O2.NUMBER,
+            type: A.NUMBER,
             value: n2.value - 1
           }));
           return yield* __yieldStar(evaluator.closure_call_unchecked(func, [yield* __yieldStar(evaluator.closure_call_unchecked(recursiveFunc, [x]))]));
@@ -265,15 +265,15 @@ export default require => {
       }
       return yield new __await(evaluator.closure_make({
         name: "function",
-        args: [O2.VOID],
-        returnType: O2.VOID
+        args: [A.VOID],
+        returnType: A.VOID
       }, n2.value === 0 ? identity : composition));
     });
   }
   function twice(evaluator, func) {
     return __asyncGenerator(this, null, function* () {
       return yield* __yieldStar(repeat(evaluator, func, {
-        type: O2.NUMBER,
+        type: A.NUMBER,
         value: 2
       }));
     });
@@ -281,13 +281,13 @@ export default require => {
   function thrice(evaluator, func) {
     return __asyncGenerator(this, null, function* () {
       return yield* __yieldStar(repeat(evaluator, func, {
-        type: O2.NUMBER,
+        type: A.NUMBER,
         value: 3
       }));
     });
   }
   var _thrice_dec, _twice_dec, _repeat_dec, _a, _init;
-  var RepeatModulePlugin = class extends (_a = o2, _repeat_dec = [n([O2.CLOSURE, O2.NUMBER], O2.CLOSURE)], _twice_dec = [n([O2.CLOSURE], O2.CLOSURE)], _thrice_dec = [n([O2.CLOSURE], O2.CLOSURE)], _a) {
+  var RepeatModulePlugin = class extends (_a = o2, _repeat_dec = [n([A.CLOSURE, A.NUMBER], A.CLOSURE)], _twice_dec = [n([A.CLOSURE], A.CLOSURE)], _thrice_dec = [n([A.CLOSURE], A.CLOSURE)], _a) {
     constructor(conduit, channels, evaluator) {
       super(conduit, channels, evaluator);
       __runInitializers(_init, 5, this);
