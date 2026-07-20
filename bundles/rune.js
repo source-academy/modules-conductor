@@ -1,10 +1,32 @@
 export default require => {
-  var __create = Object.create;
   var __defProp = Object.defineProperty;
+  var __defProps = Object.defineProperties;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+  var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
   var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __getOwnPropSymbols = Object.getOwnPropertySymbols;
   var __getProtoOf = Object.getPrototypeOf;
   var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __propIsEnum = Object.prototype.propertyIsEnumerable;
+  var __reflectGet = Reflect.get;
+  var __knownSymbol = (name, symbol) => (symbol = Symbol[name]) ? symbol : Symbol.for("Symbol." + name);
+  var __typeError = msg => {
+    throw TypeError(msg);
+  };
+  var __defNormalProp = (obj, key, value) => (key in obj) ? __defProp(obj, key, {
+    enumerable: true,
+    configurable: true,
+    writable: true,
+    value
+  }) : obj[key] = value;
+  var __spreadValues = (a2, b) => {
+    for (var prop in b || (b = {})) if (__hasOwnProp.call(b, prop)) __defNormalProp(a2, prop, b[prop]);
+    if (__getOwnPropSymbols) for (var prop of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop)) __defNormalProp(a2, prop, b[prop]);
+    }
+    return a2;
+  };
+  var __spreadProps = (a2, b) => __defProps(a2, __getOwnPropDescs(b));
   var __require = (x => typeof require !== "undefined" ? require : typeof Proxy !== "undefined" ? new Proxy(x, {
     get: (a2, b) => (typeof require !== "undefined" ? require : a2)[b]
   }) : x)(function (x) {
@@ -26,73 +48,135 @@ export default require => {
     }
     return to;
   };
-  var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", {
-    value: mod,
-    enumerable: true
-  }) : target, mod));
   var __toCommonJS = mod => __copyProps(__defProp({}, "__esModule", {
     value: true
   }), mod);
-  var __decorateClass = (decorators, target, key, kind) => {
-    var result = kind > 1 ? void 0 : kind ? __getOwnPropDesc(target, key) : target;
-    for (var i = decorators.length - 1, decorator; i >= 0; i--) if (decorator = decorators[i]) result = (kind ? decorator(target, key, result) : decorator(result)) || result;
-    if (kind && result) __defProp(target, key, result);
-    return result;
+  var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+  var __superGet = (cls, obj, key) => __reflectGet(__getProtoOf(cls), key, obj);
+  var __async = (__this, __arguments, generator) => {
+    return new Promise((resolve, reject) => {
+      var fulfilled = value => {
+        try {
+          step(generator.next(value));
+        } catch (e2) {
+          reject(e2);
+        }
+      };
+      var rejected = value => {
+        try {
+          step(generator.throw(value));
+        } catch (e2) {
+          reject(e2);
+        }
+      };
+      var step = x => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+      step((generator = generator.apply(__this, __arguments)).next());
+    });
+  };
+  var __await = function (promise, isYieldStar) {
+    this[0] = promise;
+    this[1] = isYieldStar;
+  };
+  var __asyncGenerator = (__this, __arguments, generator) => {
+    var resume = (k, v, yes, no) => {
+      try {
+        var x = generator[k](v), isAwait = (v = x.value) instanceof __await, done = x.done;
+        Promise.resolve(isAwait ? v[0] : v).then(y => isAwait ? resume(k === "return" ? k : "next", v[1] ? {
+          done: y.done,
+          value: y.value
+        } : y, yes, no) : yes({
+          value: y,
+          done
+        })).catch(e2 => resume("throw", e2, yes, no));
+      } catch (e2) {
+        no(e2);
+      }
+    }, method = (k, call, wait, clear) => it[k] = x => (call = new Promise((yes, no, run) => (run = () => resume(k, x, yes, no), q ? q.then(run) : run())), clear = () => q === wait && (q = 0), q = wait = call.then(clear, clear), call), q, it = {};
+    return (generator = generator.apply(__this, __arguments), it[__knownSymbol("asyncIterator")] = () => it, method("next"), method("throw"), method("return"), it);
+  };
+  var __yieldStar = value => {
+    var obj = value[__knownSymbol("asyncIterator")], isAwait = false, method, it = {};
+    if (obj == null) {
+      obj = value[__knownSymbol("iterator")]();
+      method = k => it[k] = x => obj[k](x);
+    } else {
+      obj = obj.call(value);
+      method = k => it[k] = v => {
+        if (isAwait) {
+          isAwait = false;
+          if (k === "throw") throw v;
+          return v;
+        }
+        isAwait = true;
+        return {
+          done: false,
+          value: new __await(new Promise(resolve => {
+            var x = obj[k](v);
+            if (!(x instanceof Object)) __typeError("Object expected");
+            resolve(x);
+          }), 1)
+        };
+      };
+    }
+    return (it[__knownSymbol("iterator")] = () => it, method("next"), ("throw" in obj) ? method("throw") : it.throw = x => {
+      throw x;
+    }, ("return" in obj) && method("return"), it);
   };
   var index_exports = {};
   __export(index_exports, {
-    anaglyph: () => anaglyph,
-    animate_anaglyph: () => animate_anaglyph,
-    animate_rune: () => animate_rune,
-    beside: () => beside,
-    beside_frac: () => beside_frac,
-    black: () => black,
-    blank: () => blank,
-    blue: () => blue,
-    brown: () => brown,
-    circle: () => circle,
-    color: () => color,
-    colour_with_hue: () => colour_with_hue,
-    corner: () => corner,
-    flip_horiz: () => flip_horiz,
-    flip_vert: () => flip_vert,
-    from_url: () => from_url,
-    green: () => green,
-    heart: () => heart,
-    hollusion: () => hollusion,
-    hollusion_magnitude: () => hollusion_magnitude,
-    indigo: () => indigo,
-    make_cross: () => make_cross,
-    nova: () => nova,
-    orange: () => orange,
-    overlay: () => overlay,
-    overlay_frac: () => overlay_frac,
-    pentagram: () => pentagram,
-    pink: () => pink,
-    purple: () => purple,
-    quarter_turn_left: () => quarter_turn_left,
-    quarter_turn_right: () => quarter_turn_right,
-    random_color: () => random_color,
-    rcross: () => rcross,
-    red: () => red,
-    repeat_pattern: () => repeat_pattern,
-    ribbon: () => ribbon,
-    rotate: () => rotate2,
-    sail: () => sail,
-    scale: () => scale3,
-    scale_independent: () => scale_independent,
-    show: () => show,
-    square: () => square,
-    stack: () => stack,
-    stack_frac: () => stack_frac,
-    stackn: () => stackn,
-    translate: () => translate2,
-    triangle: () => triangle,
-    turn_upside_down: () => turn_upside_down,
-    type_map: () => type_map,
-    white: () => white,
-    yellow: () => yellow
+    default: () => RuneModulePlugin
   });
+  var _;
+  !(function (_2) {
+    (_2.UNKNOWN = "__unknown", _2.INTERNAL = "__internal", _2.EVALUATOR = "__evaluator", _2.EVALUATOR_SYNTAX = "__evaluator_syntax", _2.EVALUATOR_TYPE = "__evaluator_type", _2.EVALUATOR_RUNTIME = "__evaluator_runtime");
+  })(_ || (_ = {}));
+  var o = class extends Error {
+    constructor(r) {
+      super(r);
+      __publicField(this, "name", "ConductorError");
+      __publicField(this, "errorType", _.UNKNOWN);
+    }
+  };
+  var s = class extends o {
+    constructor(r) {
+      super(r);
+      __publicField(this, "name", "ConductorInternalError");
+      __publicField(this, "errorType", _.INTERNAL);
+    }
+  };
+  var R;
+  !(function (R2) {
+    (R2[R2.CALL = 0] = "CALL", R2[R2.RETURN = 1] = "RETURN", R2[R2.RETURN_ERR = 2] = "RETURN_ERR");
+  })(R || (R = {}));
+  var O;
+  !(function (O2) {
+    (O2[O2.PROTOCOL_VERSION = 0] = "PROTOCOL_VERSION", O2[O2.PROTOCOL_MIN_VERSION = 0] = "PROTOCOL_MIN_VERSION", O2[O2.SETUP_MESSAGES_BUFFER_SIZE = 10] = "SETUP_MESSAGES_BUFFER_SIZE");
+  })(O || (O = {}));
+  var o2 = class {
+    constructor(t2, o3, r) {
+      __publicField(this, "exports", []);
+      __publicField(this, "exportedNames", []);
+      __publicField(this, "evaluator");
+      this.evaluator = r;
+    }
+    initialise() {
+      return __async(this, null, function* () {
+        for (const o3 of this.exportedNames) {
+          const r = this[o3];
+          if (!r.signature || "function" != typeof r || "string" != typeof o3) throw new s(`'${String(o3)}' is not an exportable method`);
+          const s3 = r.bind(this);
+          s3.signature = r.signature;
+          const e2 = yield this.evaluator.closure_make(r.signature, s3);
+          this.exports.push({
+            symbol: o3,
+            value: e2,
+            signature: r.signature
+          });
+        }
+      });
+    }
+  };
+  __publicField(o2, "channelAttach");
   var A;
   !(function (A2) {
     (A2[A2.VOID = 0] = "VOID", A2[A2.BOOLEAN = 1] = "BOOLEAN", A2[A2.NUMBER = 2] = "NUMBER", A2[A2.CONST_STRING = 3] = "CONST_STRING", A2[A2.EMPTY_LIST = 4] = "EMPTY_LIST", A2[A2.PAIR = 5] = "PAIR", A2[A2.ARRAY = 6] = "ARRAY", A2[A2.CLOSURE = 7] = "CLOSURE", A2[A2.OPAQUE = 8] = "OPAQUE", A2[A2.LIST = 9] = "LIST", A2[A2.ANY = 10] = "ANY");
@@ -101,14 +185,20 @@ export default require => {
   !(function (a2) {
     (a2[a2.HELLO = 0] = "HELLO", a2[a2.ABORT = 1] = "ABORT", a2[a2.ENTRY = 2] = "ENTRY");
   })(a || (a = {}));
-  var O;
-  !(function (O2) {
-    (O2[O2.PROTOCOL_VERSION = 0] = "PROTOCOL_VERSION", O2[O2.PROTOCOL_MIN_VERSION = 0] = "PROTOCOL_MIN_VERSION", O2[O2.SETUP_MESSAGES_BUFFER_SIZE = 10] = "SETUP_MESSAGES_BUFFER_SIZE");
-  })(O || (O = {}));
   var N;
   !(function (N2) {
     (N2[N2.ONLINE = 0] = "ONLINE", N2[N2.EVAL_READY = 1] = "EVAL_READY", N2[N2.RUNNING = 2] = "RUNNING", N2[N2.WAITING = 3] = "WAITING", N2[N2.BREAKPOINT = 4] = "BREAKPOINT", N2[N2.STOPPED = 5] = "STOPPED", N2[N2.ERROR = 6] = "ERROR");
   })(N || (N = {}));
+  function attachModuleMethod(clss, methodName, args, returnType) {
+    const method = clss.prototype[methodName];
+    if (method === void 0) {
+      throw new Error(`Rune module method "${String(methodName)}" does not exist.`);
+    }
+    method.signature = {
+      args,
+      returnType
+    };
+  }
   var import_rttcErrors = __require("js-slang/dist/errors/rttcErrors");
   var import_base = __require("js-slang/dist/errors/base");
   var import_rttc = __require("js-slang/dist/utils/rttc");
@@ -146,9 +236,9 @@ export default require => {
         return [255, 0, Math.floor(q * 255)];
     }
   }
-  function repeat_internal(f, n) {
+  function repeat_internal(f, n2) {
     const func = x => (0, import_operators.callWithoutMetadata)(f, x);
-    return n === 0 ? x => x : x => func(repeat_internal(func, n - 1)(x));
+    return n2 === 0 ? x => x : x => func(repeat_internal(func, n2 - 1)(x));
   }
   function sample(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
@@ -570,7 +660,7 @@ export default require => {
   function rotate(out, a2, rad, axis) {
     var x = axis[0], y = axis[1], z = axis[2];
     var len2 = Math.sqrt(x * x + y * y + z * z);
-    var s2, c, t2;
+    var s3, c, t2;
     var a00, a01, a02, a03;
     var a10, a11, a12, a13;
     var a20, a21, a22, a23;
@@ -584,7 +674,7 @@ export default require => {
     x *= len2;
     y *= len2;
     z *= len2;
-    s2 = Math.sin(rad);
+    s3 = Math.sin(rad);
     c = Math.cos(rad);
     t2 = 1 - c;
     a00 = a2[0];
@@ -600,13 +690,13 @@ export default require => {
     a22 = a2[10];
     a23 = a2[11];
     b00 = x * x * t2 + c;
-    b01 = y * x * t2 + z * s2;
-    b02 = z * x * t2 - y * s2;
-    b10 = x * y * t2 - z * s2;
+    b01 = y * x * t2 + z * s3;
+    b02 = z * x * t2 - y * s3;
+    b10 = x * y * t2 - z * s3;
     b11 = y * y * t2 + c;
-    b12 = z * y * t2 + x * s2;
-    b20 = x * z * t2 + y * s2;
-    b21 = y * z * t2 - x * s2;
+    b12 = z * y * t2 + x * s3;
+    b20 = x * z * t2 + y * s3;
+    b21 = y * z * t2 - x * s3;
     b22 = z * z * t2 + c;
     out[0] = a00 * b00 + a10 * b01 + a20 * b02;
     out[1] = a01 * b00 + a11 * b01 + a21 * b02;
@@ -629,7 +719,7 @@ export default require => {
     return out;
   }
   function rotateX(out, a2, rad) {
-    var s2 = Math.sin(rad);
+    var s3 = Math.sin(rad);
     var c = Math.cos(rad);
     var a10 = a2[4];
     var a11 = a2[5];
@@ -649,18 +739,18 @@ export default require => {
       out[14] = a2[14];
       out[15] = a2[15];
     }
-    out[4] = a10 * c + a20 * s2;
-    out[5] = a11 * c + a21 * s2;
-    out[6] = a12 * c + a22 * s2;
-    out[7] = a13 * c + a23 * s2;
-    out[8] = a20 * c - a10 * s2;
-    out[9] = a21 * c - a11 * s2;
-    out[10] = a22 * c - a12 * s2;
-    out[11] = a23 * c - a13 * s2;
+    out[4] = a10 * c + a20 * s3;
+    out[5] = a11 * c + a21 * s3;
+    out[6] = a12 * c + a22 * s3;
+    out[7] = a13 * c + a23 * s3;
+    out[8] = a20 * c - a10 * s3;
+    out[9] = a21 * c - a11 * s3;
+    out[10] = a22 * c - a12 * s3;
+    out[11] = a23 * c - a13 * s3;
     return out;
   }
   function rotateY(out, a2, rad) {
-    var s2 = Math.sin(rad);
+    var s3 = Math.sin(rad);
     var c = Math.cos(rad);
     var a00 = a2[0];
     var a01 = a2[1];
@@ -680,18 +770,18 @@ export default require => {
       out[14] = a2[14];
       out[15] = a2[15];
     }
-    out[0] = a00 * c - a20 * s2;
-    out[1] = a01 * c - a21 * s2;
-    out[2] = a02 * c - a22 * s2;
-    out[3] = a03 * c - a23 * s2;
-    out[8] = a00 * s2 + a20 * c;
-    out[9] = a01 * s2 + a21 * c;
-    out[10] = a02 * s2 + a22 * c;
-    out[11] = a03 * s2 + a23 * c;
+    out[0] = a00 * c - a20 * s3;
+    out[1] = a01 * c - a21 * s3;
+    out[2] = a02 * c - a22 * s3;
+    out[3] = a03 * c - a23 * s3;
+    out[8] = a00 * s3 + a20 * c;
+    out[9] = a01 * s3 + a21 * c;
+    out[10] = a02 * s3 + a22 * c;
+    out[11] = a03 * s3 + a23 * c;
     return out;
   }
   function rotateZ(out, a2, rad) {
-    var s2 = Math.sin(rad);
+    var s3 = Math.sin(rad);
     var c = Math.cos(rad);
     var a00 = a2[0];
     var a01 = a2[1];
@@ -711,14 +801,14 @@ export default require => {
       out[14] = a2[14];
       out[15] = a2[15];
     }
-    out[0] = a00 * c + a10 * s2;
-    out[1] = a01 * c + a11 * s2;
-    out[2] = a02 * c + a12 * s2;
-    out[3] = a03 * c + a13 * s2;
-    out[4] = a10 * c - a00 * s2;
-    out[5] = a11 * c - a01 * s2;
-    out[6] = a12 * c - a02 * s2;
-    out[7] = a13 * c - a03 * s2;
+    out[0] = a00 * c + a10 * s3;
+    out[1] = a01 * c + a11 * s3;
+    out[2] = a02 * c + a12 * s3;
+    out[3] = a03 * c + a13 * s3;
+    out[4] = a10 * c - a00 * s3;
+    out[5] = a11 * c - a01 * s3;
+    out[6] = a12 * c - a02 * s3;
+    out[7] = a13 * c - a03 * s3;
     return out;
   }
   function fromTranslation(out, v) {
@@ -762,7 +852,7 @@ export default require => {
   function fromRotation(out, rad, axis) {
     var x = axis[0], y = axis[1], z = axis[2];
     var len2 = Math.sqrt(x * x + y * y + z * z);
-    var s2, c, t2;
+    var s3, c, t2;
     if (len2 < EPSILON) {
       return null;
     }
@@ -770,19 +860,19 @@ export default require => {
     x *= len2;
     y *= len2;
     z *= len2;
-    s2 = Math.sin(rad);
+    s3 = Math.sin(rad);
     c = Math.cos(rad);
     t2 = 1 - c;
     out[0] = x * x * t2 + c;
-    out[1] = y * x * t2 + z * s2;
-    out[2] = z * x * t2 - y * s2;
+    out[1] = y * x * t2 + z * s3;
+    out[2] = z * x * t2 - y * s3;
     out[3] = 0;
-    out[4] = x * y * t2 - z * s2;
+    out[4] = x * y * t2 - z * s3;
     out[5] = y * y * t2 + c;
-    out[6] = z * y * t2 + x * s2;
+    out[6] = z * y * t2 + x * s3;
     out[7] = 0;
-    out[8] = x * z * t2 + y * s2;
-    out[9] = y * z * t2 - x * s2;
+    out[8] = x * z * t2 + y * s3;
+    out[9] = y * z * t2 - x * s3;
     out[10] = z * z * t2 + c;
     out[11] = 0;
     out[12] = 0;
@@ -792,7 +882,7 @@ export default require => {
     return out;
   }
   function fromXRotation(out, rad) {
-    var s2 = Math.sin(rad);
+    var s3 = Math.sin(rad);
     var c = Math.cos(rad);
     out[0] = 1;
     out[1] = 0;
@@ -800,10 +890,10 @@ export default require => {
     out[3] = 0;
     out[4] = 0;
     out[5] = c;
-    out[6] = s2;
+    out[6] = s3;
     out[7] = 0;
     out[8] = 0;
-    out[9] = -s2;
+    out[9] = -s3;
     out[10] = c;
     out[11] = 0;
     out[12] = 0;
@@ -813,17 +903,17 @@ export default require => {
     return out;
   }
   function fromYRotation(out, rad) {
-    var s2 = Math.sin(rad);
+    var s3 = Math.sin(rad);
     var c = Math.cos(rad);
     out[0] = c;
     out[1] = 0;
-    out[2] = -s2;
+    out[2] = -s3;
     out[3] = 0;
     out[4] = 0;
     out[5] = 1;
     out[6] = 0;
     out[7] = 0;
-    out[8] = s2;
+    out[8] = s3;
     out[9] = 0;
     out[10] = c;
     out[11] = 0;
@@ -834,13 +924,13 @@ export default require => {
     return out;
   }
   function fromZRotation(out, rad) {
-    var s2 = Math.sin(rad);
+    var s3 = Math.sin(rad);
     var c = Math.cos(rad);
     out[0] = c;
-    out[1] = s2;
+    out[1] = s3;
     out[2] = 0;
     out[3] = 0;
-    out[4] = -s2;
+    out[4] = -s3;
     out[5] = c;
     out[6] = 0;
     out[7] = 0;
@@ -1024,7 +1114,7 @@ export default require => {
     }
     return out_r;
   }
-  function fromRotationTranslationScale(out, q, v, s2) {
+  function fromRotationTranslationScale(out, q, v, s3) {
     var x = q[0], y = q[1], z = q[2], w = q[3];
     var x2 = x + x;
     var y2 = y + y;
@@ -1038,9 +1128,9 @@ export default require => {
     var wx = w * x2;
     var wy = w * y2;
     var wz = w * z2;
-    var sx = s2[0];
-    var sy = s2[1];
-    var sz = s2[2];
+    var sx = s3[0];
+    var sy = s3[1];
+    var sz = s3[2];
     out[0] = (1 - (yy + zz)) * sx;
     out[1] = (xy + wz) * sx;
     out[2] = (xz - wy) * sx;
@@ -1059,7 +1149,7 @@ export default require => {
     out[15] = 1;
     return out;
   }
-  function fromRotationTranslationScaleOrigin(out, q, v, s2, o) {
+  function fromRotationTranslationScaleOrigin(out, q, v, s3, o3) {
     var x = q[0], y = q[1], z = q[2], w = q[3];
     var x2 = x + x;
     var y2 = y + y;
@@ -1073,12 +1163,12 @@ export default require => {
     var wx = w * x2;
     var wy = w * y2;
     var wz = w * z2;
-    var sx = s2[0];
-    var sy = s2[1];
-    var sz = s2[2];
-    var ox = o[0];
-    var oy = o[1];
-    var oz = o[2];
+    var sx = s3[0];
+    var sy = s3[1];
+    var sz = s3[2];
+    var ox = o3[0];
+    var oy = o3[1];
+    var oz = o3[2];
     var out0 = (1 - (yy + zz)) * sx;
     var out1 = (xy + wz) * sx;
     var out2 = (xz - wy) * sx;
@@ -1874,23 +1964,6 @@ export default require => {
       return a2;
     };
   })();
-  var glAnimationSymbol = Symbol.for("glAnimation");
-  var glAnimation = class _glAnimation {
-    constructor(duration, fps) {
-      this.duration = duration;
-      this.fps = fps;
-    }
-    get _anim_symbol() {
-      return glAnimationSymbol;
-    }
-    static [Symbol.hasInstance](constructor) {
-      if (typeof constructor !== "object" || constructor === null) return false;
-      return ("_anim_symbol" in constructor) && constructor._anim_symbol === glAnimationSymbol;
-    }
-    static isAnimation(obj) {
-      return obj instanceof _glAnimation;
-    }
-  };
   function loadShader(gl, type, source) {
     const shader = gl.createShader(type);
     if (!shader) {
@@ -1961,81 +2034,6 @@ export default require => {
       texture
     };
   }
-  function createTypeMap() {
-    const type_map2 = {};
-    function registerType(name, declaration) {
-      if (name === "prelude") {
-        type_map2["prelude"] = type_map2["prelude"] != void 0 ? type_map2["prelude"] + "\n" + declaration : declaration;
-      } else {
-        type_map2[name] = declaration;
-      }
-    }
-    function classDeclaration2(name) {
-      return _target => {
-        registerType("prelude", `class ${name} {}`);
-      };
-    }
-    function typeDeclaration(type, declaration = null) {
-      return target => {
-        const typeAlias = `type ${target.name} = ${type}`;
-        let variableDeclaration3 = `const ${target.name} = ${declaration === null ? type : declaration}`;
-        switch (type) {
-          case "number":
-            variableDeclaration3 = `const ${target.name} = 0`;
-            break;
-          case "string":
-            variableDeclaration3 = `const ${target.name} = ''`;
-            break;
-          case "boolean":
-            variableDeclaration3 = `const ${target.name} = false`;
-            break;
-          case "void":
-            variableDeclaration3 = "";
-            break;
-        }
-        registerType("prelude", `${typeAlias};
-${variableDeclaration3};`);
-      };
-    }
-    function functionDeclaration2(paramTypes, returnType) {
-      return (_target, propertyKey, _descriptor) => {
-        let returnValue = "";
-        switch (returnType) {
-          case "number":
-            returnValue = "return 0";
-            break;
-          case "string":
-            returnValue = "return ''";
-            break;
-          case "boolean":
-            returnValue = "return false";
-            break;
-          case "void":
-            returnValue = "";
-            break;
-          default:
-            returnValue = `return ${returnType}`;
-            break;
-        }
-        registerType(propertyKey, `function ${propertyKey} (${paramTypes}) : ${returnType} { ${returnValue} }`);
-      };
-    }
-    function variableDeclaration2(type) {
-      return (_target, propertyKey) => {
-        registerType(propertyKey, `const ${propertyKey}: ${type} = ${type}`);
-      };
-    }
-    return {
-      classDeclaration: classDeclaration2,
-      functionDeclaration: functionDeclaration2,
-      variableDeclaration: variableDeclaration2,
-      typeDeclaration,
-      type_map: type_map2
-    };
-  }
-  var typeMapCreator = createTypeMap();
-  var {functionDeclaration, variableDeclaration, classDeclaration} = typeMapCreator;
-  var type_map = typeMapCreator.type_map;
   var normalVertexShader = `
 attribute vec4 aVertexPosition;
 uniform vec4 uVertexColor;
@@ -2082,7 +2080,7 @@ void main(void) {
   gl_FragColor.a = 1.0;
 }
 `;
-  var Rune = class {
+  var _Rune = class _Rune {
     constructor(vertices, colors, transformMatrix, subRunes, texture, hollusionDistance) {
       this.vertices = vertices;
       this.colors = colors;
@@ -2090,7 +2088,7 @@ void main(void) {
       this.subRunes = subRunes;
       this.texture = texture;
       this.hollusionDistance = hollusionDistance;
-      this.copy = () => new Rune(this.vertices, this.colors, mat4_exports.clone(this.transformMatrix), this.subRunes, this.texture, this.hollusionDistance);
+      this.copy = () => new _Rune(this.vertices, this.colors, mat4_exports.clone(this.transformMatrix), this.subRunes, this.texture, this.hollusionDistance);
       this.flatten = () => {
         const runeList = [];
         const runeTodoList = [this.copy()];
@@ -2115,81 +2113,102 @@ void main(void) {
       this.toReplString = () => "<Rune>";
     }
   };
-  Rune.of = (params = {}) => {
+  _Rune.of = (params = {}) => {
     const paramGetter = (name, defaultValue) => {
       var _a;
       return (_a = params[name]) != null ? _a : defaultValue();
     };
-    return new Rune(paramGetter("vertices", () => new Float32Array()), paramGetter("colors", () => null), paramGetter("transformMatrix", mat4_exports.create), paramGetter("subRunes", () => []), paramGetter("texture", () => null), paramGetter("hollusionDistance", () => 0.1));
+    return new _Rune(paramGetter("vertices", () => new Float32Array()), paramGetter("colors", () => null), paramGetter("transformMatrix", mat4_exports.create), paramGetter("subRunes", () => []), paramGetter("texture", () => null), paramGetter("hollusionDistance", () => 0.1));
   };
-  Rune = __decorateClass([classDeclaration("Rune")], Rune);
+  var Rune = _Rune;
   function drawRunesToFrameBuffer(gl, runes, cameraMatrix, colorFilter, framebuffer = null, depthSwitch = false) {
-    gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-    const shaderProgram = initShaderProgram(gl, normalVertexShader, normalFragmentShader);
-    gl.useProgram(shaderProgram);
-    if (gl === null) {
-      throw new import_base.GeneralRuntimeError("Rendering Context not initialized for drawRune.");
-    }
-    const vertexPositionPointer = gl.getAttribLocation(shaderProgram, "aVertexPosition");
-    const vertexColorPointer = gl.getUniformLocation(shaderProgram, "uVertexColor");
-    const vertexColorFilterPt = gl.getUniformLocation(shaderProgram, "uColorFilter");
-    const projectionMatrixPointer = gl.getUniformLocation(shaderProgram, "uProjectionMatrix");
-    const cameraMatrixPointer = gl.getUniformLocation(shaderProgram, "uCameraMatrix");
-    const modelViewMatrixPointer = gl.getUniformLocation(shaderProgram, "uModelViewMatrix");
-    const textureSwitchPointer = gl.getUniformLocation(shaderProgram, "uRenderWithTexture");
-    const depthSwitchPointer = gl.getUniformLocation(shaderProgram, "uRenderWithDepthColor");
-    const texturePointer = gl.getUniformLocation(shaderProgram, "uTexture");
-    gl.uniform1i(depthSwitchPointer, depthSwitch ? 1 : 0);
-    const orthoCam = mat4_exports.create();
-    mat4_exports.ortho(orthoCam, -1, 1, -1, 1, -0.5, 1.5);
-    gl.uniformMatrix4fv(projectionMatrixPointer, false, orthoCam);
-    gl.uniformMatrix4fv(cameraMatrixPointer, false, cameraMatrix);
-    gl.uniform4fv(vertexColorFilterPt, colorFilter);
-    const loadTexture = image => {
-      const texture = gl.createTexture();
-      gl.bindTexture(gl.TEXTURE_2D, texture);
-      function isPowerOf2(value) {
-        return (value & value - 1) === 0;
+    return __async(this, null, function* () {
+      gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+      const shaderProgram = initShaderProgram(gl, normalVertexShader, normalFragmentShader);
+      gl.useProgram(shaderProgram);
+      if (gl === null) {
+        throw new import_base.GeneralRuntimeError("Rendering Context not initialized for drawRune.");
       }
-      const level = 0;
-      const internalFormat = gl.RGBA;
-      const width = 1;
-      const height = 1;
-      const border = 0;
-      const srcFormat = gl.RGBA;
-      const srcType = gl.UNSIGNED_BYTE;
-      const pixel = new Uint8Array([0, 0, 255, 255]);
-      gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, width, height, border, srcFormat, srcType, pixel);
-      gl.bindTexture(gl.TEXTURE_2D, texture);
-      gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, srcFormat, srcType, image);
-      if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
-        gl.generateMipmap(gl.TEXTURE_2D);
-      } else {
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-      }
-      return texture;
-    };
-    runes.forEach(rune => {
-      const positionBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-      gl.bufferData(gl.ARRAY_BUFFER, rune.vertices, gl.STATIC_DRAW);
-      gl.vertexAttribPointer(vertexPositionPointer, 4, gl.FLOAT, false, 0, 0);
-      gl.enableVertexAttribArray(vertexPositionPointer);
-      if (rune.texture === null) {
-        gl.uniform4fv(vertexColorPointer, rune.colors || new Float32Array([0, 0, 0, 1]));
-        gl.uniform1i(textureSwitchPointer, 0);
-      } else {
-        const texture = loadTexture(rune.texture);
-        gl.activeTexture(gl.TEXTURE0);
+      const vertexPositionPointer = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+      const vertexColorPointer = gl.getUniformLocation(shaderProgram, "uVertexColor");
+      const vertexColorFilterPt = gl.getUniformLocation(shaderProgram, "uColorFilter");
+      const projectionMatrixPointer = gl.getUniformLocation(shaderProgram, "uProjectionMatrix");
+      const cameraMatrixPointer = gl.getUniformLocation(shaderProgram, "uCameraMatrix");
+      const modelViewMatrixPointer = gl.getUniformLocation(shaderProgram, "uModelViewMatrix");
+      const textureSwitchPointer = gl.getUniformLocation(shaderProgram, "uRenderWithTexture");
+      const depthSwitchPointer = gl.getUniformLocation(shaderProgram, "uRenderWithDepthColor");
+      const texturePointer = gl.getUniformLocation(shaderProgram, "uTexture");
+      gl.uniform1i(depthSwitchPointer, depthSwitch ? 1 : 0);
+      const orthoCam = mat4_exports.create();
+      mat4_exports.ortho(orthoCam, -1, 1, -1, 1, -0.5, 1.5);
+      gl.uniformMatrix4fv(projectionMatrixPointer, false, orthoCam);
+      gl.uniformMatrix4fv(cameraMatrixPointer, false, cameraMatrix);
+      gl.uniform4fv(vertexColorFilterPt, colorFilter);
+      const loadTexture = rune => __async(null, null, function* () {
+        if (rune.texture === null) return null;
+        const imageSource = rune.texture;
+        let image;
+        if (typeof imageSource !== "string") {
+          image = imageSource;
+        } else {
+          image = yield new Promise((resolve, reject) => {
+            const image2 = Object.assign(new Image(), {
+              crossOrigin: "anonymous",
+              src: imageSource
+            });
+            image2.onload = () => {
+              rune.texture = image2;
+              resolve(image2);
+            };
+            image2.onabort = reject;
+            image2.onerror = reject;
+          });
+        }
+        const texture = gl.createTexture();
         gl.bindTexture(gl.TEXTURE_2D, texture);
-        gl.uniform1i(texturePointer, 0);
-        gl.uniform1i(textureSwitchPointer, 1);
+        function isPowerOf2(value) {
+          return (value & value - 1) === 0;
+        }
+        const level = 0;
+        const internalFormat = gl.RGBA;
+        const width = 1;
+        const height = 1;
+        const border = 0;
+        const srcFormat = gl.RGBA;
+        const srcType = gl.UNSIGNED_BYTE;
+        const pixel = new Uint8Array([0, 0, 255, 255]);
+        gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, width, height, border, srcFormat, srcType, pixel);
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, srcFormat, srcType, image);
+        if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
+          gl.generateMipmap(gl.TEXTURE_2D);
+        } else {
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        }
+        return texture;
+      });
+      for (const rune of runes) {
+        const positionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, rune.vertices, gl.STATIC_DRAW);
+        gl.vertexAttribPointer(vertexPositionPointer, 4, gl.FLOAT, false, 0, 0);
+        gl.enableVertexAttribArray(vertexPositionPointer);
+        if (rune.texture === null) {
+          gl.uniform4fv(vertexColorPointer, rune.colors || new Float32Array([0, 0, 0, 1]));
+          gl.uniform1i(textureSwitchPointer, 0);
+        } else {
+          const texture = yield loadTexture(rune);
+          gl.activeTexture(gl.TEXTURE0);
+          gl.bindTexture(gl.TEXTURE_2D, texture);
+          gl.uniform1i(texturePointer, 0);
+          gl.uniform1i(textureSwitchPointer, 1);
+        }
+        gl.uniformMatrix4fv(modelViewMatrixPointer, false, rune.transformMatrix);
+        const vertexCount = rune.vertices.length / 4;
+        gl.drawArrays(gl.TRIANGLES, 0, vertexCount);
       }
-      gl.uniformMatrix4fv(modelViewMatrixPointer, false, rune.transformMatrix);
-      const vertexCount = rune.vertices.length / 4;
-      gl.drawArrays(gl.TRIANGLES, 0, vertexCount);
     });
   }
   var DrawnRune = class {
@@ -2245,29 +2264,6 @@ void main(void) {
     gl_FragColor.a = 1.0;
   }
   `;
-  var DrawnNormalRune = class extends DrawnRune {
-    constructor(rune) {
-      super(rune, false);
-      this.draw = canvas => {
-        const gl = getWebGlFromCanvas(canvas);
-        const cameraMatrix = mat4_exports.create();
-        drawRunesToFrameBuffer(gl, this.rune.flatten(), cameraMatrix, new Float32Array([1, 1, 1, 1]), null, true);
-      };
-    }
-  };
-  var AnimatedRune = class extends glAnimation {
-    constructor(duration, fps, func) {
-      super(duration, fps);
-      this.func = func;
-      this.toReplString = () => "<AnimatedRune>";
-    }
-    getFrame(num) {
-      const rune = this.func(num);
-      return {
-        draw: rune.draw.bind(rune)
-      };
-    }
-  };
   function throwIfNotRune(func_name, rune, param_name) {
     if (!(rune instanceof Rune)) {
       throw new import_rttcErrors.InvalidParameterTypeError("Rune", rune, func_name, param_name);
@@ -2477,9 +2473,7 @@ void main(void) {
   var _RuneFunctions = class _RuneFunctions {
     static from_url(imageUrl) {
       const rune = getSquare();
-      rune.texture = new Image();
-      rune.texture.crossOrigin = "anonymous";
-      rune.texture.src = imageUrl;
+      rune.texture = imageUrl;
       return rune;
     }
     static scale_independent(ratio_x, ratio_y, rune) {
@@ -2546,15 +2540,15 @@ void main(void) {
       throwIfNotRune(_RuneFunctions.stack.name, rune2, "rune2");
       return _RuneFunctions.stack_frac(0.5, rune1, rune2);
     }
-    static stackn(n, rune) {
+    static stackn(n2, rune) {
       throwIfNotRune(_RuneFunctions.stackn.name, rune);
-      (0, import_rttc.assertNumberWithinRange)(n, {
+      (0, import_rttc.assertNumberWithinRange)(n2, {
         func_name: _RuneFunctions.stackn.name
       });
-      if (n <= 1) {
+      if (n2 <= 1) {
         return rune;
       }
-      return _RuneFunctions.stack_frac(1 / n, rune, _RuneFunctions.stackn(n - 1, rune));
+      return _RuneFunctions.stack_frac(1 / n2, rune, _RuneFunctions.stackn(n2 - 1, rune));
     }
     static quarter_turn_right(rune) {
       throwIfNotRune(_RuneFunctions.quarter_turn_right.name, rune);
@@ -2595,10 +2589,10 @@ void main(void) {
       throwIfNotRune(_RuneFunctions.make_cross.name, rune);
       return _RuneFunctions.stack(_RuneFunctions.beside(_RuneFunctions.quarter_turn_right(rune), _RuneFunctions.rotate(Math.PI, rune)), _RuneFunctions.beside(rune, _RuneFunctions.rotate(Math.PI / 2, rune)));
     }
-    static repeat_pattern(n, pattern, initial) {
+    static repeat_pattern(n2, pattern, initial) {
       throwIfNotRune(_RuneFunctions.repeat_pattern.name, initial, "initial");
       (0, import_rttc.assertFunctionOfLength)(pattern, 1, _RuneFunctions.repeat_pattern.name);
-      const repeated = repeat_internal(pattern, n);
+      const repeated = repeat_internal(pattern, n2);
       return repeated(initial);
     }
     static overlay_frac(frac, rune1, rune2) {
@@ -2653,37 +2647,6 @@ void main(void) {
   _RuneFunctions.heart = getHeart();
   _RuneFunctions.pentagram = getPentagram();
   _RuneFunctions.ribbon = getRibbon();
-  __decorateClass([variableDeclaration("Rune")], _RuneFunctions, "square", 2);
-  __decorateClass([variableDeclaration("Rune")], _RuneFunctions, "blank", 2);
-  __decorateClass([variableDeclaration("Rune")], _RuneFunctions, "rcross", 2);
-  __decorateClass([variableDeclaration("Rune")], _RuneFunctions, "sail", 2);
-  __decorateClass([variableDeclaration("Rune")], _RuneFunctions, "triangle", 2);
-  __decorateClass([variableDeclaration("Rune")], _RuneFunctions, "corner", 2);
-  __decorateClass([variableDeclaration("Rune")], _RuneFunctions, "nova", 2);
-  __decorateClass([variableDeclaration("Rune")], _RuneFunctions, "circle", 2);
-  __decorateClass([variableDeclaration("Rune")], _RuneFunctions, "heart", 2);
-  __decorateClass([variableDeclaration("Rune")], _RuneFunctions, "pentagram", 2);
-  __decorateClass([variableDeclaration("Rune")], _RuneFunctions, "ribbon", 2);
-  __decorateClass([functionDeclaration("imageUrl: string", "Rune")], _RuneFunctions, "from_url", 1);
-  __decorateClass([functionDeclaration("ratio_x: number, ratio_y: number, rune: Rune", "Rune")], _RuneFunctions, "scale_independent", 1);
-  __decorateClass([functionDeclaration("ratio: number, rune: Rune", "Rune")], _RuneFunctions, "scale", 1);
-  __decorateClass([functionDeclaration("x: number, y: number, rune: Rune", "Rune")], _RuneFunctions, "translate", 1);
-  __decorateClass([functionDeclaration("rad: number, rune: Rune", "Rune")], _RuneFunctions, "rotate", 1);
-  __decorateClass([functionDeclaration("frac: number, rune1: Rune, rune2: Rune", "Rune")], _RuneFunctions, "stack_frac", 1);
-  __decorateClass([functionDeclaration("rune1: Rune, rune2: Rune", "Rune")], _RuneFunctions, "stack", 1);
-  __decorateClass([functionDeclaration("n: number, rune: Rune", "Rune")], _RuneFunctions, "stackn", 1);
-  __decorateClass([functionDeclaration("rune: Rune", "Rune")], _RuneFunctions, "quarter_turn_right", 1);
-  __decorateClass([functionDeclaration("rune: Rune", "Rune")], _RuneFunctions, "quarter_turn_left", 1);
-  __decorateClass([functionDeclaration("rune: Rune", "Rune")], _RuneFunctions, "turn_upside_down", 1);
-  __decorateClass([functionDeclaration("frac: number, rune1: Rune, rune2: Rune", "Rune")], _RuneFunctions, "beside_frac", 1);
-  __decorateClass([functionDeclaration("rune1: Rune, rune2: Rune", "Rune")], _RuneFunctions, "beside", 1);
-  __decorateClass([functionDeclaration("rune: Rune", "Rune")], _RuneFunctions, "flip_vert", 1);
-  __decorateClass([functionDeclaration("rune: Rune", "Rune")], _RuneFunctions, "flip_horiz", 1);
-  __decorateClass([functionDeclaration("rune: Rune", "Rune")], _RuneFunctions, "make_cross", 1);
-  __decorateClass([functionDeclaration("n: number, pattern: (a: Rune) => Rune, initial: Rune", "Rune")], _RuneFunctions, "repeat_pattern", 1);
-  __decorateClass([functionDeclaration("frac: number, rune1: Rune, rune2: Rune", "Rune")], _RuneFunctions, "overlay_frac", 1);
-  __decorateClass([functionDeclaration("rune1: Rune, rune2: Rune", "Rune")], _RuneFunctions, "overlay", 1);
-  __decorateClass([functionDeclaration("rune: Rune, r: number, g: number, b: number", "Rune")], _RuneFunctions, "color", 1);
   var RuneFunctions = _RuneFunctions;
   var _RuneColours = class _RuneColours {
     static black(rune) {
@@ -2760,24 +2723,11 @@ void main(void) {
     red: "#F44336",
     yellow: "#FFEB3B"
   };
-  __decorateClass([functionDeclaration("rune: Rune", "Rune")], _RuneColours, "black", 1);
-  __decorateClass([functionDeclaration("rune: Rune", "Rune")], _RuneColours, "blue", 1);
-  __decorateClass([functionDeclaration("rune: Rune", "Rune")], _RuneColours, "brown", 1);
-  __decorateClass([functionDeclaration("rune: Rune", "Rune")], _RuneColours, "green", 1);
-  __decorateClass([functionDeclaration("rune: Rune", "Rune")], _RuneColours, "indigo", 1);
-  __decorateClass([functionDeclaration("rune: Rune", "Rune")], _RuneColours, "red", 1);
-  __decorateClass([functionDeclaration("rune: Rune", "Rune")], _RuneColours, "pink", 1);
-  __decorateClass([functionDeclaration("rune: Rune", "Rune")], _RuneColours, "orange", 1);
-  __decorateClass([functionDeclaration("rune: Rune", "Rune")], _RuneColours, "purple", 1);
-  __decorateClass([functionDeclaration("rune: Rune", "Rune")], _RuneColours, "white", 1);
-  __decorateClass([functionDeclaration("rune: Rune", "Rune")], _RuneColours, "yellow", 1);
-  __decorateClass([functionDeclaration("rune: Rune", "Rune")], _RuneColours, "random_color", 1);
-  __decorateClass([functionDeclaration("rune: Rune", "Rune")], _RuneColours, "colour_with_hue", 1);
   var RuneColours = _RuneColours;
   var _DrawnAnaglyphRune = class _DrawnAnaglyphRune extends DrawnRune {
     constructor(rune) {
       super(rune, false);
-      this.draw = canvas => {
+      this.draw = canvas => __async(this, null, function* () {
         const gl = getWebGlFromCanvas(canvas);
         const runes = white(overlay_frac(0.999999999, blank, scale3(2.2, square))).flatten().concat(this.rune.flatten());
         const halfEyeDistance = 0.03;
@@ -2787,8 +2737,8 @@ void main(void) {
         mat4_exports.lookAt(rightCameraMatrix, vec3_exports.fromValues(halfEyeDistance, 0, 0), vec3_exports.fromValues(0, 0, -0.4), vec3_exports.fromValues(0, 1, 0));
         const leftBuffer = initFramebufferObject(gl);
         const rightBuffer = initFramebufferObject(gl);
-        drawRunesToFrameBuffer(gl, runes, leftCameraMatrix, new Float32Array([1, 0, 0, 1]), leftBuffer.framebuffer, true);
-        drawRunesToFrameBuffer(gl, runes, rightCameraMatrix, new Float32Array([0, 1, 1, 1]), rightBuffer.framebuffer, true);
+        yield drawRunesToFrameBuffer(gl, runes, leftCameraMatrix, new Float32Array([1, 0, 0, 1]), leftBuffer.framebuffer, true);
+        yield drawRunesToFrameBuffer(gl, runes, rightCameraMatrix, new Float32Array([0, 1, 1, 1]), rightBuffer.framebuffer, true);
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
         const shaderProgram = initShaderProgram(gl, _DrawnAnaglyphRune.anaglyphVertexShader, _DrawnAnaglyphRune.anaglyphFragmentShader);
         gl.useProgram(shaderProgram);
@@ -2807,7 +2757,7 @@ void main(void) {
         gl.vertexAttribPointer(vertexPositionPointer, 4, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray(vertexPositionPointer);
         gl.drawArrays(gl.TRIANGLES, 0, 6);
-      };
+      });
     }
   };
   _DrawnAnaglyphRune.anaglyphVertexShader = `
@@ -2836,14 +2786,14 @@ void main(void) {
   var _DrawnHollusionRune = class _DrawnHollusionRune extends DrawnRune {
     constructor(rune, magnitude) {
       super(rune, true);
-      this.draw = canvas => {
+      this.draw = canvas => __async(this, null, function* () {
         const gl = getWebGlFromCanvas(canvas);
         const runes = white(overlay_frac(0.999999999, blank, scale3(2.2, square))).flatten().concat(this.rune.flatten());
         const xshiftMax = runes[0].hollusionDistance;
         const period = 2e3;
         const frameCount = 50;
         const frameBuffer = [];
-        const renderFrame = framePos => {
+        const renderFrame = framePos => __async(this, null, function* () {
           const fb = initFramebufferObject(gl);
           const cameraMatrix = mat4_exports.create();
           let xshift = framePos * (period / frameCount) % period;
@@ -2852,11 +2802,11 @@ void main(void) {
           }
           xshift = xshiftMax * (2 * (2 * xshift / period) - 1);
           mat4_exports.lookAt(cameraMatrix, vec3_exports.fromValues(xshift, 0, 0), vec3_exports.fromValues(0, 0, -0.4), vec3_exports.fromValues(0, 1, 0));
-          drawRunesToFrameBuffer(gl, runes, cameraMatrix, new Float32Array([1, 1, 1, 1]), fb.framebuffer, true);
+          yield drawRunesToFrameBuffer(gl, runes, cameraMatrix, new Float32Array([1, 1, 1, 1]), fb.framebuffer, true);
           return fb;
-        };
+        });
         for (let i = 0; i < frameCount; i += 1) {
-          frameBuffer.push(renderFrame(i));
+          frameBuffer.push(yield renderFrame(i));
         }
         const copyShaderProgram = initShaderProgram(gl, _DrawnHollusionRune.copyVertexShader, _DrawnHollusionRune.copyFragmentShader);
         gl.useProgram(copyShaderProgram);
@@ -2882,7 +2832,7 @@ void main(void) {
           gl.drawArrays(gl.TRIANGLES, 0, 6);
         }
         return render;
-      };
+      });
       this.rune.hollusionDistance = magnitude;
     }
   };
@@ -2950,64 +2900,398 @@ void main(void) {
   var turn_upside_down = RuneFunctions.turn_upside_down;
   var yellow = RuneColours.yellow;
   var white = RuneColours.white;
-  var import_context = __toESM(__require("js-slang/context"), 1);
-  var drawnRunes = [];
-  import_context.default.moduleContexts.rune.state = {
-    drawnRunes
-  };
-  var _RuneDisplay = class _RuneDisplay {
-    static show(rune) {
-      throwIfNotRune(_RuneDisplay.show.name, rune);
-      drawnRunes.push(new DrawnNormalRune(rune));
-      return rune;
-    }
-    static anaglyph(rune) {
-      throwIfNotRune(_RuneDisplay.anaglyph.name, rune);
-      drawnRunes.push(new DrawnAnaglyphRune(rune));
-      return rune;
-    }
-    static hollusion_magnitude(rune, magnitude) {
-      throwIfNotRune(_RuneDisplay.hollusion_magnitude.name, rune);
-      drawnRunes.push(new DrawnHollusionRune(rune, magnitude));
-      return rune;
-    }
-    static hollusion(rune) {
-      throwIfNotRune(_RuneDisplay.hollusion.name, rune);
-      return _RuneDisplay.hollusion_magnitude(rune, 0.1);
-    }
-    static animate_rune(duration, fps, func) {
-      (0, import_rttc.assertFunctionOfLength)(func, 1, _RuneDisplay.animate_rune.name, "RuneAnimation");
-      const anim = new AnimatedRune(duration, fps, n => {
-        const rune = (0, import_operators.callWithoutMetadata)(func, n);
-        throwIfNotRune("RuneAnimation", rune);
-        return new DrawnNormalRune(rune);
+  var RUNE_CHANNEL_ID = "sourceacademy-rune-channel";
+  function serializeTexture(texture) {
+    if (texture === null) return null;
+    if (typeof texture === "string") return texture;
+    return texture.src;
+  }
+  function serializeRune(rune) {
+    return {
+      vertices: Array.from(rune.vertices),
+      colors: rune.colors === null ? null : Array.from(rune.colors),
+      transformMatrix: Array.from(rune.transformMatrix),
+      subRunes: rune.subRunes.map(serializeRune),
+      textureUrl: serializeTexture(rune.texture),
+      hollusionDistance: rune.hollusionDistance
+    };
+  }
+  var _RuneModulePlugin = class _RuneModulePlugin extends o2 {
+    constructor(conduit, [runeChannel], evaluator, tabLoader) {
+      super(conduit, [runeChannel], evaluator);
+      this.id = "rune";
+      this.exportedNames = ["anaglyph", "animate_anaglyph", "animate_rune", "beside", "beside_frac", "black", "blue", "brown", "color", "colour_with_hue", "flip_horiz", "flip_vert", "from_url", "green", "hollusion", "hollusion_magnitude", "indigo", "make_cross", "orange", "overlay", "overlay_frac", "pink", "purple", "quarter_turn_left", "quarter_turn_right", "random_color", "red", "repeat_pattern", "rotate", "scale", "scale_independent", "show", "stack", "stack_frac", "stackn", "translate", "turn_upside_down", "white", "yellow"];
+      this.__displayed = [];
+      this.__tabLoaded = false;
+      if (!runeChannel) {
+        throw new import_base.GeneralRuntimeError("Rune channel is required but was not provided.");
+      }
+      this.__runeChannel = runeChannel;
+      this.__tabLoader = tabLoader;
+      this.__runeChannel.subscribe(message => {
+        if (message.type === "request") {
+          this.__displayed.forEach(displayedMessage => this.__runeChannel.send(displayedMessage));
+        }
       });
-      drawnRunes.push(anim);
-      return anim;
     }
-    static animate_anaglyph(duration, fps, func) {
-      (0, import_rttc.assertFunctionOfLength)(func, 1, _RuneDisplay.animate_anaglyph.name, "RuneAnimation");
-      const anim = new AnimatedRune(duration, fps, n => {
-        const rune = (0, import_operators.callWithoutMetadata)(func, n);
-        throwIfNotRune("RuneAnimation", rune);
-        return new DrawnAnaglyphRune(rune);
+    initialise() {
+      return __async(this, null, function* () {
+        yield __superGet(_RuneModulePlugin.prototype, this, "initialise").call(this);
+        for (const name in RuneFunctions) {
+          const value = RuneFunctions[name];
+          if (!(value instanceof Rune)) {
+            continue;
+          }
+          this[name] = value;
+          this.exports.push({
+            symbol: name,
+            value: yield this.__makeRune(value)
+          });
+        }
       });
-      drawnRunes.push(anim);
-      return anim;
+    }
+    __loadRuneTab() {
+      if (this.__tabLoaded || this.__tabLoader === void 0) return true;
+      const tabName = this.__tabLoader.tabs[0];
+      if (tabName === void 0) return true;
+      this.__tabLoader.loadTab(tabName);
+      this.__tabLoaded = true;
+      return false;
+    }
+    __display(message) {
+      return __async(this, null, function* () {
+        this.__displayed.push(message);
+        if (this.__loadRuneTab()) {
+          this.__runeChannel.send(message);
+        }
+      });
+    }
+    __getRune(rune, funcName) {
+      return __async(this, null, function* () {
+        const value = yield this.evaluator.opaque_get(rune);
+        throwIfNotRune(funcName, value);
+        return value;
+      });
+    }
+    __makeRune(rune) {
+      return __async(this, null, function* () {
+        return yield this.evaluator.opaque_make(rune, true);
+      });
+    }
+    __callUnaryRune(arg, funcName, operation) {
+      return __async(this, null, function* () {
+        return this.__makeRune(operation(yield this.__getRune(arg, funcName)));
+      });
+    }
+    __sendRuneRender(rune, message) {
+      return __async(this, null, function* () {
+        yield this.__display(__spreadProps(__spreadValues({}, message), {
+          rune: serializeRune(rune)
+        }));
+      });
+    }
+    __evaluateAnimationFrames(duration, fps, func, funcName) {
+      return __asyncGenerator(this, null, function* () {
+        const frameCount = Math.max(1, Math.ceil(duration * fps) + 1);
+        const frames = [];
+        for (let frame = 0; frame < frameCount; frame += 1) {
+          const timestamp = Math.min(frame / fps, duration);
+          const result = yield* __yieldStar(this.evaluator.closure_call_unchecked(func, [{
+            type: A.NUMBER,
+            value: timestamp
+          }]));
+          frames.push(serializeRune(yield new __await(this.__getRune(result, funcName))));
+        }
+        return frames;
+      });
+    }
+    show(rune) {
+      return __asyncGenerator(this, null, function* () {
+        const value = yield new __await(this.__getRune(rune, "show"));
+        yield new __await(this.__sendRuneRender(value, {
+          type: "render",
+          mode: "normal"
+        }));
+        return rune;
+      });
+    }
+    anaglyph(rune) {
+      return __asyncGenerator(this, null, function* () {
+        const value = yield new __await(this.__getRune(rune, "anaglyph"));
+        yield new __await(this.__sendRuneRender(value, {
+          type: "render",
+          mode: "anaglyph"
+        }));
+        return rune;
+      });
+    }
+    hollusion_magnitude(rune, magnitude) {
+      return __asyncGenerator(this, null, function* () {
+        const value = yield new __await(this.__getRune(rune, "hollusion_magnitude"));
+        yield new __await(this.__sendRuneRender(value, {
+          type: "render",
+          mode: "hollusion",
+          magnitude: magnitude.value
+        }));
+        return rune;
+      });
+    }
+    hollusion(rune) {
+      return __asyncGenerator(this, null, function* () {
+        const value = yield new __await(this.__getRune(rune, "hollusion"));
+        yield new __await(this.__sendRuneRender(value, {
+          type: "render",
+          mode: "hollusion",
+          magnitude: 0.1
+        }));
+        return rune;
+      });
+    }
+    animate_rune(duration, fps, func) {
+      return __asyncGenerator(this, null, function* () {
+        const frames = yield* __yieldStar(this.__evaluateAnimationFrames(duration.value, fps.value, func, "animate_rune"));
+        const message = {
+          type: "animation",
+          mode: "normal",
+          duration: duration.value,
+          fps: fps.value,
+          frames
+        };
+        yield new __await(this.__display(message));
+        return yield new __await(this.evaluator.opaque_make({
+          message,
+          toReplString: () => "<AnimatedRune>"
+        }, true));
+      });
+    }
+    animate_anaglyph(duration, fps, func) {
+      return __asyncGenerator(this, null, function* () {
+        const frames = yield* __yieldStar(this.__evaluateAnimationFrames(duration.value, fps.value, func, "animate_anaglyph"));
+        const message = {
+          type: "animation",
+          mode: "anaglyph",
+          duration: duration.value,
+          fps: fps.value,
+          frames
+        };
+        yield new __await(this.__display(message));
+        return yield new __await(this.evaluator.opaque_make({
+          message,
+          toReplString: () => "<AnimatedRune>"
+        }, true));
+      });
+    }
+    from_url(imageUrl) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__makeRune(from_url(imageUrl.value)));
+      });
+    }
+    scale_independent(ratioX, ratioY, rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__makeRune(scale_independent(ratioX.value, ratioY.value, yield new __await(this.__getRune(rune, scale_independent.name)))));
+      });
+    }
+    scale(ratio, rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__makeRune(scale3(ratio.value, yield new __await(this.__getRune(rune, scale3.name)))));
+      });
+    }
+    translate(x, y, rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__makeRune(translate2(x.value, y.value, yield new __await(this.__getRune(rune, translate2.name)))));
+      });
+    }
+    rotate(rad, rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__makeRune(rotate2(rad.value, yield new __await(this.__getRune(rune, rotate2.name)))));
+      });
+    }
+    stack_frac(frac, rune1, rune2) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__makeRune(stack_frac(frac.value, yield new __await(this.__getRune(rune1, stack_frac.name)), yield new __await(this.__getRune(rune2, stack_frac.name)))));
+      });
+    }
+    stack(rune1, rune2) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__makeRune(stack(yield new __await(this.__getRune(rune1, stack.name)), yield new __await(this.__getRune(rune2, stack.name)))));
+      });
+    }
+    stackn(n2, rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__makeRune(stackn(n2.value, yield new __await(this.__getRune(rune, stackn.name)))));
+      });
+    }
+    quarter_turn_right(rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__callUnaryRune(rune, quarter_turn_right.name, quarter_turn_right));
+      });
+    }
+    quarter_turn_left(rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__callUnaryRune(rune, quarter_turn_left.name, quarter_turn_left));
+      });
+    }
+    turn_upside_down(rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__callUnaryRune(rune, turn_upside_down.name, turn_upside_down));
+      });
+    }
+    beside_frac(frac, rune1, rune2) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__makeRune(beside_frac(frac.value, yield new __await(this.__getRune(rune1, beside_frac.name)), yield new __await(this.__getRune(rune2, beside_frac.name)))));
+      });
+    }
+    beside(rune1, rune2) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__makeRune(beside(yield new __await(this.__getRune(rune1, beside.name)), yield new __await(this.__getRune(rune2, beside.name)))));
+      });
+    }
+    flip_vert(rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__callUnaryRune(rune, flip_vert.name, flip_vert));
+      });
+    }
+    flip_horiz(rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__callUnaryRune(rune, flip_horiz.name, flip_horiz));
+      });
+    }
+    make_cross(rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__callUnaryRune(rune, make_cross.name, make_cross));
+      });
+    }
+    repeat_pattern(n2, pattern, initial) {
+      return __asyncGenerator(this, null, function* () {
+        let current = initial;
+        for (let i = 0; i < n2.value; i += 1) {
+          current = yield* __yieldStar(this.evaluator.closure_call_unchecked(pattern, [current]));
+          yield new __await(this.__getRune(current, repeat_pattern.name));
+        }
+        return current;
+      });
+    }
+    overlay_frac(frac, rune1, rune2) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__makeRune(overlay_frac(frac.value, yield new __await(this.__getRune(rune1, overlay_frac.name)), yield new __await(this.__getRune(rune2, overlay_frac.name)))));
+      });
+    }
+    overlay(rune1, rune2) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__makeRune(overlay(yield new __await(this.__getRune(rune1, overlay.name)), yield new __await(this.__getRune(rune2, overlay.name)))));
+      });
+    }
+    color(rune, r, g, b) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__makeRune(color(yield new __await(this.__getRune(rune, color.name)), r.value, g.value, b.value)));
+      });
+    }
+    colour_with_hue(rune, hue) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__makeRune(colour_with_hue(yield new __await(this.__getRune(rune, colour_with_hue.name)), hue.value)));
+      });
+    }
+    black(rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__callUnaryRune(rune, black.name, black));
+      });
+    }
+    blue(rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__callUnaryRune(rune, blue.name, blue));
+      });
+    }
+    brown(rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__callUnaryRune(rune, brown.name, brown));
+      });
+    }
+    green(rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__callUnaryRune(rune, green.name, green));
+      });
+    }
+    indigo(rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__callUnaryRune(rune, indigo.name, indigo));
+      });
+    }
+    red(rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__callUnaryRune(rune, red.name, red));
+      });
+    }
+    pink(rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__callUnaryRune(rune, pink.name, pink));
+      });
+    }
+    orange(rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__callUnaryRune(rune, orange.name, orange));
+      });
+    }
+    purple(rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__callUnaryRune(rune, purple.name, purple));
+      });
+    }
+    white(rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__callUnaryRune(rune, white.name, white));
+      });
+    }
+    yellow(rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__callUnaryRune(rune, yellow.name, yellow));
+      });
+    }
+    random_color(rune) {
+      return __asyncGenerator(this, null, function* () {
+        return yield new __await(this.__callUnaryRune(rune, random_color.name, random_color));
+      });
     }
   };
-  __decorateClass([functionDeclaration("rune: Rune", "Rune")], _RuneDisplay, "show", 1);
-  __decorateClass([functionDeclaration("rune: Rune", "Rune")], _RuneDisplay, "anaglyph", 1);
-  __decorateClass([functionDeclaration("rune: Rune, magnitude: number", "Rune")], _RuneDisplay, "hollusion_magnitude", 1);
-  __decorateClass([functionDeclaration("rune: Rune", "Rune")], _RuneDisplay, "hollusion", 1);
-  __decorateClass([functionDeclaration("duration: number, fps: number, func: RuneAnimation", "AnimatedRune")], _RuneDisplay, "animate_rune", 1);
-  __decorateClass([functionDeclaration("duration: number, fps: number, func: RuneAnimation", "AnimatedRune")], _RuneDisplay, "animate_anaglyph", 1);
-  var RuneDisplay = _RuneDisplay;
-  var show = RuneDisplay.show;
-  var anaglyph = RuneDisplay.anaglyph;
-  var hollusion = RuneDisplay.hollusion;
-  var hollusion_magnitude = RuneDisplay.hollusion_magnitude;
-  var animate_rune = RuneDisplay.animate_rune;
-  var animate_anaglyph = RuneDisplay.animate_anaglyph;
+  _RuneModulePlugin.channelAttach = [RUNE_CHANNEL_ID];
+  var RuneModulePlugin = _RuneModulePlugin;
+  attachModuleMethod(RuneModulePlugin, "anaglyph", [A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "animate_anaglyph", [A.NUMBER, A.NUMBER, A.CLOSURE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "animate_rune", [A.NUMBER, A.NUMBER, A.CLOSURE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "beside", [A.OPAQUE, A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "beside_frac", [A.NUMBER, A.OPAQUE, A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "black", [A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "blue", [A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "brown", [A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "color", [A.OPAQUE, A.NUMBER, A.NUMBER, A.NUMBER], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "colour_with_hue", [A.OPAQUE, A.NUMBER], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "flip_horiz", [A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "flip_vert", [A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "from_url", [A.CONST_STRING], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "green", [A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "hollusion", [A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "hollusion_magnitude", [A.OPAQUE, A.NUMBER], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "indigo", [A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "make_cross", [A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "orange", [A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "overlay", [A.OPAQUE, A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "overlay_frac", [A.NUMBER, A.OPAQUE, A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "pink", [A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "purple", [A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "quarter_turn_left", [A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "quarter_turn_right", [A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "random_color", [A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "red", [A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "repeat_pattern", [A.NUMBER, A.CLOSURE, A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "rotate", [A.NUMBER, A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "scale", [A.NUMBER, A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "scale_independent", [A.NUMBER, A.NUMBER, A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "show", [A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "stack", [A.OPAQUE, A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "stack_frac", [A.NUMBER, A.OPAQUE, A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "stackn", [A.NUMBER, A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "translate", [A.NUMBER, A.NUMBER, A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "turn_upside_down", [A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "white", [A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "yellow", [A.OPAQUE], A.OPAQUE);
   return __toCommonJS(index_exports);
 };

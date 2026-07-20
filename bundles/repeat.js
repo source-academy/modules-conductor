@@ -293,6 +293,20 @@ export default require => {
       __runInitializers(_init, 5, this);
       this.id = "repeat";
       this.exportedNames = ["repeat", "twice", "thrice"];
+      this.__bindExportedMethods();
+    }
+    __bindExportedMethods() {
+      for (const name of this.exportedNames) {
+        const method = this[name];
+        if (typeof method !== "function") continue;
+        const signature = method.signature;
+        const boundMethod = method.bind(this);
+        boundMethod.signature = signature;
+        Object.defineProperty(this, name, {
+          configurable: true,
+          value: boundMethod
+        });
+      }
     }
     repeat(func, n2) {
       return __asyncGenerator(this, null, function* () {
