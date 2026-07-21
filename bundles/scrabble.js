@@ -78,8 +78,8 @@ export default require => {
     (R2[R2.CALL = 0] = "CALL", R2[R2.RETURN = 1] = "RETURN", R2[R2.RETURN_ERR = 2] = "RETURN_ERR");
   })(R || (R = {}));
   var O;
-  !(function (O2) {
-    (O2[O2.PROTOCOL_VERSION = 0] = "PROTOCOL_VERSION", O2[O2.PROTOCOL_MIN_VERSION = 0] = "PROTOCOL_MIN_VERSION", O2[O2.SETUP_MESSAGES_BUFFER_SIZE = 10] = "SETUP_MESSAGES_BUFFER_SIZE");
+  !(function (O3) {
+    (O3[O3.PROTOCOL_VERSION = 0] = "PROTOCOL_VERSION", O3[O3.PROTOCOL_MIN_VERSION = 0] = "PROTOCOL_MIN_VERSION", O3[O3.SETUP_MESSAGES_BUFFER_SIZE = 10] = "SETUP_MESSAGES_BUFFER_SIZE");
   })(O || (O = {}));
   var o2 = class {
     constructor(t2, o3, r) {
@@ -106,10 +106,10 @@ export default require => {
     }
   };
   __publicField(o2, "channelAttach");
-  var A;
-  !(function (A2) {
-    (A2[A2.VOID = 0] = "VOID", A2[A2.BOOLEAN = 1] = "BOOLEAN", A2[A2.NUMBER = 2] = "NUMBER", A2[A2.CONST_STRING = 3] = "CONST_STRING", A2[A2.EMPTY_LIST = 4] = "EMPTY_LIST", A2[A2.PAIR = 5] = "PAIR", A2[A2.ARRAY = 6] = "ARRAY", A2[A2.CLOSURE = 7] = "CLOSURE", A2[A2.OPAQUE = 8] = "OPAQUE", A2[A2.LIST = 9] = "LIST", A2[A2.ANY = 10] = "ANY");
-  })(A || (A = {}));
+  var O2;
+  !(function (O3) {
+    (O3[O3.VOID = 0] = "VOID", O3[O3.BOOLEAN = 1] = "BOOLEAN", O3[O3.NUMBER = 2] = "NUMBER", O3[O3.CONST_STRING = 3] = "CONST_STRING", O3[O3.EMPTY_LIST = 4] = "EMPTY_LIST", O3[O3.PAIR = 5] = "PAIR", O3[O3.ARRAY = 6] = "ARRAY", O3[O3.CLOSURE = 7] = "CLOSURE", O3[O3.OPAQUE = 8] = "OPAQUE", O3[O3.LIST = 9] = "LIST");
+  })(O2 || (O2 = {}));
   var a;
   !(function (a2) {
     (a2[a2.HELLO = 0] = "HELLO", a2[a2.ABORT = 1] = "ABORT", a2[a2.ENTRY = 2] = "ENTRY");
@@ -125,10 +125,10 @@ export default require => {
   var scrabble_letters_tiny = scrabble_words_tiny.map(w => w.split(""));
   function makeStringArray(evaluator, words) {
     return __async(this, null, function* () {
-      const array = yield evaluator.array_make(A.CONST_STRING, words.length);
+      const array = yield evaluator.array_make(O2.CONST_STRING, words.length);
       for (let i = 0; i < words.length; i++) {
         yield evaluator.array_set(array, i, {
-          type: A.CONST_STRING,
+          type: O2.CONST_STRING,
           value: words[i]
         });
       }
@@ -137,8 +137,8 @@ export default require => {
   }
   function makeLetterArray(evaluator, letterLists) {
     return __async(this, null, function* () {
-      const placeholder = yield evaluator.array_make(A.CONST_STRING, 0);
-      const outer = yield evaluator.array_make(A.ARRAY, letterLists.length, placeholder);
+      const placeholder = yield evaluator.array_make(O2.CONST_STRING, 0);
+      const outer = yield evaluator.array_make(O2.ARRAY, letterLists.length, placeholder);
       for (let i = 0; i < letterLists.length; i++) {
         yield evaluator.array_set(outer, i, yield makeStringArray(evaluator, letterLists[i]));
       }

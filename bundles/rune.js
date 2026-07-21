@@ -149,8 +149,8 @@ export default require => {
     (R2[R2.CALL = 0] = "CALL", R2[R2.RETURN = 1] = "RETURN", R2[R2.RETURN_ERR = 2] = "RETURN_ERR");
   })(R || (R = {}));
   var O;
-  !(function (O2) {
-    (O2[O2.PROTOCOL_VERSION = 0] = "PROTOCOL_VERSION", O2[O2.PROTOCOL_MIN_VERSION = 0] = "PROTOCOL_MIN_VERSION", O2[O2.SETUP_MESSAGES_BUFFER_SIZE = 10] = "SETUP_MESSAGES_BUFFER_SIZE");
+  !(function (O3) {
+    (O3[O3.PROTOCOL_VERSION = 0] = "PROTOCOL_VERSION", O3[O3.PROTOCOL_MIN_VERSION = 0] = "PROTOCOL_MIN_VERSION", O3[O3.SETUP_MESSAGES_BUFFER_SIZE = 10] = "SETUP_MESSAGES_BUFFER_SIZE");
   })(O || (O = {}));
   var o2 = class {
     constructor(t2, o3, r) {
@@ -177,10 +177,10 @@ export default require => {
     }
   };
   __publicField(o2, "channelAttach");
-  var A;
-  !(function (A2) {
-    (A2[A2.VOID = 0] = "VOID", A2[A2.BOOLEAN = 1] = "BOOLEAN", A2[A2.NUMBER = 2] = "NUMBER", A2[A2.CONST_STRING = 3] = "CONST_STRING", A2[A2.EMPTY_LIST = 4] = "EMPTY_LIST", A2[A2.PAIR = 5] = "PAIR", A2[A2.ARRAY = 6] = "ARRAY", A2[A2.CLOSURE = 7] = "CLOSURE", A2[A2.OPAQUE = 8] = "OPAQUE", A2[A2.LIST = 9] = "LIST", A2[A2.ANY = 10] = "ANY");
-  })(A || (A = {}));
+  var O2;
+  !(function (O3) {
+    (O3[O3.VOID = 0] = "VOID", O3[O3.BOOLEAN = 1] = "BOOLEAN", O3[O3.NUMBER = 2] = "NUMBER", O3[O3.CONST_STRING = 3] = "CONST_STRING", O3[O3.EMPTY_LIST = 4] = "EMPTY_LIST", O3[O3.PAIR = 5] = "PAIR", O3[O3.ARRAY = 6] = "ARRAY", O3[O3.CLOSURE = 7] = "CLOSURE", O3[O3.OPAQUE = 8] = "OPAQUE", O3[O3.LIST = 9] = "LIST");
+  })(O2 || (O2 = {}));
   var a;
   !(function (a2) {
     (a2[a2.HELLO = 0] = "HELLO", a2[a2.ABORT = 1] = "ABORT", a2[a2.ENTRY = 2] = "ENTRY");
@@ -241,10 +241,13 @@ export default require => {
     return n2 === 0 ? x => x : x => func(repeat_internal(func, n2 - 1)(x));
   }
   function sample(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
+    const randomIndex = Math.floor(Math.random() * arr.length);
+    return arr[randomIndex];
   }
   function clamp(value, bound1, bound2) {
-    if (bound2 == null) return Math.min(value, bound1);
+    if (bound2 == null) {
+      return Math.min(value, bound1);
+    }
     return Math.min(Math.max(value, bound1), bound2);
   }
   var EPSILON = 1e-6;
@@ -2997,7 +3000,7 @@ void main(void) {
         for (let frame = 0; frame < frameCount; frame += 1) {
           const timestamp = Math.min(frame / fps, duration);
           const result = yield* __yieldStar(this.evaluator.closure_call_unchecked(func, [{
-            type: A.NUMBER,
+            type: O2.NUMBER,
             value: timestamp
           }]));
           frames.push(serializeRune(yield new __await(this.__getRune(result, funcName))));
@@ -3254,44 +3257,44 @@ void main(void) {
   };
   _RuneModulePlugin.channelAttach = [RUNE_CHANNEL_ID];
   var RuneModulePlugin = _RuneModulePlugin;
-  attachModuleMethod(RuneModulePlugin, "anaglyph", [A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "animate_anaglyph", [A.NUMBER, A.NUMBER, A.CLOSURE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "animate_rune", [A.NUMBER, A.NUMBER, A.CLOSURE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "beside", [A.OPAQUE, A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "beside_frac", [A.NUMBER, A.OPAQUE, A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "black", [A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "blue", [A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "brown", [A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "color", [A.OPAQUE, A.NUMBER, A.NUMBER, A.NUMBER], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "colour_with_hue", [A.OPAQUE, A.NUMBER], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "flip_horiz", [A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "flip_vert", [A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "from_url", [A.CONST_STRING], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "green", [A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "hollusion", [A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "hollusion_magnitude", [A.OPAQUE, A.NUMBER], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "indigo", [A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "make_cross", [A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "orange", [A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "overlay", [A.OPAQUE, A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "overlay_frac", [A.NUMBER, A.OPAQUE, A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "pink", [A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "purple", [A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "quarter_turn_left", [A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "quarter_turn_right", [A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "random_color", [A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "red", [A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "repeat_pattern", [A.NUMBER, A.CLOSURE, A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "rotate", [A.NUMBER, A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "scale", [A.NUMBER, A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "scale_independent", [A.NUMBER, A.NUMBER, A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "show", [A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "stack", [A.OPAQUE, A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "stack_frac", [A.NUMBER, A.OPAQUE, A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "stackn", [A.NUMBER, A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "translate", [A.NUMBER, A.NUMBER, A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "turn_upside_down", [A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "white", [A.OPAQUE], A.OPAQUE);
-  attachModuleMethod(RuneModulePlugin, "yellow", [A.OPAQUE], A.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "anaglyph", [O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "animate_anaglyph", [O2.NUMBER, O2.NUMBER, O2.CLOSURE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "animate_rune", [O2.NUMBER, O2.NUMBER, O2.CLOSURE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "beside", [O2.OPAQUE, O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "beside_frac", [O2.NUMBER, O2.OPAQUE, O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "black", [O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "blue", [O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "brown", [O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "color", [O2.OPAQUE, O2.NUMBER, O2.NUMBER, O2.NUMBER], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "colour_with_hue", [O2.OPAQUE, O2.NUMBER], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "flip_horiz", [O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "flip_vert", [O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "from_url", [O2.CONST_STRING], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "green", [O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "hollusion", [O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "hollusion_magnitude", [O2.OPAQUE, O2.NUMBER], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "indigo", [O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "make_cross", [O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "orange", [O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "overlay", [O2.OPAQUE, O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "overlay_frac", [O2.NUMBER, O2.OPAQUE, O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "pink", [O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "purple", [O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "quarter_turn_left", [O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "quarter_turn_right", [O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "random_color", [O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "red", [O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "repeat_pattern", [O2.NUMBER, O2.CLOSURE, O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "rotate", [O2.NUMBER, O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "scale", [O2.NUMBER, O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "scale_independent", [O2.NUMBER, O2.NUMBER, O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "show", [O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "stack", [O2.OPAQUE, O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "stack_frac", [O2.NUMBER, O2.OPAQUE, O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "stackn", [O2.NUMBER, O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "translate", [O2.NUMBER, O2.NUMBER, O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "turn_upside_down", [O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "white", [O2.OPAQUE], O2.OPAQUE);
+  attachModuleMethod(RuneModulePlugin, "yellow", [O2.OPAQUE], O2.OPAQUE);
   return __toCommonJS(index_exports);
 };

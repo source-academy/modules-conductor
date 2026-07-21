@@ -543,7 +543,7 @@
     "params": [
       {
         "paramType": "regular",
-        "type": "NoteWithOctave",
+        "type": "string",
         "name": "note"
       }
     ],
@@ -569,7 +569,7 @@
     "params": [
       {
         "paramType": "regular",
-        "type": "NoteWithOctave",
+        "type": "string",
         "name": "note"
       }
     ],

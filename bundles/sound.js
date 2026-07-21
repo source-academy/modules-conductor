@@ -6,8 +6,14 @@ export default require => {
   var __getProtoOf = Object.getPrototypeOf;
   var __hasOwnProp = Object.prototype.hasOwnProperty;
   var __pow = Math.pow;
+  var __defNormalProp = (obj, key, value) => (key in obj) ? __defProp(obj, key, {
+    enumerable: true,
+    configurable: true,
+    writable: true,
+    value
+  }) : obj[key] = value;
   var __require = (x => typeof require !== "undefined" ? require : typeof Proxy !== "undefined" ? new Proxy(x, {
-    get: (a, b) => (typeof require !== "undefined" ? require : a)[b]
+    get: (a2, b) => (typeof require !== "undefined" ? require : a2)[b]
   }) : x)(function (x) {
     if (typeof require !== "undefined") return require.apply(this, arguments);
     throw Error('Dynamic require of "' + x + '" is not supported');
@@ -34,20 +40,21 @@ export default require => {
   var __toCommonJS = mod => __copyProps(__defProp({}, "__esModule", {
     value: true
   }), mod);
+  var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   var __async = (__this, __arguments, generator) => {
     return new Promise((resolve, reject) => {
       var fulfilled = value => {
         try {
           step(generator.next(value));
-        } catch (e) {
-          reject(e);
+        } catch (e3) {
+          reject(e3);
         }
       };
       var rejected = value => {
         try {
           step(generator.throw(value));
-        } catch (e) {
-          reject(e);
+        } catch (e3) {
+          reject(e3);
         }
       };
       var step = x => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
@@ -87,10 +94,90 @@ export default require => {
     trombone: () => trombone,
     violin: () => violin
   });
-  var import_rttcErrors = __require("js-slang/dist/errors/rttcErrors");
-  var import_base = __require("js-slang/dist/errors/base");
-  var import_rttc = __require("js-slang/dist/utils/rttc");
-  var import_operators = __require("js-slang/dist/utils/operators");
+  var _;
+  !(function (_2) {
+    (_2.UNKNOWN = "__unknown", _2.INTERNAL = "__internal", _2.EVALUATOR = "__evaluator", _2.EVALUATOR_SYNTAX = "__evaluator_syntax", _2.EVALUATOR_TYPE = "__evaluator_type", _2.EVALUATOR_RUNTIME = "__evaluator_runtime");
+  })(_ || (_ = {}));
+  var o = class extends Error {
+    constructor(r2) {
+      super(r2);
+      __publicField(this, "name", "ConductorError");
+      __publicField(this, "errorType", _.UNKNOWN);
+    }
+  };
+  var s = class extends o {
+    constructor(r2, o3, s4, e3) {
+      super(`${void 0 !== o3 ? `${e3 ? e3 + ":" : ""}${o3}${void 0 !== s4 ? ":" + s4 : ""}: ` : ""}${r2}`);
+      __publicField(this, "name", "EvaluatorError");
+      __publicField(this, "errorType", _.EVALUATOR);
+      __publicField(this, "rawMessage");
+      __publicField(this, "line");
+      __publicField(this, "column");
+      __publicField(this, "fileName");
+      (this.rawMessage = r2, this.line = o3, this.column = s4, this.fileName = e3);
+    }
+  };
+  function e(r2) {
+    const t3 = (function (r3) {
+      var _a;
+      if ("string" == typeof r3) return JSON.stringify(r3);
+      if ("number" == typeof r3 || "boolean" == typeof r3) return String(r3);
+      if (null === r3) return "null";
+      if (void 0 === r3) return "undefined";
+      if ("bigint" == typeof r3) return `${r3}n`;
+      if ("symbol" == typeof r3) return r3.toString();
+      if ("function" == typeof r3) return r3.name ? `function ${r3.name}` : "anonymous function";
+      try {
+        return (_a = JSON.stringify(r3)) != null ? _a : Object.prototype.toString.call(r3);
+      } catch (e3) {
+        try {
+          return String(r3);
+        } catch (e4) {
+          return Object.prototype.toString.call(r3);
+        }
+      }
+    })(r2);
+    return t3.length > 100 ? `${t3.slice(0, 100)}...` : t3;
+  }
+  var n = class extends s {
+    constructor(r2, t3, n3, o3, u3, a2, i) {
+      super(`${r2}: Expected ${n3}${t3 ? ` for ${t3}` : ""}, got ${e(o3)}.`, u3, a2, i);
+      __publicField(this, "name", "EvaluatorParameterTypeError");
+      __publicField(this, "errorType", _.EVALUATOR_TYPE);
+      __publicField(this, "funcName");
+      __publicField(this, "paramName");
+      __publicField(this, "expected");
+      __publicField(this, "actual");
+      (this.funcName = r2, this.paramName = t3, this.expected = n3, this.actual = o3);
+    }
+  };
+  var u = class extends n {
+    constructor(r2, t3, e3, n3, o3, u3, a2) {
+      super(e3, n3, (function (r3) {
+        if ("string" == typeof r3) return r3;
+        const {min: t4, max: e4, integer: n4 = true} = r3, o4 = n4 ? "integer" : "number";
+        return void 0 !== t4 && void 0 !== e4 ? `${o4} \u2208 [${t4}, ${e4}]` : void 0 !== t4 ? `${o4} \u2265 ${t4}` : void 0 !== e4 ? `${o4} \u2264 ${e4}` : o4;
+      })(t3), r2, o3, u3, a2);
+      __publicField(this, "name", "EvaluatorNumberRangeError");
+    }
+  };
+  var e2 = class extends s {
+    constructor() {
+      super(...arguments);
+      __publicField(this, "name", "EvaluatorRuntimeError");
+      __publicField(this, "errorType", _.EVALUATOR_RUNTIME);
+    }
+  };
+  function f(r2, o3, t3, e3 = true) {
+    return "number" == typeof r2 && !Number.isNaN(r2) && (!(e3 && !Number.isInteger(r2)) && (!(void 0 !== o3 && r2 < o3) && !(void 0 !== t3 && r2 > t3)));
+  }
+  function m(r2, t3, e3, n3, i = true, u3) {
+    if (!f(r2, e3, n3, i)) throw new u(r2, {
+      min: e3,
+      max: n3,
+      integer: i
+    }, t3, u3);
+  }
   var Accidental;
   (function (Accidental2) {
     Accidental2["SHARP"] = "#";
@@ -120,13 +207,12 @@ export default require => {
   function noteToValues(note, func_name) {
     const res = parseNoteWithOctave(note);
     if (res === null) {
-      throw new import_base.GeneralRuntimeError(`${func_name}: Invalid Note with Octave: ${note}`);
+      throw new e2(`${func_name}: Invalid Note with Octave: ${note}`);
     }
     return res;
   }
-  var import_list = __require("js-slang/dist/stdlib/list");
   function letter_name_to_midi_note(note) {
-    const [noteName, accidental, octave] = noteToValues(note, letter_name_to_midi_note.name);
+    const [noteName, accidental, octave] = noteToValues(note, "letter_name_to_midi_note");
     let res = 12;
     switch (noteName) {
       case "C":
@@ -169,7 +255,7 @@ export default require => {
     return res + 12 * octave;
   }
   function midi_note_to_frequency(note) {
-    (0, import_rttc.assertNumberWithinRange)(note, midi_note_to_frequency.name);
+    m(note, "midi_note_to_frequency");
     return 440 * Math.pow(2, (note - 69) / 12);
   }
   function letter_name_to_frequency(note) {
@@ -178,7 +264,11 @@ export default require => {
   var SHARP = Accidental.SHARP;
   var FLAT = Accidental.FLAT;
   var NATURAL = Accidental.NATURAL;
-  var import_list2 = __require("js-slang/dist/stdlib/list");
+  var import_rttcErrors = __require("js-slang/dist/errors/rttcErrors");
+  var import_base = __require("js-slang/dist/errors/base");
+  var import_rttc = __require("js-slang/dist/utils/rttc");
+  var import_operators = __require("js-slang/dist/utils/operators");
+  var import_list = __require("js-slang/dist/stdlib/list");
   var import_stringify = __require("js-slang/dist/utils/stringify");
   var FS = 44100;
   var fourier_expansion_level = 5;
@@ -197,11 +287,11 @@ export default require => {
     return globalVars.audioplayer;
   }
   function linear_decay(decay_period) {
-    return t => {
-      if (t > decay_period || t < 0) {
+    return t3 => {
+      if (t3 > decay_period || t3 < 0) {
         return 0;
       }
-      return 1 - t / decay_period;
+      return 1 - t3 / decay_period;
     };
   }
   function getAudioStream(func_name) {
@@ -218,7 +308,7 @@ export default require => {
   }
   function start_recording(mediaRecorder) {
     const data = [];
-    mediaRecorder.ondataavailable = e => e.data.size && data.push(e.data);
+    mediaRecorder.ondataavailable = e3 => e3.data.size && data.push(e3.data);
     mediaRecorder.start();
     mediaRecorder.onstop = () => process(data);
   }
@@ -238,8 +328,8 @@ export default require => {
   function save(audioBuffer) {
     const array = audioBuffer.getChannelData(0);
     const duration = array.length / FS;
-    globalVars.recordedSound = make_sound(t => {
-      const index = t * FS;
+    globalVars.recordedSound = make_sound(t3 => {
+      const index = t3 * FS;
       const lowerIndex = Math.floor(index);
       const upperIndex = lowerIndex + 1;
       const ratio = index - lowerIndex;
@@ -320,16 +410,16 @@ export default require => {
   function make_sound(wave, duration) {
     validateDuration(make_sound.name, duration);
     validateWave(make_sound.name, wave);
-    return (0, import_list2.pair)(t => t >= duration ? 0 : wave(t), duration);
+    return (0, import_list.pair)(t3 => t3 >= duration ? 0 : wave(t3), duration);
   }
   function get_wave(sound) {
-    return (0, import_list2.head)(sound);
+    return (0, import_list.head)(sound);
   }
   function get_duration(sound) {
-    return (0, import_list2.tail)(sound);
+    return (0, import_list.tail)(sound);
   }
   function is_sound(x) {
-    return (0, import_list2.is_pair)(x) && (0, import_rttc.isFunctionOfLength)((0, import_list2.head)(x), 1) && typeof (0, import_list2.tail)(x) === "number";
+    return (0, import_list.is_pair)(x) && (0, import_rttc.isFunctionOfLength)((0, import_list.head)(x), 1) && typeof (0, import_list.tail)(x) === "number";
   }
   function play_wave(wave, duration) {
     validateDuration(play_wave.name, duration);
@@ -395,43 +485,43 @@ export default require => {
   function sine_sound(freq, duration) {
     validateDuration(sine_sound.name, duration);
     (0, import_rttc.assertNumberWithinRange)(freq, sine_sound.name, 0, void 0, false, "freq");
-    return make_sound(t => Math.sin(2 * Math.PI * t * freq), duration);
+    return make_sound(t3 => Math.sin(2 * Math.PI * t3 * freq), duration);
   }
   function square_sound(freq, duration) {
     validateDuration(square_sound.name, duration);
     (0, import_rttc.assertNumberWithinRange)(freq, square_sound.name, 0, void 0, false, "freq");
-    function fourier_expansion_square(t) {
+    function fourier_expansion_square(t3) {
       let answer = 0;
       for (let i = 1; i <= fourier_expansion_level; i += 1) {
-        answer += Math.sin(2 * Math.PI * (2 * i - 1) * freq * t) / (2 * i - 1);
+        answer += Math.sin(2 * Math.PI * (2 * i - 1) * freq * t3) / (2 * i - 1);
       }
       return answer;
     }
-    return make_sound(t => 4 / Math.PI * fourier_expansion_square(t), duration);
+    return make_sound(t3 => 4 / Math.PI * fourier_expansion_square(t3), duration);
   }
   function triangle_sound(freq, duration) {
     validateDuration(triangle_sound.name, duration);
     (0, import_rttc.assertNumberWithinRange)(freq, triangle_sound.name, 0, void 0, false, "freq");
-    function fourier_expansion_triangle(t) {
+    function fourier_expansion_triangle(t3) {
       let answer = 0;
       for (let i = 0; i < fourier_expansion_level; i += 1) {
-        answer += __pow(-1, i) * Math.sin((2 * i + 1) * t * freq * Math.PI * 2) / __pow(2 * i + 1, 2);
+        answer += __pow(-1, i) * Math.sin((2 * i + 1) * t3 * freq * Math.PI * 2) / __pow(2 * i + 1, 2);
       }
       return answer;
     }
-    return make_sound(t => 8 / Math.PI / Math.PI * fourier_expansion_triangle(t), duration);
+    return make_sound(t3 => 8 / Math.PI / Math.PI * fourier_expansion_triangle(t3), duration);
   }
   function sawtooth_sound(freq, duration) {
     validateDuration(sawtooth_sound.name, duration);
     (0, import_rttc.assertNumberWithinRange)(freq, sawtooth_sound.name, 0, void 0, false, "freq");
-    function fourier_expansion_sawtooth(t) {
+    function fourier_expansion_sawtooth(t3) {
       let answer = 0;
       for (let i = 1; i <= fourier_expansion_level; i += 1) {
-        answer += Math.sin(2 * Math.PI * i * freq * t) / i;
+        answer += Math.sin(2 * Math.PI * i * freq * t3) / i;
       }
       return answer;
     }
-    return make_sound(t => 1 / 2 - 1 / Math.PI * fourier_expansion_sawtooth(t), duration);
+    return make_sound(t3 => 1 / 2 - 1 / Math.PI * fourier_expansion_sawtooth(t3), duration);
   }
   function consecutively(list_of_sounds) {
     function consec_two(ss1, ss2) {
@@ -439,10 +529,10 @@ export default require => {
       const wave2 = get_wave(ss2);
       const dur1 = get_duration(ss1);
       const dur2 = get_duration(ss2);
-      const new_wave = t => t < dur1 ? wave1(t) : wave2(t - dur1);
+      const new_wave = t3 => t3 < dur1 ? wave1(t3) : wave2(t3 - dur1);
       return make_sound(new_wave, dur1 + dur2);
     }
-    return (0, import_list2.accumulate)(consec_two, silence_sound(0), list_of_sounds);
+    return (0, import_list.accumulate)(consec_two, silence_sound(0), list_of_sounds);
   }
   function simultaneously(list_of_sounds) {
     function simul_two(ss1, ss2) {
@@ -450,23 +540,23 @@ export default require => {
       const wave2 = get_wave(ss2);
       const dur1 = get_duration(ss1);
       const dur2 = get_duration(ss2);
-      const new_wave = t => {
+      const new_wave = t3 => {
         let sum = 0;
-        if (t <= dur1) {
-          sum += wave1(t);
+        if (t3 <= dur1) {
+          sum += wave1(t3);
         }
-        if (t <= dur2) {
-          sum += wave2(t);
+        if (t3 <= dur2) {
+          sum += wave2(t3);
         }
         return sum;
       };
       const new_dur = Math.max(dur1, dur2);
       return make_sound(new_wave, new_dur);
     }
-    const mushed_sounds = (0, import_list2.accumulate)(simul_two, silence_sound(0), list_of_sounds);
-    const len = (0, import_list2.length)(list_of_sounds);
-    const normalised_wave = t => (0, import_list2.head)(mushed_sounds)(t) / len;
-    const highest_duration = (0, import_list2.tail)(mushed_sounds);
+    const mushed_sounds = (0, import_list.accumulate)(simul_two, silence_sound(0), list_of_sounds);
+    const len = (0, import_list.length)(list_of_sounds);
+    const normalised_wave = t3 => (0, import_list.head)(mushed_sounds)(t3) / len;
+    const highest_duration = (0, import_list.tail)(mushed_sounds);
     return make_sound(normalised_wave, highest_duration);
   }
   function wrapSoundTransformer(transformer) {
@@ -475,7 +565,7 @@ export default require => {
         throw new import_rttcErrors.InvalidParameterTypeError("Sound", sound, "SoundTransformer");
       }
       const [old_wave, old_duration] = sound;
-      return transformer(t => (0, import_operators.callWithoutMetadata)(old_wave, t), old_duration);
+      return transformer(t3 => (0, import_operators.callWithoutMetadata)(old_wave, t3), old_duration);
     }
     wrapped.toReplString = () => "<SoundTransformer>";
     return wrapped;
@@ -491,28 +581,28 @@ export default require => {
       const release_time = duration * release_ratio;
       const decayWave = linear_decay(decay_time);
       const releaseWave = linear_decay(release_time);
-      return make_sound(t => {
-        if (t < attack_time) {
-          return wave(t) * (t / attack_time);
+      return make_sound(t3 => {
+        if (t3 < attack_time) {
+          return wave(t3) * (t3 / attack_time);
         }
-        if (t < attack_time + decay_time) {
-          return ((1 - sustain_level) * decayWave(t - attack_time) + sustain_level) * wave(t);
+        if (t3 < attack_time + decay_time) {
+          return ((1 - sustain_level) * decayWave(t3 - attack_time) + sustain_level) * wave(t3);
         }
-        if (t < duration - release_time) {
-          return wave(t) * sustain_level;
+        if (t3 < duration - release_time) {
+          return wave(t3) * sustain_level;
         }
-        return wave(t) * sustain_level * releaseWave(t - (duration - release_time));
+        return wave(t3) * sustain_level * releaseWave(t3 - (duration - release_time));
       }, duration);
     });
   }
   function stacking_adsr(waveform, base_frequency, duration, envelopes) {
-    function zip(lst, n) {
-      if ((0, import_list2.is_null)(lst)) {
+    function zip(lst, n3) {
+      if ((0, import_list.is_null)(lst)) {
         return lst;
       }
-      return (0, import_list2.pair)((0, import_list2.pair)(n, (0, import_list2.head)(lst)), zip((0, import_list2.tail)(lst), n + 1));
+      return (0, import_list.pair)((0, import_list.pair)(n3, (0, import_list.head)(lst)), zip((0, import_list.tail)(lst), n3 + 1));
     }
-    const new_list = (0, import_list2.map)(x => (0, import_list2.tail)(x)((0, import_operators.callWithoutMetadata)(waveform, base_frequency * (0, import_list2.head)(x), duration)), zip(envelopes, 1));
+    const new_list = (0, import_list.map)(x => (0, import_list.tail)(x)((0, import_operators.callWithoutMetadata)(waveform, base_frequency * (0, import_list.head)(x), duration)), zip(envelopes, 1));
     return simultaneously(new_list);
   }
   function phase_mod(freq, duration, amount) {
@@ -520,28 +610,28 @@ export default require => {
     validateDuration(phase_mod.name, duration);
     (0, import_rttc.assertNumberWithinRange)(amount, phase_mod.name, void 0, void 0, false);
     return wrapSoundTransformer((wave, duration2) => {
-      return make_sound(t => Math.sin(2 * Math.PI * t * freq + amount * wave(t)), duration2);
+      return make_sound(t3 => Math.sin(2 * Math.PI * t3 * freq + amount * wave(t3)), duration2);
     });
   }
   function bell(note, duration) {
     validateDuration(bell.name, duration);
-    return stacking_adsr(square_sound, midi_note_to_frequency(note), duration, (0, import_list2.list)(adsr(0, 0.6, 0, 0.05), adsr(0, 0.6618, 0, 0.05), adsr(0, 0.7618, 0, 0.05), adsr(0, 0.9071, 0, 0.05)));
+    return stacking_adsr(square_sound, midi_note_to_frequency(note), duration, (0, import_list.list)(adsr(0, 0.6, 0, 0.05), adsr(0, 0.6618, 0, 0.05), adsr(0, 0.7618, 0, 0.05), adsr(0, 0.9071, 0, 0.05)));
   }
   function cello(note, duration) {
     validateDuration(cello.name, duration);
-    return stacking_adsr(square_sound, midi_note_to_frequency(note), duration, (0, import_list2.list)(adsr(0.05, 0, 1, 0.1), adsr(0.05, 0, 1, 0.15), adsr(0, 0, 0.2, 0.15)));
+    return stacking_adsr(square_sound, midi_note_to_frequency(note), duration, (0, import_list.list)(adsr(0.05, 0, 1, 0.1), adsr(0.05, 0, 1, 0.15), adsr(0, 0, 0.2, 0.15)));
   }
   function piano(note, duration) {
     validateDuration(piano.name, duration);
-    return stacking_adsr(triangle_sound, midi_note_to_frequency(note), duration, (0, import_list2.list)(adsr(0, 0.515, 0, 0.05), adsr(0, 0.32, 0, 0.05), adsr(0, 0.2, 0, 0.05)));
+    return stacking_adsr(triangle_sound, midi_note_to_frequency(note), duration, (0, import_list.list)(adsr(0, 0.515, 0, 0.05), adsr(0, 0.32, 0, 0.05), adsr(0, 0.2, 0, 0.05)));
   }
   function trombone(note, duration) {
     validateDuration(trombone.name, duration);
-    return stacking_adsr(square_sound, midi_note_to_frequency(note), duration, (0, import_list2.list)(adsr(0.2, 0, 1, 0.1), adsr(0.3236, 0.6, 0, 0.1)));
+    return stacking_adsr(square_sound, midi_note_to_frequency(note), duration, (0, import_list.list)(adsr(0.2, 0, 1, 0.1), adsr(0.3236, 0.6, 0, 0.1)));
   }
   function violin(note, duration) {
     validateDuration(violin.name, duration);
-    return stacking_adsr(sawtooth_sound, midi_note_to_frequency(note), duration, (0, import_list2.list)(adsr(0.35, 0, 1, 0.15), adsr(0.35, 0, 1, 0.15), adsr(0.45, 0, 1, 0.15), adsr(0.45, 0, 1, 0.15)));
+    return stacking_adsr(sawtooth_sound, midi_note_to_frequency(note), duration, (0, import_list.list)(adsr(0.35, 0, 1, 0.15), adsr(0.35, 0, 1, 0.15), adsr(0.45, 0, 1, 0.15), adsr(0.45, 0, 1, 0.15)));
   }
   var import_context = __toESM(__require("js-slang/context"), 1);
   var import_stringify2 = __require("js-slang/dist/utils/stringify");
@@ -557,23 +647,23 @@ export default require => {
       var len = src.length;
       var dst = "";
       var i = 0;
-      var n;
+      var n3;
       while (len > 2) {
-        n = src[i] << 16 | src[i + 1] << 8 | src[i + 2];
-        dst += this.encLookup[n >> 12] + this.encLookup[n & 4095];
+        n3 = src[i] << 16 | src[i + 1] << 8 | src[i + 2];
+        dst += this.encLookup[n3 >> 12] + this.encLookup[n3 & 4095];
         len -= 3;
         i += 3;
       }
       if (len > 0) {
         var n1 = (src[i] & 252) >> 2;
-        var n2 = (src[i] & 3) << 4;
-        if (len > 1) n2 |= (src[++i] & 240) >> 4;
+        var n22 = (src[i] & 3) << 4;
+        if (len > 1) n22 |= (src[++i] & 240) >> 4;
         dst += this.chars[n1];
-        dst += this.chars[n2];
+        dst += this.chars[n22];
         if (len == 2) {
-          var n3 = (src[i++] & 15) << 2;
-          n3 |= (src[i] & 192) >> 6;
-          dst += this.chars[n3];
+          var n32 = (src[i++] & 15) << 2;
+          n32 |= (src[i] & 192) >> 6;
+          dst += this.chars[n32];
         }
         if (len == 1) dst += "=";
         dst += "=";
@@ -608,14 +698,14 @@ export default require => {
       return [i & 255, i >> 8 & 255];
     }
     function split16bitArray(data2) {
-      var r = [];
+      var r2 = [];
       var j = 0;
       var len = data2.length;
       for (var i = 0; i < len; i++) {
-        r[j++] = data2[i] & 255;
-        r[j++] = data2[i] >> 8 & 255;
+        r2[j++] = data2[i] & 255;
+        r2[j++] = data2[i] >> 8 & 255;
       }
-      return r;
+      return r2;
     }
     this.Make = function (data2) {
       if (data2 instanceof Array) this.data = data2;

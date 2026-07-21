@@ -39,18 +39,18 @@ export default require => {
     RuneTab: () => RuneTab,
     default: () => RuneTabPlugin
   });
-  var A;
-  !(function (A2) {
-    (A2[A2.VOID = 0] = "VOID", A2[A2.BOOLEAN = 1] = "BOOLEAN", A2[A2.NUMBER = 2] = "NUMBER", A2[A2.CONST_STRING = 3] = "CONST_STRING", A2[A2.EMPTY_LIST = 4] = "EMPTY_LIST", A2[A2.PAIR = 5] = "PAIR", A2[A2.ARRAY = 6] = "ARRAY", A2[A2.CLOSURE = 7] = "CLOSURE", A2[A2.OPAQUE = 8] = "OPAQUE", A2[A2.LIST = 9] = "LIST", A2[A2.ANY = 10] = "ANY");
-  })(A || (A = {}));
+  var O;
+  !(function (O3) {
+    (O3[O3.VOID = 0] = "VOID", O3[O3.BOOLEAN = 1] = "BOOLEAN", O3[O3.NUMBER = 2] = "NUMBER", O3[O3.CONST_STRING = 3] = "CONST_STRING", O3[O3.EMPTY_LIST = 4] = "EMPTY_LIST", O3[O3.PAIR = 5] = "PAIR", O3[O3.ARRAY = 6] = "ARRAY", O3[O3.CLOSURE = 7] = "CLOSURE", O3[O3.OPAQUE = 8] = "OPAQUE", O3[O3.LIST = 9] = "LIST");
+  })(O || (O = {}));
   var a;
   !(function (a3) {
     (a3[a3.HELLO = 0] = "HELLO", a3[a3.ABORT = 1] = "ABORT", a3[a3.ENTRY = 2] = "ENTRY");
   })(a || (a = {}));
-  var O;
-  !(function (O2) {
-    (O2[O2.PROTOCOL_VERSION = 0] = "PROTOCOL_VERSION", O2[O2.PROTOCOL_MIN_VERSION = 0] = "PROTOCOL_MIN_VERSION", O2[O2.SETUP_MESSAGES_BUFFER_SIZE = 10] = "SETUP_MESSAGES_BUFFER_SIZE");
-  })(O || (O = {}));
+  var O2;
+  !(function (O3) {
+    (O3[O3.PROTOCOL_VERSION = 0] = "PROTOCOL_VERSION", O3[O3.PROTOCOL_MIN_VERSION = 0] = "PROTOCOL_MIN_VERSION", O3[O3.SETUP_MESSAGES_BUFFER_SIZE = 10] = "SETUP_MESSAGES_BUFFER_SIZE");
+  })(O2 || (O2 = {}));
   var N;
   !(function (N2) {
     (N2[N2.ONLINE = 0] = "ONLINE", N2[N2.EVAL_READY = 1] = "EVAL_READY", N2[N2.RUNNING = 2] = "RUNNING", N2[N2.WAITING = 3] = "WAITING", N2[N2.BREAKPOINT = 4] = "BREAKPOINT", N2[N2.STOPPED = 5] = "STOPPED", N2[N2.ERROR = 6] = "ERROR");
@@ -97,10 +97,13 @@ export default require => {
     return n3 === 0 ? x => x : x => func(repeat_internal(func, n3 - 1)(x));
   }
   function sample(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
+    const randomIndex = Math.floor(Math.random() * arr.length);
+    return arr[randomIndex];
   }
   function clamp(value, bound1, bound2) {
-    if (bound2 == null) return Math.min(value, bound1);
+    if (bound2 == null) {
+      return Math.min(value, bound1);
+    }
     return Math.min(Math.max(value, bound1), bound2);
   }
   var EPSILON = 1e-6;
@@ -3205,7 +3208,9 @@ void main(void) {
   var import_jsx_runtime7 = __require("react/jsx-runtime");
   var import_core7 = __require("@blueprintjs/core");
   function clamp2(value, bound1, bound2) {
-    if (bound2 == null) return Math.min(value, bound1);
+    if (bound2 == null) {
+      return Math.min(value, bound1);
+    }
     return Math.min(Math.max(value, bound1), bound2);
   }
   var import_react4 = __require("react");
