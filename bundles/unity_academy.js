@@ -188,7 +188,7 @@ export default require => {
       function cloneAndReplaceKey(oldElement, newKey) {
         return ReactElement(oldElement.type, newKey, oldElement.props);
       }
-      function isValidElement(object) {
+      function isValidElement3(object) {
         return "object" === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE;
       }
       function escape(key) {
@@ -246,7 +246,7 @@ export default require => {
         }
         if (invokeCallback) return (callback = callback(children), invokeCallback = "" === nameSoFar ? "." + getElementKey(children, 0) : nameSoFar, isArrayImpl(callback) ? (escapedPrefix = "", null != invokeCallback && (escapedPrefix = invokeCallback.replace(userProvidedKeyEscapeRegex, "$&/") + "/"), mapIntoArray(callback, array, escapedPrefix, "", function (c) {
           return c;
-        })) : null != callback && (isValidElement(callback) && (callback = cloneAndReplaceKey(callback, escapedPrefix + (null == callback.key || children && children.key === callback.key ? "" : ("" + callback.key).replace(userProvidedKeyEscapeRegex, "$&/") + "/") + invokeCallback)), array.push(callback)), 1);
+        })) : null != callback && (isValidElement3(callback) && (callback = cloneAndReplaceKey(callback, escapedPrefix + (null == callback.key || children && children.key === callback.key ? "" : ("" + callback.key).replace(userProvidedKeyEscapeRegex, "$&/") + "/") + invokeCallback)), array.push(callback)), 1);
         invokeCallback = 0;
         var nextNamePrefix = "" === nameSoFar ? "." : nameSoFar + ":";
         if (isArrayImpl(children)) for (var i = 0; i < children.length; i++) (nameSoFar = children[i], type = nextNamePrefix + getElementKey(nameSoFar, i), invokeCallback += mapIntoArray(nameSoFar, array, escapedPrefix, type, callback)); else if ((i = getIteratorFn(children), "function" === typeof i)) for ((children = i.call(children), i = 0); !(nameSoFar = children.next()).done; ) (nameSoFar = nameSoFar.value, type = nextNamePrefix + getElementKey(nameSoFar, i++), invokeCallback += mapIntoArray(nameSoFar, array, escapedPrefix, type, callback)); else if ("object" === type) {
@@ -313,7 +313,7 @@ export default require => {
           }) || [];
         },
         only: function (children) {
-          if (!isValidElement(children)) throw Error("React.Children.only expected to receive a single React element child.");
+          if (!isValidElement3(children)) throw Error("React.Children.only expected to receive a single React element child.");
           return children;
         }
       };
@@ -389,7 +389,7 @@ export default require => {
           render
         };
       };
-      exports.isValidElement = isValidElement;
+      exports.isValidElement = isValidElement3;
       exports.lazy = function (ctor) {
         return {
           $$typeof: REACT_LAZY_TYPE,
@@ -478,7 +478,7 @@ export default require => {
       exports.useTransition = function () {
         return ReactSharedInternals.H.useTransition();
       };
-      exports.version = "19.2.5";
+      exports.version = "19.2.7";
     }
   });
   var require_react_development = __commonJS({
@@ -666,9 +666,9 @@ export default require => {
           return newKey;
         }
         function validateChildKeys(node) {
-          isValidElement(node) ? node._store && (node._store.validated = 1) : "object" === typeof node && null !== node && node.$$typeof === REACT_LAZY_TYPE && ("fulfilled" === node._payload.status ? isValidElement(node._payload.value) && node._payload.value._store && (node._payload.value._store.validated = 1) : node._store && (node._store.validated = 1));
+          isValidElement3(node) ? node._store && (node._store.validated = 1) : "object" === typeof node && null !== node && node.$$typeof === REACT_LAZY_TYPE && ("fulfilled" === node._payload.status ? isValidElement3(node._payload.value) && node._payload.value._store && (node._payload.value._store.validated = 1) : node._store && (node._store.validated = 1));
         }
-        function isValidElement(object) {
+        function isValidElement3(object) {
           return "object" === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE;
         }
         function escape(key) {
@@ -729,7 +729,7 @@ export default require => {
             var childKey = "" === nameSoFar ? "." + getElementKey(invokeCallback, 0) : nameSoFar;
             isArrayImpl(callback) ? (escapedPrefix = "", null != childKey && (escapedPrefix = childKey.replace(userProvidedKeyEscapeRegex, "$&/") + "/"), mapIntoArray(callback, array, escapedPrefix, "", function (c) {
               return c;
-            })) : null != callback && (isValidElement(callback) && (null != callback.key && (invokeCallback && invokeCallback.key === callback.key || checkKeyStringCoercion(callback.key)), escapedPrefix = cloneAndReplaceKey(callback, escapedPrefix + (null == callback.key || invokeCallback && invokeCallback.key === callback.key ? "" : ("" + callback.key).replace(userProvidedKeyEscapeRegex, "$&/") + "/") + childKey), "" !== nameSoFar && null != invokeCallback && isValidElement(invokeCallback) && null == invokeCallback.key && invokeCallback._store && !invokeCallback._store.validated && (escapedPrefix._store.validated = 2), callback = escapedPrefix), array.push(callback));
+            })) : null != callback && (isValidElement3(callback) && (null != callback.key && (invokeCallback && invokeCallback.key === callback.key || checkKeyStringCoercion(callback.key)), escapedPrefix = cloneAndReplaceKey(callback, escapedPrefix + (null == callback.key || invokeCallback && invokeCallback.key === callback.key ? "" : ("" + callback.key).replace(userProvidedKeyEscapeRegex, "$&/") + "/") + childKey), "" !== nameSoFar && null != invokeCallback && isValidElement3(invokeCallback) && null == invokeCallback.key && invokeCallback._store && !invokeCallback._store.validated && (escapedPrefix._store.validated = 2), callback = escapedPrefix), array.push(callback));
             return 1;
           }
           invokeCallback = 0;
@@ -957,7 +957,7 @@ export default require => {
             }) || [];
           },
           only: function (children) {
-            if (!isValidElement(children)) throw Error("React.Children.only expected to receive a single React element child.");
+            if (!isValidElement3(children)) throw Error("React.Children.only expected to receive a single React element child.");
             return children;
           }
         };
@@ -1128,7 +1128,7 @@ export default require => {
           });
           return elementType;
         };
-        exports.isValidElement = isValidElement;
+        exports.isValidElement = isValidElement3;
         exports.lazy = function (ctor) {
           ctor = {
             _status: -1,
@@ -1255,7 +1255,7 @@ export default require => {
         exports.useTransition = function () {
           return resolveDispatcher().useTransition();
         };
-        exports.version = "19.2.5";
+        exports.version = "19.2.7";
         "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
       })();
     }
@@ -1472,9 +1472,9 @@ export default require => {
           return ReactElement(type, children, maybeKey, getOwner(), debugStack, debugTask);
         }
         function validateChildKeys(node) {
-          isValidElement(node) ? node._store && (node._store.validated = 1) : "object" === typeof node && null !== node && node.$$typeof === REACT_LAZY_TYPE && ("fulfilled" === node._payload.status ? isValidElement(node._payload.value) && node._payload.value._store && (node._payload.value._store.validated = 1) : node._store && (node._store.validated = 1));
+          isValidElement3(node) ? node._store && (node._store.validated = 1) : "object" === typeof node && null !== node && node.$$typeof === REACT_LAZY_TYPE && ("fulfilled" === node._payload.status ? isValidElement3(node._payload.value) && node._payload.value._store && (node._payload.value._store.validated = 1) : node._store && (node._store.validated = 1));
         }
-        function isValidElement(object) {
+        function isValidElement3(object) {
           return "object" === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE;
         }
         var React4 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React4.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function () {
@@ -2846,6 +2846,14 @@ export default require => {
       "use strict";
       init_define_process();
       crown_default = ["m2 6 3 2 3-4 3 4 3-2-1 6H3zm6-5a1 1 0 1 1 0 2 1 1 0 0 1 0-2M1 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2m14 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2M3 13h10v2H3z"];
+    }
+  });
+  var crystal_ball_default;
+  var init_crystal_ball = __esm({
+    "node_modules/@blueprintjs/icons/lib/esm/generated/16px/paths/crystal-ball.js"() {
+      "use strict";
+      init_define_process();
+      crystal_ball_default = ["m11.5 1 .916 2.584L15 4.5l-2.584.916L11.5 8l-.916-2.584L8 4.5l2.584-.916zM8 .5a7 7 0 0 1 1.983.286L9.41 2.41l-.496.175a5 5 0 1 0 3.967 6q.018-.04.034-.083l.676-1.911 1.276-.452Q14.998 6.8 15 7.5c0 1.903-.76 3.629-1.993 4.89.302.275.493.67.493 1.11 0 .996-.77 1.515-1.05 1.68-.381.226-.832.376-1.258.482C10.318 15.881 9.19 16 8 16s-2.318-.12-3.192-.338c-.426-.106-.877-.257-1.257-.481-.28-.166-1.051-.685-1.051-1.681 0-.44.19-.835.492-1.11A7 7 0 0 1 8 .5M8 6l.51 1.49L10 8l-1.49.51L8 10l-.51-1.49L6 8l1.49-.51z"];
     }
   });
   var css_style_default;
@@ -7524,6 +7532,7 @@ export default require => {
     Cross: () => cross_default,
     CrossCircle: () => cross_circle_default,
     Crown: () => crown_default,
+    CrystalBall: () => crystal_ball_default,
     CssStyle: () => css_style_default,
     Cube: () => cube_default,
     CubeAdd: () => cube_add_default,
@@ -8234,6 +8243,7 @@ export default require => {
       init_cross();
       init_cross_circle();
       init_crown();
+      init_crystal_ball();
       init_css_style();
       init_cube();
       init_cube_add();
@@ -9908,6 +9918,14 @@ export default require => {
       crown_default2 = ["m2 8 4 2 4-5 4 5 4-2-1 7H3zm8-6a1 1 0 1 1 0 2 1 1 0 0 1 0-2M1 5a1 1 0 1 1 0 2 1 1 0 0 1 0-2m18 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2M3 16h14v2H3z"];
     }
   });
+  var crystal_ball_default2;
+  var init_crystal_ball2 = __esm({
+    "node_modules/@blueprintjs/icons/lib/esm/generated/20px/paths/crystal-ball.js"() {
+      "use strict";
+      init_define_process();
+      crystal_ball_default2 = ["m14.5 2 1.047 2.953L18.5 6l-2.953 1.047L14.5 10l-1.046-2.953L10.5 6l2.954-1.047zM10 1c1.08 0 2.11.203 3.06.57l-.668 1.886a6.5 6.5 0 1 0 4.081 5.464l.248-.7 1.577-.558a8.47 8.47 0 0 1-2.23 7.786c.267.271.432.642.432 1.052 0 .822-.422 1.452-.862 1.868-.437.413-.988.716-1.545.939-1.123.449-2.57.693-4.093.693s-2.97-.244-4.093-.693c-.557-.223-1.108-.526-1.545-.939-.44-.416-.862-1.046-.862-1.868 0-.41.164-.781.43-1.052A8.5 8.5 0 0 1 10 1m0 7 .764 2.236L13 11l-2.236.764L10 14l-.764-2.236L7 11l2.236-.764z"];
+    }
+  });
   var css_style_default2;
   var init_css_style2 = __esm({
     "node_modules/@blueprintjs/icons/lib/esm/generated/20px/paths/css-style.js"() {
@@ -10017,7 +10035,7 @@ export default require => {
     "node_modules/@blueprintjs/icons/lib/esm/generated/20px/paths/data-cloud.js"() {
       "use strict";
       init_define_process();
-      data_cloud_default2 = ["M19 11c0 .552-2.239 1-5 1s-5-.448-5-1 2.239-1 5-1 5 .448 5 1m-.776.535-.003.001c-.887.279-2.446.464-4.221.464s-3.334-.185-4.221-.464h-.003C9.285 11.38 9 11.196 9 11s.285-.38.776-.535l.002-.001C10.666 10.185 12.225 10 14 10s3.334.185 4.221.464h.003c.491.155.776.339.776.536s-.285.38-.776.535m-.492 1.153c.47-.094.913-.216 1.268-.379V15c0 .197-.285.38-.776.535l-.003.001c-.887.279-2.446.464-4.221.464s-3.334-.185-4.221-.464h-.003C9.285 15.38 9 15.196 9 15v-2.69c.355.162.799.284 1.268.378.987.197 2.306.312 3.732.312s2.745-.115 3.732-.312M9 16.31V19c0 .552 2.239 1 5 1s5-.448 5-1v-2.69c-.355.162-.799.284-1.268.378-.987.197-2.306.312-3.732.312s-2.745-.115-3.732-.312c-.47-.094-.913-.216-1.268-.379m5.784-12.287q.108-.02.216-.022a5.002 5.002 0 0 1 4.814 6.354 1.4 1.4 0 0 0-.217-.27 2 2 0 0 0-.562-.377c-.36-.17-.818-.298-1.303-.395C16.745 9.115 15.426 9 14 9s-2.745.115-3.732.312c-.485.097-.942.224-1.303.395a2 2 0 0 0-.562.376A1.28 1.28 0 0 0 8 11v3H4c-2.21 0-4-1.79-4-4a3.98 3.98 0 0 1 3.01-3.86q0-.037-.005-.07L3 6c0-3.31 2.69-6 6-6 2.62 0 4.83 1.69 5.64 4.04q.072-.007.144-.018"];
+      data_cloud_default2 = ["M19 11c0 .552-2.239 1-5 1s-5-.448-5-1 2.239-1 5-1 5 .448 5 1m-1.268 1.688c.47-.094.913-.216 1.268-.379V15c0 .197-.285.38-.776.535l-.003.001c-.887.279-2.446.464-4.221.464s-3.334-.185-4.221-.464h-.003C9.285 15.38 9 15.196 9 15v-2.69c.355.162.799.284 1.268.378.987.197 2.306.312 3.732.312s2.745-.115 3.732-.312M9 16.31c.355.163.798.284 1.268.378.987.197 2.306.312 3.732.312s2.745-.115 3.732-.312c.469-.094.913-.216 1.268-.378V19c0 .552-2.239 1-5 1s-5-.448-5-1zm5.784-12.288q.108-.02.216-.022a5.002 5.002 0 0 1 4.814 6.354 1.4 1.4 0 0 0-.217-.27 2 2 0 0 0-.562-.377c-.36-.17-.818-.298-1.303-.395C16.745 9.115 15.426 9 14 9s-2.745.115-3.732.312c-.485.097-.942.224-1.303.395a2 2 0 0 0-.562.376A1.28 1.28 0 0 0 8 11v3H4c-2.21 0-4-1.79-4-4a3.98 3.98 0 0 1 3.01-3.86l-.005-.07L3 6c0-3.31 2.69-6 6-6 2.62 0 4.83 1.69 5.64 4.04z"];
     }
   });
   var data_connection_default2;
@@ -14584,6 +14602,7 @@ export default require => {
     Cross: () => cross_default2,
     CrossCircle: () => cross_circle_default2,
     Crown: () => crown_default2,
+    CrystalBall: () => crystal_ball_default2,
     CssStyle: () => css_style_default2,
     Cube: () => cube_default2,
     CubeAdd: () => cube_add_default2,
@@ -15294,6 +15313,7 @@ export default require => {
       init_cross2();
       init_cross_circle2();
       init_crown2();
+      init_crystal_ball2();
       init_css_style2();
       init_cube2();
       init_cube_add2();
@@ -16068,7 +16088,7 @@ export default require => {
       exports.useFormStatus = function () {
         return ReactSharedInternals.H.useHostTransitionStatus();
       };
-      exports.version = "19.2.5";
+      exports.version = "19.2.7";
     }
   });
   var require_react_dom_development = __commonJS({
@@ -16234,7 +16254,7 @@ export default require => {
         exports.useFormStatus = function () {
           return resolveDispatcher().useHostTransitionStatus();
         };
-        exports.version = "19.2.5";
+        exports.version = "19.2.7";
         "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
       })();
     }
@@ -26132,7 +26152,7 @@ export default require => {
         }
       };
       var isomorphicReactPackageVersion$jscomp$inline_1840 = React4.version;
-      if ("19.2.5" !== isomorphicReactPackageVersion$jscomp$inline_1840) throw Error(formatProdErrorMessage(527, isomorphicReactPackageVersion$jscomp$inline_1840, "19.2.5"));
+      if ("19.2.7" !== isomorphicReactPackageVersion$jscomp$inline_1840) throw Error(formatProdErrorMessage(527, isomorphicReactPackageVersion$jscomp$inline_1840, "19.2.7"));
       ReactDOMSharedInternals.findDOMNode = function (componentOrElement) {
         var fiber = componentOrElement._reactInternals;
         if (void 0 === fiber) {
@@ -26147,10 +26167,10 @@ export default require => {
       };
       var internals$jscomp$inline_2347 = {
         bundleType: 0,
-        version: "19.2.5",
+        version: "19.2.7",
         rendererPackageName: "react-dom",
         currentDispatcherRef: ReactSharedInternals,
-        reconcilerVersion: "19.2.5"
+        reconcilerVersion: "19.2.7"
       };
       if ("undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__) {
         hook$jscomp$inline_2348 = __REACT_DEVTOOLS_GLOBAL_HOOK__;
@@ -26188,7 +26208,7 @@ export default require => {
         listenToAllSupportedEvents(container);
         return new ReactDOMHydrationRoot(initialChildren);
       };
-      exports.version = "19.2.5";
+      exports.version = "19.2.7";
     }
   });
   var require_react_dom_client_development = __commonJS({
@@ -40383,7 +40403,7 @@ export default require => {
         };
         (function () {
           var isomorphicReactPackageVersion = React4.version;
-          if ("19.2.5" !== isomorphicReactPackageVersion) throw Error('Incompatible React versions: The "react" and "react-dom" packages must have the exact same version. Instead got:\n  - react:      ' + (isomorphicReactPackageVersion + "\n  - react-dom:  19.2.5\nLearn more: https://react.dev/warnings/version-mismatch"));
+          if ("19.2.7" !== isomorphicReactPackageVersion) throw Error('Incompatible React versions: The "react" and "react-dom" packages must have the exact same version. Instead got:\n  - react:      ' + (isomorphicReactPackageVersion + "\n  - react-dom:  19.2.7\nLearn more: https://react.dev/warnings/version-mismatch"));
         })();
         "function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error("React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://react.dev/link/react-polyfills");
         ReactDOMSharedInternals.findDOMNode = function (componentOrElement) {
@@ -40401,10 +40421,10 @@ export default require => {
         if (!(function () {
           var internals = {
             bundleType: 1,
-            version: "19.2.5",
+            version: "19.2.7",
             rendererPackageName: "react-dom",
             currentDispatcherRef: ReactSharedInternals,
-            reconcilerVersion: "19.2.5"
+            reconcilerVersion: "19.2.7"
           };
           internals.overrideHookState = overrideHookState;
           internals.overrideHookStateDeletePath = overrideHookStateDeletePath;
@@ -40458,7 +40478,7 @@ export default require => {
           listenToAllSupportedEvents(container);
           return new ReactDOMHydrationRoot(initialChildren);
         };
-        exports.version = "19.2.5";
+        exports.version = "19.2.7";
         "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
       })();
     }
@@ -41383,8 +41403,10 @@ export default require => {
     getArrowKeyDirection: () => getArrowKeyDirection,
     getDeepUnequalKeyValues: () => getDeepUnequalKeyValues,
     getFocusableElements: () => getFocusableElements,
+    getReactMajorVersion: () => getReactMajorVersion,
     getRef: () => getRef,
     isArrowKey: () => isArrowKey,
+    isBlueprintIconElement: () => isBlueprintIconElement,
     isDarkTheme: () => isDarkTheme,
     isElementOfType: () => isElementOfType,
     isEmptyString: () => isEmptyString,
@@ -41604,6 +41626,7 @@ export default require => {
     return typeof value === "function";
   }
   init_define_process();
+  var import_react = __toESM(require_react());
   init_define_process();
   var ns = "[Blueprint]";
   var CLAMP_MIN_MAX = ns + ` clamp: max cannot be less than min`;
@@ -41641,6 +41664,7 @@ export default require => {
   var POPOVER_WARN_PLACEMENT_AND_POSITION_MUTEX = ns + ` <Popover> supports either placement or position prop, not both.`;
   var POPOVER_WARN_UNCONTROLLED_ONINTERACTION = ns + ` <Popover> onInteraction is ignored when uncontrolled.`;
   var POPOVER_WARN_TARGET_PROPS_WITH_RENDER_TARGET = ns + ` <Popover> targetProps value is ignored when renderTarget API is used.`;
+  var POPOVER_WARN_REACT19 = ns + ` <Popover> positions content incorrectly under React 19 (especially in StrictMode); migrate to <PopoverNext>.`;
   var RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX = ns + ` <RadioGroup> children and options prop are mutually exclusive, with options taking priority.`;
   var SLIDER_ZERO_STEP = ns + ` <Slider> stepSize must be greater than zero.`;
   var SLIDER_ZERO_LABEL_STEP = ns + ` <Slider> labelStepSize must be greater than zero.`;
@@ -41662,6 +41686,9 @@ export default require => {
   var OVERLAY_CHILD_REQUIRES_KEY = ns + ` <Overlay2> requires each child element to have a unique key prop when childRefs is used`;
   function isNodeEnv(env) {
     return typeof NODE_ENV !== "undefined" && NODE_ENV === env;
+  }
+  function getReactMajorVersion() {
+    return parseInt(import_react.version, 10);
   }
   function arrayLengthCompare(a = [], b = []) {
     return a.length - b.length;
@@ -41701,7 +41728,24 @@ export default require => {
     return typeof val === "string" && val.trim().length === 0;
   }
   init_define_process();
-  var import_react = __toESM(require_react());
+  var import_react2 = __toESM(require_react());
+  init_define_process();
+  var DISPLAYNAME_PREFIX = "Blueprint6";
+  var INVALID_PROPS = ["active", "alignText", "asyncControl", "containerRef", "current", "elementRef", "ellipsizeText", "endIcon", "fill", "icon", "iconSize", "inputClassName", "inputRef", "intent", "inline", "large", "loading", "leftElement", "leftIcon", "minimal", "onRemove", "outlined", "panel", "panelClassName", "popoverProps", "rightElement", "rightIcon", "round", "selectedValue", "size", "small", "tagName", "text", "textClassName", "variant"];
+  function removeNonHTMLProps(props, invalidProps = INVALID_PROPS, shouldMerge = false) {
+    if (shouldMerge) {
+      invalidProps = invalidProps.concat(INVALID_PROPS);
+    }
+    return invalidProps.reduce((prev, curr) => {
+      if (curr.indexOf("-") !== -1) {
+        return prev;
+      }
+      if (prev.hasOwnProperty(curr)) {
+        delete prev[curr];
+      }
+      return prev;
+    }, __spreadValues({}, props));
+  }
   function isReactNodeEmpty(node, skipArray = false) {
     return node == null || node === "" || node === false || !skipArray && Array.isArray(node) && (node.length === 0 || node.every(n => isReactNodeEmpty(n, true)));
   }
@@ -41712,10 +41756,10 @@ export default require => {
     if (child == null || typeof child === "boolean" || isEmptyString(child)) {
       return void 0;
     } else if (typeof child === "string" || typeof child === "number" || isReactFragment(child) || isReactNodeArray(child)) {
-      return (0, import_react.createElement)(tagName, props, child);
+      return (0, import_react2.createElement)(tagName, props, child);
     } else if (isReactElement(child)) {
       if (Object.keys(props).length > 0) {
-        return (0, import_react.cloneElement)(child, props);
+        return (0, import_react2.cloneElement)(child, props);
       } else {
         return child;
       }
@@ -41734,6 +41778,18 @@ export default require => {
   }
   function isElementOfType(element, ComponentType) {
     return element != null && element.type != null && element.type.displayName != null && element.type.displayName === ComponentType.displayName;
+  }
+  var BLUEPRINT_ICON_DISPLAYNAME_PREFIX = `${DISPLAYNAME_PREFIX}.Icon.`;
+  function isBlueprintIconElement(value) {
+    if (!(0, import_react2.isValidElement)(value)) {
+      return false;
+    }
+    const {type} = value;
+    if (typeof type === "string") {
+      return false;
+    }
+    const {displayName} = type;
+    return typeof displayName === "string" && displayName.startsWith(BLUEPRINT_ICON_DISPLAYNAME_PREFIX);
   }
   init_define_process();
   function isKeyboardClick(event) {
@@ -41786,27 +41842,10 @@ export default require => {
     return ref.current;
   }
   init_define_process();
-  var DISPLAYNAME_PREFIX = "Blueprint6";
-  var INVALID_PROPS = ["active", "alignText", "asyncControl", "containerRef", "current", "elementRef", "ellipsizeText", "endIcon", "fill", "icon", "iconSize", "inputClassName", "inputRef", "intent", "inline", "large", "loading", "leftElement", "leftIcon", "minimal", "onRemove", "outlined", "panel", "panelClassName", "popoverProps", "rightElement", "rightIcon", "round", "selectedValue", "size", "small", "tagName", "text", "textClassName", "variant"];
-  function removeNonHTMLProps(props, invalidProps = INVALID_PROPS, shouldMerge = false) {
-    if (shouldMerge) {
-      invalidProps = invalidProps.concat(INVALID_PROPS);
-    }
-    return invalidProps.reduce((prev, curr) => {
-      if (curr.indexOf("-") !== -1) {
-        return prev;
-      }
-      if (prev.hasOwnProperty(curr)) {
-        delete prev[curr];
-      }
-      return prev;
-    }, __spreadValues({}, props));
-  }
   init_define_process();
-  init_define_process();
-  var import_react2 = __toESM(require_react());
+  var import_react3 = __toESM(require_react());
   function useValidateProps(validator, dependencies = []) {
-    (0, import_react2.useEffect)(() => {
+    (0, import_react3.useEffect)(() => {
       if (!isNodeEnv("production")) {
         validator();
       }
@@ -41815,9 +41854,9 @@ export default require => {
   init_define_process();
   var import_jsx_runtime6 = __toESM(require_jsx_runtime());
   var import_classnames5 = __toESM(require_classnames());
-  var import_react9 = __toESM(require_react());
+  var import_react10 = __toESM(require_react());
   init_define_process();
-  var import_react3 = __toESM(require_react());
+  var import_react4 = __toESM(require_react());
   var DEFAULT_OPTIONS = {
     defaultTabIndex: void 0,
     disabledTabIndex: -1
@@ -41825,16 +41864,16 @@ export default require => {
   function useInteractiveAttributes(interactive, props, ref, options = DEFAULT_OPTIONS) {
     const {defaultTabIndex, disabledTabIndex} = options;
     const {active, onClick, onFocus, onKeyDown, onKeyUp, onBlur, tabIndex = defaultTabIndex} = props;
-    const [currentKeyPressed, setCurrentKeyPressed] = (0, import_react3.useState)();
-    const [isActive, setIsActive] = (0, import_react3.useState)(false);
-    const elementRef = (0, import_react3.useRef)(null);
-    const handleBlur = (0, import_react3.useCallback)(e => {
+    const [currentKeyPressed, setCurrentKeyPressed] = (0, import_react4.useState)();
+    const [isActive, setIsActive] = (0, import_react4.useState)(false);
+    const elementRef = (0, import_react4.useRef)(null);
+    const handleBlur = (0, import_react4.useCallback)(e => {
       if (isActive) {
         setIsActive(false);
       }
       onBlur == null ? void 0 : onBlur(e);
     }, [isActive, onBlur]);
-    const handleKeyDown = (0, import_react3.useCallback)(e => {
+    const handleKeyDown = (0, import_react4.useCallback)(e => {
       if (utils_exports.isKeyboardClick(e)) {
         e.preventDefault();
         if (e.key !== currentKeyPressed) {
@@ -41844,7 +41883,7 @@ export default require => {
       setCurrentKeyPressed(e.key);
       onKeyDown == null ? void 0 : onKeyDown(e);
     }, [currentKeyPressed, onKeyDown]);
-    const handleKeyUp = (0, import_react3.useCallback)(e => {
+    const handleKeyUp = (0, import_react4.useCallback)(e => {
       var _a;
       if (utils_exports.isKeyboardClick(e)) {
         setIsActive(false);
@@ -41867,7 +41906,7 @@ export default require => {
   init_define_process();
   var import_jsx_runtime4 = __toESM(require_jsx_runtime());
   var import_classnames2 = __toESM(require_classnames());
-  var import_react5 = __toESM(require_react());
+  var import_react6 = __toESM(require_react());
   init_define_process();
   init_define_process();
   init_define_process();
@@ -42014,6 +42053,7 @@ export default require => {
     BlueprintIcons_162["CrossCircle"] = "cross-circle";
     BlueprintIcons_162["Cross"] = "cross";
     BlueprintIcons_162["Crown"] = "crown";
+    BlueprintIcons_162["CrystalBall"] = "crystal-ball";
     BlueprintIcons_162["CssStyle"] = "css-style";
     BlueprintIcons_162["CubeAdd"] = "cube-add";
     BlueprintIcons_162["CubeCutout"] = "cube-cutout";
@@ -42721,6 +42761,7 @@ export default require => {
     [BlueprintIcons_16.CrossCircle]: "62262",
     [BlueprintIcons_16.Cross]: "61801",
     [BlueprintIcons_16.Crown]: "61802",
+    [BlueprintIcons_16.CrystalBall]: "62402",
     [BlueprintIcons_16.CssStyle]: "62315",
     [BlueprintIcons_16.CubeAdd]: "61803",
     [BlueprintIcons_16.CubeCutout]: "62389",
@@ -43393,7 +43434,7 @@ export default require => {
   init_define_process();
   var import_jsx_runtime = __toESM(require_jsx_runtime());
   var import_classnames = __toESM(require_classnames());
-  var import_react4 = __toESM(require_react());
+  var import_react5 = __toESM(require_react());
   init_define_process();
   var NS2 = "bp6";
   var ICON2 = `${NS2}-icon`;
@@ -43406,7 +43447,7 @@ export default require => {
     uniqueCountForNamespace2.set(namespace, curCount + 1);
     return `${namespace}-${curCount}`;
   }
-  var SVGIconContainer = (0, import_react4.forwardRef)((props, ref) => {
+  var SVGIconContainer = (0, import_react5.forwardRef)((props, ref) => {
     const _a = props, {children, className, color, htmlTitle, iconName, size = IconSize.STANDARD, svgProps, tagName = "span", title} = _a, htmlProps = __objRest(_a, ["children", "className", "color", "htmlTitle", "iconName", "size", "svgProps", "tagName", "title"]);
     const isLarge = size >= IconSize.LARGE;
     const pixelGridSize = isLarge ? IconSize.LARGE : IconSize.STANDARD;
@@ -43432,7 +43473,7 @@ export default require => {
         }), children]
       }));
     } else {
-      return (0, import_react4.createElement)(tagName, __spreadProps(__spreadValues({
+      return (0, import_react5.createElement)(tagName, __spreadProps(__spreadValues({
         "aria-hidden": title ? void 0 : true
       }, htmlProps), {
         className: (0, import_classnames.default)(ICON2, `${ICON2}-${iconName}`, className),
@@ -43456,7 +43497,7 @@ export default require => {
   init_iconTypes();
   var PATHS_16 = ["m9.41 8 3.29-3.29c.19-.18.3-.43.3-.71a1.003 1.003 0 0 0-1.71-.71L8 6.59l-3.29-3.3a1.003 1.003 0 0 0-1.42 1.42L6.59 8 3.3 11.29c-.19.18-.3.43-.3.71a1.003 1.003 0 0 0 1.71.71L8 9.41l3.29 3.29c.18.19.43.3.71.3a1.003 1.003 0 0 0 .71-1.71z"];
   var PATHS_20 = ["m11.41 10 4.29-4.29c.19-.18.3-.43.3-.71a1.003 1.003 0 0 0-1.71-.71L10 8.59l-4.29-4.3a1.003 1.003 0 0 0-1.42 1.42L8.59 10 4.3 14.29c-.19.18-.3.43-.3.71a1.003 1.003 0 0 0 1.71.71l4.29-4.3 4.29 4.29c.18.19.43.3.71.3a1.003 1.003 0 0 0 .71-1.71z"];
-  var Cross = React.forwardRef((props, ref) => {
+  var CrossIcon = React.forwardRef((props, ref) => {
     var _a;
     const isLarge = ((_a = props.size) != null ? _a : IconSize.STANDARD) >= IconSize.LARGE;
     const paths = isLarge ? PATHS_20 : PATHS_16;
@@ -43470,14 +43511,15 @@ export default require => {
       }, i))
     }));
   });
-  Cross.displayName = `Blueprint6.Icon.Cross`;
+  CrossIcon.displayName = `Blueprint6.Icon.CrossIcon`;
+  var Cross = CrossIcon;
   init_define_process();
   var import_jsx_runtime3 = __toESM(require_jsx_runtime());
   var React2 = __toESM(require_react());
   init_iconTypes();
   var PATHS_162 = ["M7.99-.01c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8m-6 8c0-3.31 2.69-6 6-6 1.3 0 2.49.42 3.47 1.12l-8.35 8.35c-.7-.98-1.12-2.17-1.12-3.47m6 6c-1.3 0-2.49-.42-3.47-1.12l8.35-8.35c.7.98 1.12 2.17 1.12 3.47 0 3.32-2.68 6-6 6"];
   var PATHS_202 = ["M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0M2 10c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L3.69 14.9A7.9 7.9 0 0 1 2 10m8 8c-1.85 0-3.55-.63-4.9-1.69L16.31 5.1A7.9 7.9 0 0 1 18 10c0 4.42-3.58 8-8 8"];
-  var Disable = React2.forwardRef((props, ref) => {
+  var DisableIcon = React2.forwardRef((props, ref) => {
     var _a;
     const isLarge = ((_a = props.size) != null ? _a : IconSize.STANDARD) >= IconSize.LARGE;
     const paths = isLarge ? PATHS_202 : PATHS_162;
@@ -43491,13 +43533,14 @@ export default require => {
       }, i))
     }));
   });
-  Disable.displayName = `Blueprint6.Icon.Disable`;
-  var Icon = (0, import_react5.forwardRef)((props, ref) => {
-    var _b;
+  DisableIcon.displayName = `Blueprint6.Icon.DisableIcon`;
+  var Disable = DisableIcon;
+  var Icon = (0, import_react6.forwardRef)((props, ref) => {
+    var _b, _c, _d;
     const _a = props, {autoLoad = true, className, color, icon, intent, tagName = "span", svgProps, title, htmlTitle} = _a, htmlProps = __objRest(_a, ["autoLoad", "className", "color", "icon", "intent", "tagName", "svgProps", "title", "htmlTitle"]);
     const size = (_b = props.size) != null ? _b : IconSize.STANDARD;
-    const [iconPaths, setIconPaths] = (0, import_react5.useState)(() => typeof icon === "string" ? Icons.getPaths(icon, size) : void 0);
-    (0, import_react5.useEffect)(() => {
+    const [iconPaths, setIconPaths] = (0, import_react6.useState)(() => typeof icon === "string" ? Icons.getPaths(icon, size) : void 0);
+    (0, import_react6.useEffect)(() => {
       let shouldCancelIconLoading = false;
       if (typeof icon === "string") {
         const loadedIconPaths = Icons.getPaths(icon, size);
@@ -43522,11 +43565,31 @@ export default require => {
     if (icon == null || typeof icon === "boolean") {
       return null;
     } else if (typeof icon !== "string") {
+      if ((0, import_react6.isValidElement)(icon)) {
+        const mergedClassName = (0, import_classnames2.default)(icon.props.className, className, classes_exports.intentClass(intent));
+        if (isBlueprintIconElement(icon)) {
+          const iconElementProps = {
+            className: mergedClassName
+          };
+          const resolvedSize = (_c = icon.props.size) != null ? _c : props.size;
+          if (resolvedSize != null) {
+            iconElementProps.size = resolvedSize;
+          }
+          const resolvedColor = (_d = icon.props.color) != null ? _d : color;
+          if (resolvedColor != null) {
+            iconElementProps.color = resolvedColor;
+          }
+          return (0, import_react6.cloneElement)(icon, iconElementProps);
+        }
+        return (0, import_react6.cloneElement)(icon, {
+          className: mergedClassName
+        });
+      }
       return icon;
     }
     if (iconPaths == null) {
       const sizeClass2 = size === IconSize.STANDARD ? classes_exports.ICON_STANDARD : size === IconSize.LARGE ? classes_exports.ICON_LARGE : void 0;
-      return (0, import_react5.createElement)(tagName || "span", __spreadProps(__spreadValues({
+      return (0, import_react6.createElement)(tagName || "span", __spreadProps(__spreadValues({
         "aria-hidden": title ? void 0 : true
       }, removeNonHTMLProps(htmlProps)), {
         className: (0, import_classnames2.default)(classes_exports.ICON, sizeClass2, classes_exports.iconClass(icon), classes_exports.intentClass(intent), className),
@@ -43557,7 +43620,7 @@ export default require => {
   init_define_process();
   var import_jsx_runtime5 = __toESM(require_jsx_runtime());
   var import_classnames3 = __toESM(require_classnames());
-  var import_react6 = __toESM(require_react());
+  var import_react7 = __toESM(require_react());
   var SpinnerSize;
   (function (SpinnerSize2) {
     SpinnerSize2[SpinnerSize2["SMALL"] = 20] = "SMALL";
@@ -43585,14 +43648,14 @@ export default require => {
     const classes = (0, import_classnames3.default)(classes_exports.SPINNER, classes_exports.intentClass(intent), {
       [classes_exports.SPINNER_NO_SPIN]: value != null
     }, className);
-    return (0, import_react6.createElement)(tagName, __spreadValues({
+    return (0, import_react7.createElement)(tagName, __spreadValues({
       "aria-label": "loading",
       "aria-valuemax": 100,
       "aria-valuemin": 0,
       "aria-valuenow": value === void 0 ? void 0 : value * 100,
       className: classes,
       role: "progressbar"
-    }, htmlProps), (0, import_react6.createElement)(tagName, {
+    }, htmlProps), (0, import_react7.createElement)(tagName, {
       className: classes_exports.SPINNER_ANIMATION
     }, (0, import_jsx_runtime5.jsxs)("svg", {
       width: sizePx,
@@ -43631,16 +43694,16 @@ export default require => {
   };
   init_define_process();
   var import_classnames4 = __toESM(require_classnames());
-  var import_react8 = __toESM(require_react());
+  var import_react9 = __toESM(require_react());
   init_define_process();
-  var import_react7 = __toESM(require_react());
-  var useIsomorphicLayoutEffect = hasDOMEnvironment() ? import_react7.useLayoutEffect : import_react7.useEffect;
-  var Text = (0, import_react8.forwardRef)((_a, forwardedRef) => {
+  var import_react8 = __toESM(require_react());
+  var useIsomorphicLayoutEffect = hasDOMEnvironment() ? import_react8.useLayoutEffect : import_react8.useEffect;
+  var Text = (0, import_react9.forwardRef)((_a, forwardedRef) => {
     var _b = _a, {children, tagName = "div", title, className, ellipsize = false} = _b, htmlProps = __objRest(_b, ["children", "tagName", "title", "className", "ellipsize"]);
-    const contentMeasuringRef = (0, import_react8.useRef)();
-    const textRef = (0, import_react8.useMemo)(() => mergeRefs(contentMeasuringRef, forwardedRef), [forwardedRef]);
-    const [textContent, setTextContent] = (0, import_react8.useState)("");
-    const [isContentOverflowing, setIsContentOverflowing] = (0, import_react8.useState)();
+    const contentMeasuringRef = (0, import_react9.useRef)();
+    const textRef = (0, import_react9.useMemo)(() => mergeRefs(contentMeasuringRef, forwardedRef), [forwardedRef]);
+    const [textContent, setTextContent] = (0, import_react9.useState)("");
+    const [isContentOverflowing, setIsContentOverflowing] = (0, import_react9.useState)();
     useIsomorphicLayoutEffect(() => {
       var _a2;
       if (((_a2 = contentMeasuringRef.current) == null ? void 0 : _a2.textContent) != null) {
@@ -43648,7 +43711,7 @@ export default require => {
         setTextContent(contentMeasuringRef.current.textContent);
       }
     }, [contentMeasuringRef, children, ellipsize]);
-    return (0, import_react8.createElement)(tagName, __spreadProps(__spreadValues({}, htmlProps), {
+    return (0, import_react9.createElement)(tagName, __spreadProps(__spreadValues({}, htmlProps), {
       className: (0, import_classnames4.default)({
         [classes_exports.TEXT_OVERFLOW_ELLIPSIS]: ellipsize
       }, className),
@@ -43657,7 +43720,7 @@ export default require => {
     }), children);
   });
   Text.displayName = `${DISPLAYNAME_PREFIX}.Text`;
-  var Button = (0, import_react9.forwardRef)((props, ref) => {
+  var Button = (0, import_react10.forwardRef)((props, ref) => {
     const commonAttributes = useSharedButtonAttributes(props, ref);
     return (0, import_jsx_runtime6.jsx)("button", __spreadProps(__spreadValues(__spreadValues({
       type: "button"
@@ -43666,7 +43729,7 @@ export default require => {
     }));
   });
   Button.displayName = `${DISPLAYNAME_PREFIX}.Button`;
-  var AnchorButton = (0, import_react9.forwardRef)((props, ref) => {
+  var AnchorButton = (0, import_react10.forwardRef)((props, ref) => {
     const {href} = props;
     const commonProps = useSharedButtonAttributes(props, ref, {
       defaultTabIndex: 0,
@@ -43723,9 +43786,9 @@ export default require => {
   }
   init_define_process();
   var import_jsx_runtime7 = __toESM(require_jsx_runtime());
-  var import_react10 = __toESM(require_react());
+  var import_react11 = __toESM(require_react());
   var import_client = __toESM(require_client());
-  var import_react11 = __toESM(require_react(), 1);
+  var import_react12 = __toESM(require_react(), 1);
   var import_client2 = __toESM(require_client(), 1);
   init_define_process();
   var Vector3 = class {
@@ -43796,7 +43859,7 @@ export default require => {
       this.gameObjectIdentifier = gameObjectIdentifier;
     }
   };
-  var UnityComponent = class extends import_react11.default.Component {
+  var UnityComponent = class extends import_react12.default.Component {
     render() {
       const moduleInstance = getInstance();
       return (0, import_jsx_runtime8.jsxs)("div", {

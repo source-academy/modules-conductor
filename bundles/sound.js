@@ -46,15 +46,15 @@ export default require => {
       var fulfilled = value => {
         try {
           step(generator.next(value));
-        } catch (e3) {
-          reject(e3);
+        } catch (e4) {
+          reject(e4);
         }
       };
       var rejected = value => {
         try {
           step(generator.throw(value));
-        } catch (e3) {
-          reject(e3);
+        } catch (e4) {
+          reject(e4);
         }
       };
       var step = x => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
@@ -106,15 +106,15 @@ export default require => {
     }
   };
   var s = class extends o {
-    constructor(r2, o3, s4, e3) {
-      super(`${void 0 !== o3 ? `${e3 ? e3 + ":" : ""}${o3}${void 0 !== s4 ? ":" + s4 : ""}: ` : ""}${r2}`);
+    constructor(r2, o3, s4, e4) {
+      super(`${void 0 !== o3 ? `${e4 ? e4 + ":" : ""}${o3}${void 0 !== s4 ? ":" + s4 : ""}: ` : ""}${r2}`);
       __publicField(this, "name", "EvaluatorError");
       __publicField(this, "errorType", _.EVALUATOR);
       __publicField(this, "rawMessage");
       __publicField(this, "line");
       __publicField(this, "column");
       __publicField(this, "fileName");
-      (this.rawMessage = r2, this.line = o3, this.column = s4, this.fileName = e3);
+      (this.rawMessage = r2, this.line = o3, this.column = s4, this.fileName = e4);
     }
   };
   function e(r2) {
@@ -129,10 +129,10 @@ export default require => {
       if ("function" == typeof r3) return r3.name ? `function ${r3.name}` : "anonymous function";
       try {
         return (_a = JSON.stringify(r3)) != null ? _a : Object.prototype.toString.call(r3);
-      } catch (e3) {
+      } catch (e4) {
         try {
           return String(r3);
-        } catch (e4) {
+        } catch (e5) {
           return Object.prototype.toString.call(r3);
         }
       }
@@ -140,23 +140,23 @@ export default require => {
     return t3.length > 100 ? `${t3.slice(0, 100)}...` : t3;
   }
   var n = class extends s {
-    constructor(r2, t3, n3, o3, u3, a2, i) {
-      super(`${r2}: Expected ${n3}${t3 ? ` for ${t3}` : ""}, got ${e(o3)}.`, u3, a2, i);
+    constructor(r2, t3, n2, o3, u3, a2, i) {
+      super(`${r2}: Expected ${n2}${t3 ? ` for ${t3}` : ""}, got ${e(o3)}.`, u3, a2, i);
       __publicField(this, "name", "EvaluatorParameterTypeError");
       __publicField(this, "errorType", _.EVALUATOR_TYPE);
       __publicField(this, "funcName");
       __publicField(this, "paramName");
       __publicField(this, "expected");
       __publicField(this, "actual");
-      (this.funcName = r2, this.paramName = t3, this.expected = n3, this.actual = o3);
+      (this.funcName = r2, this.paramName = t3, this.expected = n2, this.actual = o3);
     }
   };
   var u = class extends n {
-    constructor(r2, t3, e3, n3, o3, u3, a2) {
-      super(e3, n3, (function (r3) {
+    constructor(r2, t3, e4, n2, o3, u3, a2) {
+      super(e4, n2, (function (r3) {
         if ("string" == typeof r3) return r3;
-        const {min: t4, max: e4, integer: n4 = true} = r3, o4 = n4 ? "integer" : "number";
-        return void 0 !== t4 && void 0 !== e4 ? `${o4} \u2208 [${t4}, ${e4}]` : void 0 !== t4 ? `${o4} \u2265 ${t4}` : void 0 !== e4 ? `${o4} \u2264 ${e4}` : o4;
+        const {min: t4, max: e5, integer: n3 = true} = r3, o4 = n3 ? "integer" : "number";
+        return void 0 !== t4 && void 0 !== e5 ? `${o4} \u2208 [${t4}, ${e5}]` : void 0 !== t4 ? `${o4} \u2265 ${t4}` : void 0 !== e5 ? `${o4} \u2264 ${e5}` : o4;
       })(t3), r2, o3, u3, a2);
       __publicField(this, "name", "EvaluatorNumberRangeError");
     }
@@ -168,13 +168,13 @@ export default require => {
       __publicField(this, "errorType", _.EVALUATOR_RUNTIME);
     }
   };
-  function f(r2, o3, t3, e3 = true) {
-    return "number" == typeof r2 && !Number.isNaN(r2) && (!(e3 && !Number.isInteger(r2)) && (!(void 0 !== o3 && r2 < o3) && !(void 0 !== t3 && r2 > t3)));
+  function p(r2, o3, t3, n2 = true) {
+    return "number" == typeof r2 && !Number.isNaN(r2) && (!(n2 && !Number.isInteger(r2)) && (!(void 0 !== o3 && r2 < o3) && !(void 0 !== t3 && r2 > t3)));
   }
-  function m(r2, t3, e3, n3, i = true, u3) {
-    if (!f(r2, e3, n3, i)) throw new u(r2, {
-      min: e3,
-      max: n3,
+  function l(o3, t3, n2, e4, i = true, u3) {
+    if (!p(o3, n2, e4, i)) throw new u(o3, {
+      min: n2,
+      max: e4,
       integer: i
     }, t3, u3);
   }
@@ -255,7 +255,7 @@ export default require => {
     return res + 12 * octave;
   }
   function midi_note_to_frequency(note) {
-    m(note, "midi_note_to_frequency");
+    l(note, "midi_note_to_frequency");
     return 440 * Math.pow(2, (note - 69) / 12);
   }
   function letter_name_to_frequency(note) {
@@ -308,7 +308,7 @@ export default require => {
   }
   function start_recording(mediaRecorder) {
     const data = [];
-    mediaRecorder.ondataavailable = e3 => e3.data.size && data.push(e3.data);
+    mediaRecorder.ondataavailable = e4 => e4.data.size && data.push(e4.data);
     mediaRecorder.start();
     mediaRecorder.onstop = () => process(data);
   }
@@ -596,11 +596,11 @@ export default require => {
     });
   }
   function stacking_adsr(waveform, base_frequency, duration, envelopes) {
-    function zip(lst, n3) {
+    function zip(lst, n2) {
       if ((0, import_list.is_null)(lst)) {
         return lst;
       }
-      return (0, import_list.pair)((0, import_list.pair)(n3, (0, import_list.head)(lst)), zip((0, import_list.tail)(lst), n3 + 1));
+      return (0, import_list.pair)((0, import_list.pair)(n2, (0, import_list.head)(lst)), zip((0, import_list.tail)(lst), n2 + 1));
     }
     const new_list = (0, import_list.map)(x => (0, import_list.tail)(x)((0, import_operators.callWithoutMetadata)(waveform, base_frequency * (0, import_list.head)(x), duration)), zip(envelopes, 1));
     return simultaneously(new_list);
@@ -647,10 +647,10 @@ export default require => {
       var len = src.length;
       var dst = "";
       var i = 0;
-      var n3;
+      var n2;
       while (len > 2) {
-        n3 = src[i] << 16 | src[i + 1] << 8 | src[i + 2];
-        dst += this.encLookup[n3 >> 12] + this.encLookup[n3 & 4095];
+        n2 = src[i] << 16 | src[i + 1] << 8 | src[i + 2];
+        dst += this.encLookup[n2 >> 12] + this.encLookup[n2 & 4095];
         len -= 3;
         i += 3;
       }
@@ -661,9 +661,9 @@ export default require => {
         dst += this.chars[n1];
         dst += this.chars[n22];
         if (len == 2) {
-          var n32 = (src[i++] & 15) << 2;
-          n32 |= (src[i] & 192) >> 6;
-          dst += this.chars[n32];
+          var n3 = (src[i++] & 15) << 2;
+          n3 |= (src[i] & 192) >> 6;
+          dst += this.chars[n3];
         }
         if (len == 1) dst += "=";
         dst += "=";
