@@ -88,6 +88,6 @@
         "name": "sound"
       }
     ],
-    "retType": "void"
+    "retType": "Promise<void>"
   }
 }
