@@ -50,7 +50,7 @@ export default require => {
   });
   var __decoratorMetadata = (array, target) => __defNormalProp(target, __knownSymbol("metadata"), array[3]);
   var __runInitializers = (array, flags, self, value) => {
-    for (var i = 0, fns = array[flags >> 1], n4 = fns && fns.length; i < n4; i++) flags & 1 ? fns[i].call(self) : value = fns[i].call(self, value);
+    for (var i = 0, fns = array[flags >> 1], n3 = fns && fns.length; i < n3; i++) flags & 1 ? fns[i].call(self) : value = fns[i].call(self, value);
     return value;
   };
   var __decorateElement = (array, flags, name, decorators, target, extra) => {
@@ -94,15 +94,15 @@ export default require => {
       var fulfilled = value => {
         try {
           step(generator.next(value));
-        } catch (e6) {
-          reject(e6);
+        } catch (e7) {
+          reject(e7);
         }
       };
       var rejected = value => {
         try {
           step(generator.throw(value));
-        } catch (e6) {
-          reject(e6);
+        } catch (e7) {
+          reject(e7);
         }
       };
       var step = x => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
@@ -123,9 +123,9 @@ export default require => {
         } : y, yes, no) : yes({
           value: y,
           done
-        })).catch(e6 => resume("throw", e6, yes, no));
-      } catch (e6) {
-        no(e6);
+        })).catch(e7 => resume("throw", e7, yes, no));
+      } catch (e7) {
+        no(e7);
       }
     }, method = (k, call, wait, clear) => it[k] = x => (call = new Promise((yes, no, run) => (run = () => resume(k, x, yes, no), q ? q.then(run) : run())), clear = () => q === wait && (q = 0), q = wait = call.then(clear, clear), call), q, it = {};
     return (generator = generator.apply(__this, __arguments), it[__knownSymbol("asyncIterator")] = () => it, method("next"), method("throw"), method("return"), it);
@@ -153,26 +153,26 @@ export default require => {
     }
   };
   var s2 = class extends o {
-    constructor(r2, o5, s5, e6) {
-      super(`${void 0 !== o5 ? `${e6 ? e6 + ":" : ""}${o5}${void 0 !== s5 ? ":" + s5 : ""}: ` : ""}${r2}`);
+    constructor(r2, o5, s5, e7) {
+      super(`${void 0 !== o5 ? `${e7 ? e7 + ":" : ""}${o5}${void 0 !== s5 ? ":" + s5 : ""}: ` : ""}${r2}`);
       __publicField(this, "name", "EvaluatorError");
       __publicField(this, "errorType", _.EVALUATOR);
       __publicField(this, "rawMessage");
       __publicField(this, "line");
       __publicField(this, "column");
       __publicField(this, "fileName");
-      (this.rawMessage = r2, this.line = o5, this.column = s5, this.fileName = e6);
+      (this.rawMessage = r2, this.line = o5, this.column = s5, this.fileName = e7);
     }
   };
   var s3 = class extends s2 {
-    constructor(r2, e6, s5, t5, o5, a3) {
-      super(`${r2} (expected ${e6}, got ${s5})`, t5, o5, a3);
+    constructor(r2, e7, s5, t5, o5, a3) {
+      super(`${r2} (expected ${e7}, got ${s5})`, t5, o5, a3);
       __publicField(this, "name", "EvaluatorTypeError");
       __publicField(this, "errorType", _.EVALUATOR_TYPE);
       __publicField(this, "rawMessage");
       __publicField(this, "expected");
       __publicField(this, "actual");
-      (this.rawMessage = r2, this.expected = e6, this.actual = s5);
+      (this.rawMessage = r2, this.expected = e7, this.actual = s5);
     }
   };
   var e = class extends s2 {
@@ -182,13 +182,13 @@ export default require => {
       __publicField(this, "errorType", _.EVALUATOR_RUNTIME);
     }
   };
-  function n3(n4, r2) {
+  function n2(n3, r2) {
     const t5 = {
-      args: n4,
+      args: n3,
       returnType: r2
     };
-    return function (n5, r3) {
-      n5.signature = t5;
+    return function (n4, r3) {
+      n4.signature = t5;
     };
   }
   var R;
@@ -196,8 +196,8 @@ export default require => {
     (R2[R2.CALL = 0] = "CALL", R2[R2.RETURN = 1] = "RETURN", R2[R2.RETURN_ERR = 2] = "RETURN_ERR");
   })(R || (R = {}));
   var O;
-  !(function (O3) {
-    (O3[O3.PROTOCOL_VERSION = 0] = "PROTOCOL_VERSION", O3[O3.PROTOCOL_MIN_VERSION = 0] = "PROTOCOL_MIN_VERSION", O3[O3.SETUP_MESSAGES_BUFFER_SIZE = 10] = "SETUP_MESSAGES_BUFFER_SIZE");
+  !(function (O2) {
+    (O2[O2.PROTOCOL_VERSION = 0] = "PROTOCOL_VERSION", O2[O2.PROTOCOL_MIN_VERSION = 0] = "PROTOCOL_MIN_VERSION", O2[O2.SETUP_MESSAGES_BUFFER_SIZE = 10] = "SETUP_MESSAGES_BUFFER_SIZE");
   })(O || (O = {}));
   var o3 = class {
     constructor(t5, o5, r2) {
@@ -213,10 +213,10 @@ export default require => {
           if (!r2.signature || "function" != typeof r2 || "string" != typeof o5) throw new s(`'${String(o5)}' is not an exportable method`);
           const s5 = r2.bind(this);
           s5.signature = r2.signature;
-          const e6 = yield this.evaluator.closure_make(r2.signature, s5);
+          const e7 = yield this.evaluator.closure_make(r2.signature, s5);
           this.exports.push({
             symbol: o5,
-            value: e6,
+            value: e7,
             signature: r2.signature
           });
         }
@@ -224,10 +224,10 @@ export default require => {
     }
   };
   __publicField(o3, "channelAttach");
-  var O2;
-  !(function (O3) {
-    (O3[O3.VOID = 0] = "VOID", O3[O3.BOOLEAN = 1] = "BOOLEAN", O3[O3.NUMBER = 2] = "NUMBER", O3[O3.CONST_STRING = 3] = "CONST_STRING", O3[O3.EMPTY_LIST = 4] = "EMPTY_LIST", O3[O3.PAIR = 5] = "PAIR", O3[O3.ARRAY = 6] = "ARRAY", O3[O3.CLOSURE = 7] = "CLOSURE", O3[O3.OPAQUE = 8] = "OPAQUE", O3[O3.LIST = 9] = "LIST");
-  })(O2 || (O2 = {}));
+  var E;
+  !(function (E2) {
+    (E2[E2.VOID = 0] = "VOID", E2[E2.BOOLEAN = 1] = "BOOLEAN", E2[E2.NUMBER = 2] = "NUMBER", E2[E2.CONST_STRING = 3] = "CONST_STRING", E2[E2.EMPTY_LIST = 4] = "EMPTY_LIST", E2[E2.PAIR = 5] = "PAIR", E2[E2.ARRAY = 6] = "ARRAY", E2[E2.CLOSURE = 7] = "CLOSURE", E2[E2.OPAQUE = 8] = "OPAQUE", E2[E2.LIST = 9] = "LIST", E2[E2.ANY = 10] = "ANY", E2[E2.INTEGER = 11] = "INTEGER");
+  })(E || (E = {}));
   var a2;
   !(function (a3) {
     (a3[a3.HELLO = 0] = "HELLO", a3[a3.ABORT = 1] = "ABORT", a3[a3.ENTRY = 2] = "ENTRY");
@@ -236,21 +236,23 @@ export default require => {
   !(function (N2) {
     (N2[N2.ONLINE = 0] = "ONLINE", N2[N2.EVAL_READY = 1] = "EVAL_READY", N2[N2.RUNNING = 2] = "RUNNING", N2[N2.WAITING = 3] = "WAITING", N2[N2.BREAKPOINT = 4] = "BREAKPOINT", N2[N2.STOPPED = 5] = "STOPPED", N2[N2.ERROR = 6] = "ERROR");
   })(N || (N = {}));
-  var e4 = {
-    [O2.VOID]: false,
-    [O2.BOOLEAN]: false,
-    [O2.NUMBER]: false,
-    [O2.CONST_STRING]: false,
-    [O2.EMPTY_LIST]: true,
-    [O2.PAIR]: true,
-    [O2.ARRAY]: true,
-    [O2.CLOSURE]: true,
-    [O2.OPAQUE]: true,
-    [O2.LIST]: true
+  var e5 = {
+    [E.VOID]: false,
+    [E.BOOLEAN]: false,
+    [E.NUMBER]: false,
+    [E.CONST_STRING]: false,
+    [E.EMPTY_LIST]: true,
+    [E.PAIR]: true,
+    [E.ARRAY]: true,
+    [E.CLOSURE]: true,
+    [E.OPAQUE]: true,
+    [E.LIST]: true,
+    [E.ANY]: false,
+    [E.INTEGER]: false
   };
   function t4(t5 = null) {
     return {
-      type: O2.EMPTY_LIST,
+      type: E.EMPTY_LIST,
       value: t5
     };
   }
@@ -260,10 +262,10 @@ export default require => {
   function make_tree(evaluator, value, left, right) {
     return __async(this, null, function* () {
       if (!(yield is_tree(evaluator, left))) {
-        throw new s3(`${make_tree.name} expects binary tree for left`, "binary tree", O2[left.type]);
+        throw new s3(`${make_tree.name} expects binary tree for left`, "binary tree", E[left.type]);
       }
       if (!(yield is_tree(evaluator, right))) {
-        throw new s3(`${make_tree.name} expects binary tree for right`, "binary tree", O2[right.type]);
+        throw new s3(`${make_tree.name} expects binary tree for right`, "binary tree", E[right.type]);
       }
       const rightPair = yield evaluator.pair_make(right, t4());
       const leftPair = yield evaluator.pair_make(left, rightPair);
@@ -273,29 +275,29 @@ export default require => {
   function is_tree(evaluator, value) {
     return __async(this, null, function* () {
       if (!value) return false;
-      if (value.type === O2.EMPTY_LIST) return true;
-      if (value.type !== O2.PAIR) return false;
+      if (value.type === E.EMPTY_LIST) return true;
+      if (value.type !== E.PAIR) return false;
       const rest = yield evaluator.pair_tail(value);
-      if (rest.type !== O2.PAIR) return false;
+      if (rest.type !== E.PAIR) return false;
       const left = yield evaluator.pair_head(rest);
       if (!(yield is_tree(evaluator, left))) return false;
       const rightRest = yield evaluator.pair_tail(rest);
-      if (rightRest.type !== O2.PAIR) return false;
+      if (rightRest.type !== E.PAIR) return false;
       const right = yield evaluator.pair_head(rightRest);
       if (!(yield is_tree(evaluator, right))) return false;
       const tail = yield evaluator.pair_tail(rightRest);
-      return tail.type === O2.EMPTY_LIST;
+      return tail.type === E.EMPTY_LIST;
     });
   }
   function is_empty_tree(value) {
-    return (value == null ? void 0 : value.type) === O2.EMPTY_LIST;
+    return (value == null ? void 0 : value.type) === E.EMPTY_LIST;
   }
   function assertNonEmptyTree(evaluator, value, funcName) {
     return __async(this, null, function* () {
       if (!value || !(yield is_tree(evaluator, value))) {
-        throw new s3(`${funcName} expects binary tree`, "binary tree", value ? O2[value.type] : "undefined");
+        throw new s3(`${funcName} expects binary tree`, "binary tree", value ? E[value.type] : "undefined");
       }
-      if (value.type !== O2.PAIR) {
+      if (value.type !== E.PAIR) {
         throw new e(`${funcName} received an empty binary tree!`);
       }
       return value;
@@ -323,7 +325,7 @@ export default require => {
     });
   }
   var _right_branch_dec, _left_branch_dec, _entry_dec, _is_empty_tree_dec, _is_tree_dec, _make_tree_dec, _make_empty_tree_dec, _a, _init;
-  var BinaryTreeModulePlugin = class extends (_a = o3, _make_empty_tree_dec = [n3([], O2.EMPTY_LIST)], _make_tree_dec = [n3([O2.OPAQUE, O2.LIST, O2.LIST], O2.PAIR)], _is_tree_dec = [n3([], O2.BOOLEAN)], _is_empty_tree_dec = [n3([], O2.BOOLEAN)], _entry_dec = [n3([O2.LIST], O2.OPAQUE)], _left_branch_dec = [n3([O2.LIST], O2.LIST)], _right_branch_dec = [n3([O2.LIST], O2.LIST)], _a) {
+  var BinaryTreeModulePlugin = class extends (_a = o3, _make_empty_tree_dec = [n2([], E.EMPTY_LIST)], _make_tree_dec = [n2([E.OPAQUE, E.LIST, E.LIST], E.PAIR)], _is_tree_dec = [n2([E.ANY], E.BOOLEAN)], _is_empty_tree_dec = [n2([E.ANY], E.BOOLEAN)], _entry_dec = [n2([E.LIST], E.OPAQUE)], _left_branch_dec = [n2([E.LIST], E.LIST)], _right_branch_dec = [n2([E.LIST], E.LIST)], _a) {
     constructor() {
       super(...arguments);
       __runInitializers(_init, 5, this);
@@ -344,7 +346,7 @@ export default require => {
       return __asyncGenerator(this, null, function* () {
         if (!value) throw new e("is_tree expects 1 argument, received 0");
         return {
-          type: O2.BOOLEAN,
+          type: E.BOOLEAN,
           value: yield new __await(is_tree(this.evaluator, value))
         };
       });
@@ -353,7 +355,7 @@ export default require => {
       return __asyncGenerator(this, null, function* () {
         if (!value) throw new e("is_empty_tree expects 1 argument, received 0");
         return {
-          type: O2.BOOLEAN,
+          type: E.BOOLEAN,
           value: is_empty_tree(value)
         };
       });

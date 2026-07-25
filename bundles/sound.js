@@ -51,7 +51,7 @@ export default require => {
   });
   var __decoratorMetadata = (array, target) => __defNormalProp(target, __knownSymbol("metadata"), array[3]);
   var __runInitializers = (array, flags, self2, value) => {
-    for (var i = 0, fns = array[flags >> 1], n6 = fns && fns.length; i < n6; i++) flags & 1 ? fns[i].call(self2) : value = fns[i].call(self2, value);
+    for (var i = 0, fns = array[flags >> 1], n5 = fns && fns.length; i < n5; i++) flags & 1 ? fns[i].call(self2) : value = fns[i].call(self2, value);
     return value;
   };
   var __decorateElement = (array, flags, name, decorators, target, extra) => {
@@ -95,15 +95,15 @@ export default require => {
       var fulfilled = value => {
         try {
           step(generator.next(value));
-        } catch (e5) {
-          reject(e5);
+        } catch (e6) {
+          reject(e6);
         }
       };
       var rejected = value => {
         try {
           step(generator.throw(value));
-        } catch (e5) {
-          reject(e5);
+        } catch (e6) {
+          reject(e6);
         }
       };
       var step = x => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
@@ -124,9 +124,9 @@ export default require => {
         } : y, yes, no) : yes({
           value: y,
           done
-        })).catch(e5 => resume("throw", e5, yes, no));
-      } catch (e5) {
-        no(e5);
+        })).catch(e6 => resume("throw", e6, yes, no));
+      } catch (e6) {
+        no(e6);
       }
     }, method = (k, call, wait, clear) => it[k] = x => (call = new Promise((yes, no, run) => (run = () => resume(k, x, yes, no), q ? q.then(run) : run())), clear = () => q === wait && (q = 0), q = wait = call.then(clear, clear), call), q, it = {};
     return (generator = generator.apply(__this, __arguments), it[__knownSymbol("asyncIterator")] = () => it, method("next"), method("throw"), method("return"), it);
@@ -182,15 +182,15 @@ export default require => {
     }
   };
   var s2 = class extends o {
-    constructor(r3, o4, s7, e5) {
-      super(`${void 0 !== o4 ? `${e5 ? e5 + ":" : ""}${o4}${void 0 !== s7 ? ":" + s7 : ""}: ` : ""}${r3}`);
+    constructor(r3, o4, s7, e6) {
+      super(`${void 0 !== o4 ? `${e6 ? e6 + ":" : ""}${o4}${void 0 !== s7 ? ":" + s7 : ""}: ` : ""}${r3}`);
       __publicField(this, "name", "EvaluatorError");
       __publicField(this, "errorType", _.EVALUATOR);
       __publicField(this, "rawMessage");
       __publicField(this, "line");
       __publicField(this, "column");
       __publicField(this, "fileName");
-      (this.rawMessage = r3, this.line = o4, this.column = s7, this.fileName = e5);
+      (this.rawMessage = r3, this.line = o4, this.column = s7, this.fileName = e6);
     }
   };
   function e(r3) {
@@ -205,10 +205,10 @@ export default require => {
       if ("function" == typeof r4) return r4.name ? `function ${r4.name}` : "anonymous function";
       try {
         return (_a2 = JSON.stringify(r4)) != null ? _a2 : Object.prototype.toString.call(r4);
-      } catch (e5) {
+      } catch (e6) {
         try {
           return String(r4);
-        } catch (e6) {
+        } catch (e7) {
           return Object.prototype.toString.call(r4);
         }
       }
@@ -216,23 +216,23 @@ export default require => {
     return t5.length > 100 ? `${t5.slice(0, 100)}...` : t5;
   }
   var n = class extends s2 {
-    constructor(r3, t5, n6, o4, u3, a4, i) {
-      super(`${r3}: Expected ${n6}${t5 ? ` for ${t5}` : ""}, got ${e(o4)}.`, u3, a4, i);
+    constructor(r3, t5, n5, o4, u3, a4, i) {
+      super(`${r3}: Expected ${n5}${t5 ? ` for ${t5}` : ""}, got ${e(o4)}.`, u3, a4, i);
       __publicField(this, "name", "EvaluatorParameterTypeError");
       __publicField(this, "errorType", _.EVALUATOR_TYPE);
       __publicField(this, "funcName");
       __publicField(this, "paramName");
       __publicField(this, "expected");
       __publicField(this, "actual");
-      (this.funcName = r3, this.paramName = t5, this.expected = n6, this.actual = o4);
+      (this.funcName = r3, this.paramName = t5, this.expected = n5, this.actual = o4);
     }
   };
   var u = class extends n {
-    constructor(r3, t5, e5, n6, o4, u3, a4) {
-      super(e5, n6, (function (r4) {
+    constructor(r3, t5, e6, n5, o4, u3, a4) {
+      super(e6, n5, (function (r4) {
         if ("string" == typeof r4) return r4;
-        const {min: t6, max: e6, integer: n7 = true} = r4, o5 = n7 ? "integer" : "number";
-        return void 0 !== t6 && void 0 !== e6 ? `${o5} \u2208 [${t6}, ${e6}]` : void 0 !== t6 ? `${o5} \u2265 ${t6}` : void 0 !== e6 ? `${o5} \u2264 ${e6}` : o5;
+        const {min: t6, max: e7, integer: n6 = true} = r4, o5 = n6 ? "integer" : "number";
+        return void 0 !== t6 && void 0 !== e7 ? `${o5} \u2208 [${t6}, ${e7}]` : void 0 !== t6 ? `${o5} \u2265 ${t6}` : void 0 !== e7 ? `${o5} \u2264 ${e7}` : o5;
       })(t5), r3, o4, u3, a4);
       __publicField(this, "name", "EvaluatorNumberRangeError");
     }
@@ -244,13 +244,13 @@ export default require => {
       __publicField(this, "errorType", _.EVALUATOR_RUNTIME);
     }
   };
-  function f(r3, o4, t5, e5 = true) {
-    return "number" == typeof r3 && !Number.isNaN(r3) && (!(e5 && !Number.isInteger(r3)) && (!(void 0 !== o4 && r3 < o4) && !(void 0 !== t5 && r3 > t5)));
+  function p(r3, o4, t5, n5 = true) {
+    return "number" == typeof r3 && !Number.isNaN(r3) && (!(n5 && !Number.isInteger(r3)) && (!(void 0 !== o4 && r3 < o4) && !(void 0 !== t5 && r3 > t5)));
   }
-  function m(r3, t5, e5, n6, i = true, u3) {
-    if (!f(r3, e5, n6, i)) throw new u(r3, {
-      min: e5,
-      max: n6,
+  function l(o4, t5, n5, e6, i = true, u3) {
+    if (!p(o4, n5, e6, i)) throw new u(o4, {
+      min: n5,
+      max: e6,
       integer: i
     }, t5, u3);
   }
@@ -290,62 +290,62 @@ export default require => {
     }
   };
   function s4(s7, o4) {
-    const c = [];
+    const c2 = [];
     let a4 = 0;
-    return (s7.subscribe(n6 => __async(null, null, function* () {
+    return (s7.subscribe(n5 => __async(null, null, function* () {
       var _a2, _b, _c, _d;
-      switch (n6.type) {
+      switch (n5.type) {
         case R.CALL:
           {
-            const {fn: r3, args: c2, invokeId: a5} = n6.data;
+            const {fn: r3, args: c3, invokeId: a5} = n5.data;
             try {
-              const t5 = yield o4[r3](...c2);
+              const t5 = yield o4[r3](...c3);
               a5 > 0 && s7.send(new a2(a5, t5));
-            } catch (e5) {
-              a5 > 0 && s7.send(new r2(a5, e5));
+            } catch (e6) {
+              a5 > 0 && s7.send(new r2(a5, e6));
             }
             break;
           }
         case R.RETURN:
           {
-            const {invokeId: e5, res: t5} = n6.data;
-            ((_b = (_a2 = c[e5]) == null ? void 0 : _a2[0]) == null ? void 0 : _b.call(_a2, t5), delete c[e5]);
+            const {invokeId: e6, res: t5} = n5.data;
+            ((_b = (_a2 = c2[e6]) == null ? void 0 : _a2[0]) == null ? void 0 : _b.call(_a2, t5), delete c2[e6]);
             break;
           }
         case R.RETURN_ERR:
           {
-            const {invokeId: e5, err: t5} = n6.data;
-            ((_d = (_c = c[e5]) == null ? void 0 : _c[1]) == null ? void 0 : _d.call(_c, t5), delete c[e5]);
+            const {invokeId: e6, err: t5} = n5.data;
+            ((_d = (_c = c2[e6]) == null ? void 0 : _c[1]) == null ? void 0 : _d.call(_c, t5), delete c2[e6]);
             break;
           }
       }
     })), new Proxy({}, {
-      get(e5, t5, r3) {
-        const o5 = Reflect.get(e5, t5, r3);
+      get(e6, t5, r3) {
+        const o5 = Reflect.get(e6, t5, r3);
         if (o5) return o5;
-        const i = "string" == typeof t5 && "$" === t5.charAt(0) ? (...e6) => {
-          s7.send(new t3(t5, e6, 0));
-        } : (...e6) => {
+        const i = "string" == typeof t5 && "$" === t5.charAt(0) ? (...e7) => {
+          s7.send(new t3(t5, e7, 0));
+        } : (...e7) => {
           const r4 = ++a4;
-          return (s7.send(new t3(t5, e6, r4)), new Promise((e7, t6) => {
-            c[r4] = [e7, t6];
+          return (s7.send(new t3(t5, e7, r4)), new Promise((e8, t6) => {
+            c2[r4] = [e8, t6];
           }));
         };
-        return (Reflect.set(e5, t5, i, r3), i);
+        return (Reflect.set(e6, t5, i, r3), i);
       }
     }));
   }
   var O;
-  !(function (O3) {
-    (O3[O3.PROTOCOL_VERSION = 0] = "PROTOCOL_VERSION", O3[O3.PROTOCOL_MIN_VERSION = 0] = "PROTOCOL_MIN_VERSION", O3[O3.SETUP_MESSAGES_BUFFER_SIZE = 10] = "SETUP_MESSAGES_BUFFER_SIZE");
+  !(function (O2) {
+    (O2[O2.PROTOCOL_VERSION = 0] = "PROTOCOL_VERSION", O2[O2.PROTOCOL_MIN_VERSION = 0] = "PROTOCOL_MIN_VERSION", O2[O2.SETUP_MESSAGES_BUFFER_SIZE = 10] = "SETUP_MESSAGES_BUFFER_SIZE");
   })(O || (O = {}));
-  function n5(n6, r3) {
+  function n4(n5, r3) {
     const t5 = {
-      args: n6,
+      args: n5,
       returnType: r3
     };
-    return function (n7, r4) {
-      n7.signature = t5;
+    return function (n6, r4) {
+      n6.signature = t5;
     };
   }
   var o3 = class {
@@ -362,10 +362,10 @@ export default require => {
           if (!r3.signature || "function" != typeof r3 || "string" != typeof o4) throw new s(`'${String(o4)}' is not an exportable method`);
           const s7 = r3.bind(this);
           s7.signature = r3.signature;
-          const e5 = yield this.evaluator.closure_make(r3.signature, s7);
+          const e6 = yield this.evaluator.closure_make(r3.signature, s7);
           this.exports.push({
             symbol: o4,
-            value: e5,
+            value: e6,
             signature: r3.signature
           });
         }
@@ -373,10 +373,10 @@ export default require => {
     }
   };
   __publicField(o3, "channelAttach");
-  var O2;
-  !(function (O3) {
-    (O3[O3.VOID = 0] = "VOID", O3[O3.BOOLEAN = 1] = "BOOLEAN", O3[O3.NUMBER = 2] = "NUMBER", O3[O3.CONST_STRING = 3] = "CONST_STRING", O3[O3.EMPTY_LIST = 4] = "EMPTY_LIST", O3[O3.PAIR = 5] = "PAIR", O3[O3.ARRAY = 6] = "ARRAY", O3[O3.CLOSURE = 7] = "CLOSURE", O3[O3.OPAQUE = 8] = "OPAQUE", O3[O3.LIST = 9] = "LIST");
-  })(O2 || (O2 = {}));
+  var E;
+  !(function (E2) {
+    (E2[E2.VOID = 0] = "VOID", E2[E2.BOOLEAN = 1] = "BOOLEAN", E2[E2.NUMBER = 2] = "NUMBER", E2[E2.CONST_STRING = 3] = "CONST_STRING", E2[E2.EMPTY_LIST = 4] = "EMPTY_LIST", E2[E2.PAIR = 5] = "PAIR", E2[E2.ARRAY = 6] = "ARRAY", E2[E2.CLOSURE = 7] = "CLOSURE", E2[E2.OPAQUE = 8] = "OPAQUE", E2[E2.LIST = 9] = "LIST", E2[E2.ANY = 10] = "ANY", E2[E2.INTEGER = 11] = "INTEGER");
+  })(E || (E = {}));
   var a3;
   !(function (a4) {
     (a4[a4.HELLO = 0] = "HELLO", a4[a4.ABORT = 1] = "ABORT", a4[a4.ENTRY = 2] = "ENTRY");
@@ -392,7 +392,7 @@ export default require => {
     Accidental2["NATURAL"] = "\u266E";
   })(Accidental || (Accidental = {}));
   function midi_note_to_frequency(note) {
-    m(note, "midi_note_to_frequency");
+    l(note, "midi_note_to_frequency");
     return 440 * Math.pow(2, (note - 69) / 12);
   }
   var SHARP = Accidental.SHARP;
@@ -994,37 +994,37 @@ to obtain permission to use microphone.`);
     const wave = function (t5) {
       return __asyncGenerator(this, null, function* () {
         const result = yield* __yieldStar(evaluator.closure_call_unchecked(closure, [{
-          type: O2.NUMBER,
+          type: E.NUMBER,
           value: t5
         }]));
-        if (result.type !== O2.NUMBER) {
-          throw new e2(`Expected a wave to return a number, got ${O2[result.type]}`);
+        if (result.type !== E.NUMBER) {
+          throw new e2(`Expected a wave to return a number, got ${E[result.type]}`);
         }
         return result.value;
       });
     };
     const syncCall = (_a2 = evaluator.closure_call_sync) == null ? void 0 : _a2.bind(evaluator);
     const probe = syncCall == null ? void 0 : syncCall(closure, [{
-      type: O2.NUMBER,
+      type: E.NUMBER,
       value: 0
     }]);
     if (probe !== void 0) {
-      if (probe.type !== O2.NUMBER) {
-        throw new e2(`Expected a wave to return a number, got ${O2[probe.type]}`);
+      if (probe.type !== E.NUMBER) {
+        throw new e2(`Expected a wave to return a number, got ${E[probe.type]}`);
       }
       const probedSample = [0, probe.value];
       Object.assign(wave, {
         sync: t5 => {
           if (t5 === probedSample[0]) return probedSample[1];
           const result = syncCall(closure, [{
-            type: O2.NUMBER,
+            type: E.NUMBER,
             value: t5
           }]);
           if (result === void 0) {
             throw new e2("Expected a wave to consistently return a number");
           }
-          if (result.type !== O2.NUMBER) {
-            throw new e2(`Expected a wave to return a number, got ${O2[result.type]}`);
+          if (result.type !== E.NUMBER) {
+            throw new e2(`Expected a wave to return a number, got ${E[result.type]}`);
           }
           return result.value;
         }
@@ -1044,7 +1044,7 @@ to obtain permission to use microphone.`);
     function conductorWave(t5) {
       return __asyncGenerator(this, null, function* () {
         return {
-          type: O2.NUMBER,
+          type: E.NUMBER,
           value: yield* __yieldStar(wave(t5.value))
         };
       });
@@ -1053,14 +1053,14 @@ to obtain permission to use microphone.`);
       const sync = wave.sync;
       Object.assign(conductorWave, {
         sync: t5 => ({
-          type: O2.NUMBER,
+          type: E.NUMBER,
           value: sync(t5.value)
         })
       });
     }
     const closurePromise = evaluator.closure_make({
-      returnType: O2.NUMBER,
-      args: [O2.NUMBER]
+      returnType: E.NUMBER,
+      args: [E.NUMBER]
     }, conductorWave);
     encoded.set(wave, closurePromise);
     return closurePromise;
@@ -1071,17 +1071,17 @@ to obtain permission to use microphone.`);
       const rightClosure = sound.rightWave === sound.leftWave ? leftClosure : yield waveToConductorClosure(evaluator, sound.rightWave);
       const wavesPair = yield evaluator.pair_make(leftClosure, rightClosure);
       return evaluator.pair_make(wavesPair, {
-        type: O2.NUMBER,
+        type: E.NUMBER,
         value: sound.duration
       });
     });
   }
   function isPairLike(value) {
-    return value.type === O2.PAIR || value.type === O2.ARRAY;
+    return value.type === E.PAIR || value.type === E.ARRAY;
   }
   function readListElements(evaluator, value) {
     return __async(this, null, function* () {
-      if (value.type === O2.ARRAY) {
+      if (value.type === E.ARRAY) {
         const length = yield evaluator.array_length(value);
         const elements2 = [];
         for (let i = 0; i < length; i += 1) {
@@ -1091,7 +1091,7 @@ to obtain permission to use microphone.`);
       }
       const elements = [];
       let current = value;
-      while (current.type === O2.PAIR) {
+      while (current.type === E.PAIR) {
         elements.push(yield evaluator.pair_head(current));
         current = yield evaluator.pair_tail(current);
       }
@@ -1106,12 +1106,12 @@ to obtain permission to use microphone.`);
       }
       const wavesTv = yield evaluator.pair_head(value);
       const durationTv = yield evaluator.pair_tail(value);
-      if (!isPairLike(wavesTv) || durationTv.type !== O2.NUMBER) {
+      if (!isPairLike(wavesTv) || durationTv.type !== E.NUMBER) {
         throw new e2(invalidMessage);
       }
       const leftTv = yield evaluator.pair_head(wavesTv);
       const rightTv = yield evaluator.pair_tail(wavesTv);
-      if (leftTv.type !== O2.CLOSURE || rightTv.type !== O2.CLOSURE) {
+      if (leftTv.type !== E.CLOSURE || rightTv.type !== E.CLOSURE) {
         throw new e2(invalidMessage);
       }
       const leftWave = closureToWave(evaluator, leftTv);
@@ -1136,8 +1136,8 @@ to obtain permission to use microphone.`);
   function transformerToConductor(evaluator, transformer) {
     return __async(this, null, function* () {
       return evaluator.closure_make({
-        returnType: O2.PAIR,
-        args: [O2.PAIR]
+        returnType: E.PAIR,
+        args: [E.PAIR]
       }, function (soundTv) {
         return __asyncGenerator(this, null, function* () {
           const sound = yield new __await(conductorToSound(evaluator, soundTv));
@@ -1149,7 +1149,7 @@ to obtain permission to use microphone.`);
   function soundPromiseToConductor(evaluator, promise) {
     return __async(this, null, function* () {
       return evaluator.closure_make({
-        returnType: O2.PAIR,
+        returnType: E.PAIR,
         args: []
       }, function () {
         return __asyncGenerator(this, null, function* () {
@@ -1159,7 +1159,7 @@ to obtain permission to use microphone.`);
     });
   }
   var _violin_dec, _trombone_dec, _piano_dec, _cello_dec, _bell_dec, _pan_mod_dec, _pan_dec, _squash_dec, _phase_mod_dec, _stacking_adsr_dec, _adsr_dec, _simultaneously_dec, _consecutively_dec, _sawtooth_sound_dec, _sawtooth_wave_dec, _triangle_sound_dec, _triangle_wave_dec, _square_sound_dec, _square_wave_dec, _sine_sound_dec, _sine_wave_dec, _silence_sound_dec, _silence_wave_dec, _noise_sound_dec, _noise_wave_dec, _stop_dec, _play_dec, _play_waves_dec, _play_wave_dec, _record_for_dec, _record_dec, _init_record_dec, _is_sound_dec, _get_duration_dec, _get_right_wave_dec, _get_left_wave_dec, _get_wave_dec, _make_stereo_sound_dec, _make_sound_dec, _a, _init;
-  var SoundModulePlugin = class extends (_a = o3, _make_sound_dec = [n5([O2.CLOSURE, O2.NUMBER], O2.PAIR)], _make_stereo_sound_dec = [n5([O2.CLOSURE, O2.CLOSURE, O2.NUMBER], O2.PAIR)], _get_wave_dec = [n5([O2.PAIR], O2.CLOSURE)], _get_left_wave_dec = [n5([O2.PAIR], O2.CLOSURE)], _get_right_wave_dec = [n5([O2.PAIR], O2.CLOSURE)], _get_duration_dec = [n5([O2.PAIR], O2.NUMBER)], _is_sound_dec = [n5([], O2.BOOLEAN)], _init_record_dec = [n5([], O2.CONST_STRING)], _record_dec = [n5([O2.NUMBER], O2.CLOSURE)], _record_for_dec = [n5([O2.NUMBER, O2.NUMBER], O2.CLOSURE)], _play_wave_dec = [n5([O2.CLOSURE, O2.NUMBER], O2.PAIR)], _play_waves_dec = [n5([O2.CLOSURE, O2.CLOSURE, O2.NUMBER], O2.PAIR)], _play_dec = [n5([O2.PAIR], O2.PAIR)], _stop_dec = [n5([], O2.VOID)], _noise_wave_dec = [n5([], O2.CLOSURE)], _noise_sound_dec = [n5([O2.NUMBER], O2.PAIR)], _silence_wave_dec = [n5([], O2.CLOSURE)], _silence_sound_dec = [n5([O2.NUMBER], O2.PAIR)], _sine_wave_dec = [n5([O2.NUMBER], O2.CLOSURE)], _sine_sound_dec = [n5([O2.NUMBER, O2.NUMBER], O2.PAIR)], _square_wave_dec = [n5([O2.NUMBER], O2.CLOSURE)], _square_sound_dec = [n5([O2.NUMBER, O2.NUMBER], O2.PAIR)], _triangle_wave_dec = [n5([O2.NUMBER], O2.CLOSURE)], _triangle_sound_dec = [n5([O2.NUMBER, O2.NUMBER], O2.PAIR)], _sawtooth_wave_dec = [n5([O2.NUMBER], O2.CLOSURE)], _sawtooth_sound_dec = [n5([O2.NUMBER, O2.NUMBER], O2.PAIR)], _consecutively_dec = [n5([O2.LIST], O2.PAIR)], _simultaneously_dec = [n5([O2.LIST], O2.PAIR)], _adsr_dec = [n5([O2.NUMBER, O2.NUMBER, O2.NUMBER, O2.NUMBER], O2.CLOSURE)], _stacking_adsr_dec = [n5([O2.CLOSURE, O2.NUMBER, O2.NUMBER, O2.LIST], O2.PAIR)], _phase_mod_dec = [n5([O2.NUMBER, O2.NUMBER, O2.NUMBER], O2.CLOSURE)], _squash_dec = [n5([O2.PAIR], O2.PAIR)], _pan_dec = [n5([O2.NUMBER], O2.CLOSURE)], _pan_mod_dec = [n5([O2.PAIR], O2.CLOSURE)], _bell_dec = [n5([O2.NUMBER, O2.NUMBER], O2.PAIR)], _cello_dec = [n5([O2.NUMBER, O2.NUMBER], O2.PAIR)], _piano_dec = [n5([O2.NUMBER, O2.NUMBER], O2.PAIR)], _trombone_dec = [n5([O2.NUMBER, O2.NUMBER], O2.PAIR)], _violin_dec = [n5([O2.NUMBER, O2.NUMBER], O2.PAIR)], _a) {
+  var SoundModulePlugin = class extends (_a = o3, _make_sound_dec = [n4([E.CLOSURE, E.NUMBER], E.PAIR)], _make_stereo_sound_dec = [n4([E.CLOSURE, E.CLOSURE, E.NUMBER], E.PAIR)], _get_wave_dec = [n4([E.PAIR], E.CLOSURE)], _get_left_wave_dec = [n4([E.PAIR], E.CLOSURE)], _get_right_wave_dec = [n4([E.PAIR], E.CLOSURE)], _get_duration_dec = [n4([E.PAIR], E.NUMBER)], _is_sound_dec = [n4([E.ANY], E.BOOLEAN)], _init_record_dec = [n4([], E.CONST_STRING)], _record_dec = [n4([E.NUMBER], E.CLOSURE)], _record_for_dec = [n4([E.NUMBER, E.NUMBER], E.CLOSURE)], _play_wave_dec = [n4([E.CLOSURE, E.NUMBER], E.PAIR)], _play_waves_dec = [n4([E.CLOSURE, E.CLOSURE, E.NUMBER], E.PAIR)], _play_dec = [n4([E.PAIR], E.PAIR)], _stop_dec = [n4([], E.VOID)], _noise_wave_dec = [n4([], E.CLOSURE)], _noise_sound_dec = [n4([E.NUMBER], E.PAIR)], _silence_wave_dec = [n4([], E.CLOSURE)], _silence_sound_dec = [n4([E.NUMBER], E.PAIR)], _sine_wave_dec = [n4([E.NUMBER], E.CLOSURE)], _sine_sound_dec = [n4([E.NUMBER, E.NUMBER], E.PAIR)], _square_wave_dec = [n4([E.NUMBER], E.CLOSURE)], _square_sound_dec = [n4([E.NUMBER, E.NUMBER], E.PAIR)], _triangle_wave_dec = [n4([E.NUMBER], E.CLOSURE)], _triangle_sound_dec = [n4([E.NUMBER, E.NUMBER], E.PAIR)], _sawtooth_wave_dec = [n4([E.NUMBER], E.CLOSURE)], _sawtooth_sound_dec = [n4([E.NUMBER, E.NUMBER], E.PAIR)], _consecutively_dec = [n4([E.LIST], E.PAIR)], _simultaneously_dec = [n4([E.LIST], E.PAIR)], _adsr_dec = [n4([E.NUMBER, E.NUMBER, E.NUMBER, E.NUMBER], E.CLOSURE)], _stacking_adsr_dec = [n4([E.CLOSURE, E.NUMBER, E.NUMBER, E.LIST], E.PAIR)], _phase_mod_dec = [n4([E.NUMBER, E.NUMBER, E.NUMBER], E.CLOSURE)], _squash_dec = [n4([E.PAIR], E.PAIR)], _pan_dec = [n4([E.NUMBER], E.CLOSURE)], _pan_mod_dec = [n4([E.PAIR], E.CLOSURE)], _bell_dec = [n4([E.NUMBER, E.NUMBER], E.PAIR)], _cello_dec = [n4([E.NUMBER, E.NUMBER], E.PAIR)], _piano_dec = [n4([E.NUMBER, E.NUMBER], E.PAIR)], _trombone_dec = [n4([E.NUMBER, E.NUMBER], E.PAIR)], _violin_dec = [n4([E.NUMBER, E.NUMBER], E.PAIR)], _a) {
     constructor(conduit, [soundChannel], evaluator, tabLoader) {
       super(conduit, [soundChannel], evaluator);
       __runInitializers(_init, 5, this);
@@ -1212,7 +1212,7 @@ to obtain permission to use microphone.`);
       return __asyncGenerator(this, null, function* () {
         const internal = yield new __await(conductorToSound(this.evaluator, sound));
         return {
-          type: O2.NUMBER,
+          type: E.NUMBER,
           value: get_duration(internal)
         };
       });
@@ -1221,19 +1221,19 @@ to obtain permission to use microphone.`);
       return __asyncGenerator(this, null, function* () {
         if (!value || !isPairLike(value)) {
           return {
-            type: O2.BOOLEAN,
+            type: E.BOOLEAN,
             value: false
           };
         }
         try {
           const internal = yield new __await(conductorToSound(this.evaluator, value));
           return {
-            type: O2.BOOLEAN,
+            type: E.BOOLEAN,
             value: is_sound(internal)
           };
-        } catch (e5) {
+        } catch (e6) {
           return {
-            type: O2.BOOLEAN,
+            type: E.BOOLEAN,
             value: false
           };
         }
@@ -1243,7 +1243,7 @@ to obtain permission to use microphone.`);
       return __asyncGenerator(this, null, function* () {
         this.__ensureTabLoaded();
         return {
-          type: O2.CONST_STRING,
+          type: E.CONST_STRING,
           value: yield new __await(init_record())
         };
       });
@@ -1254,7 +1254,7 @@ to obtain permission to use microphone.`);
         const evaluator = this.evaluator;
         const stopFn = record(buffer.value);
         return evaluator.closure_make({
-          returnType: O2.CLOSURE,
+          returnType: E.CLOSURE,
           args: []
         }, function () {
           return __asyncGenerator(this, null, function* () {
@@ -1298,7 +1298,7 @@ to obtain permission to use microphone.`);
         this.__ensureTabLoaded();
         stop();
         return {
-          type: O2.VOID,
+          type: E.VOID,
           value: void 0
         };
       });
@@ -1387,7 +1387,7 @@ to obtain permission to use microphone.`);
         const envelopeElements = yield new __await(readListElements(evaluator, envelopes));
         const envelopeClosures = [];
         for (const envelope of envelopeElements) {
-          if (envelope.type !== O2.CLOSURE) {
+          if (envelope.type !== E.CLOSURE) {
             throw new n("stacking_adsr", "envelopes", "a list of functions", envelope.value);
           }
           envelopeClosures.push(envelope);
@@ -1395,10 +1395,10 @@ to obtain permission to use microphone.`);
         const harmonics = [];
         for (let i = 0; i < envelopeClosures.length; i += 1) {
           const harmonicTv = yield* __yieldStar(evaluator.closure_call_unchecked(waveform, [{
-            type: O2.NUMBER,
+            type: E.NUMBER,
             value: base_frequency.value * (i + 1)
           }, {
-            type: O2.NUMBER,
+            type: E.NUMBER,
             value: duration.value
           }]));
           const harmonic = yield new __await(conductorToSound(evaluator, harmonicTv));

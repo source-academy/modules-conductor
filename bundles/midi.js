@@ -51,7 +51,7 @@ export default require => {
   });
   var __decoratorMetadata = (array, target) => __defNormalProp(target, __knownSymbol("metadata"), array[3]);
   var __runInitializers = (array, flags, self, value) => {
-    for (var i = 0, fns = array[flags >> 1], n4 = fns && fns.length; i < n4; i++) flags & 1 ? fns[i].call(self) : value = fns[i].call(self, value);
+    for (var i = 0, fns = array[flags >> 1], n3 = fns && fns.length; i < n3; i++) flags & 1 ? fns[i].call(self) : value = fns[i].call(self, value);
     return value;
   };
   var __decorateElement = (array, flags, name, decorators, target, extra) => {
@@ -95,15 +95,15 @@ export default require => {
       var fulfilled = value => {
         try {
           step(generator.next(value));
-        } catch (e6) {
-          reject(e6);
+        } catch (e7) {
+          reject(e7);
         }
       };
       var rejected = value => {
         try {
           step(generator.throw(value));
-        } catch (e6) {
-          reject(e6);
+        } catch (e7) {
+          reject(e7);
         }
       };
       var step = x => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
@@ -124,9 +124,9 @@ export default require => {
         } : y, yes, no) : yes({
           value: y,
           done
-        })).catch(e6 => resume("throw", e6, yes, no));
-      } catch (e6) {
-        no(e6);
+        })).catch(e7 => resume("throw", e7, yes, no));
+      } catch (e7) {
+        no(e7);
       }
     }, method = (k, call, wait, clear) => it[k] = x => (call = new Promise((yes, no, run) => (run = () => resume(k, x, yes, no), q ? q.then(run) : run())), clear = () => q === wait && (q = 0), q = wait = call.then(clear, clear), call), q, it = {};
     return (generator = generator.apply(__this, __arguments), it[__knownSymbol("asyncIterator")] = () => it, method("next"), method("throw"), method("return"), it);
@@ -135,13 +135,13 @@ export default require => {
   __export(index_exports, {
     default: () => MidiModulePlugin
   });
-  function n(n4, r2) {
+  function n(n3, r2) {
     const t5 = {
-      args: n4,
+      args: n3,
       returnType: r2
     };
-    return function (n5, r3) {
-      n5.signature = t5;
+    return function (n4, r3) {
+      n4.signature = t5;
     };
   }
   var _;
@@ -167,8 +167,8 @@ export default require => {
     (R2[R2.CALL = 0] = "CALL", R2[R2.RETURN = 1] = "RETURN", R2[R2.RETURN_ERR = 2] = "RETURN_ERR");
   })(R || (R = {}));
   var O;
-  !(function (O3) {
-    (O3[O3.PROTOCOL_VERSION = 0] = "PROTOCOL_VERSION", O3[O3.PROTOCOL_MIN_VERSION = 0] = "PROTOCOL_MIN_VERSION", O3[O3.SETUP_MESSAGES_BUFFER_SIZE = 10] = "SETUP_MESSAGES_BUFFER_SIZE");
+  !(function (O2) {
+    (O2[O2.PROTOCOL_VERSION = 0] = "PROTOCOL_VERSION", O2[O2.PROTOCOL_MIN_VERSION = 0] = "PROTOCOL_MIN_VERSION", O2[O2.SETUP_MESSAGES_BUFFER_SIZE = 10] = "SETUP_MESSAGES_BUFFER_SIZE");
   })(O || (O = {}));
   var o2 = class {
     constructor(t5, o5, r2) {
@@ -184,10 +184,10 @@ export default require => {
           if (!r2.signature || "function" != typeof r2 || "string" != typeof o5) throw new s(`'${String(o5)}' is not an exportable method`);
           const s5 = r2.bind(this);
           s5.signature = r2.signature;
-          const e6 = yield this.evaluator.closure_make(r2.signature, s5);
+          const e7 = yield this.evaluator.closure_make(r2.signature, s5);
           this.exports.push({
             symbol: o5,
-            value: e6,
+            value: e7,
             signature: r2.signature
           });
         }
@@ -195,10 +195,10 @@ export default require => {
     }
   };
   __publicField(o2, "channelAttach");
-  var O2;
-  !(function (O3) {
-    (O3[O3.VOID = 0] = "VOID", O3[O3.BOOLEAN = 1] = "BOOLEAN", O3[O3.NUMBER = 2] = "NUMBER", O3[O3.CONST_STRING = 3] = "CONST_STRING", O3[O3.EMPTY_LIST = 4] = "EMPTY_LIST", O3[O3.PAIR = 5] = "PAIR", O3[O3.ARRAY = 6] = "ARRAY", O3[O3.CLOSURE = 7] = "CLOSURE", O3[O3.OPAQUE = 8] = "OPAQUE", O3[O3.LIST = 9] = "LIST");
-  })(O2 || (O2 = {}));
+  var E;
+  !(function (E2) {
+    (E2[E2.VOID = 0] = "VOID", E2[E2.BOOLEAN = 1] = "BOOLEAN", E2[E2.NUMBER = 2] = "NUMBER", E2[E2.CONST_STRING = 3] = "CONST_STRING", E2[E2.EMPTY_LIST = 4] = "EMPTY_LIST", E2[E2.PAIR = 5] = "PAIR", E2[E2.ARRAY = 6] = "ARRAY", E2[E2.CLOSURE = 7] = "CLOSURE", E2[E2.OPAQUE = 8] = "OPAQUE", E2[E2.LIST = 9] = "LIST", E2[E2.ANY = 10] = "ANY", E2[E2.INTEGER = 11] = "INTEGER");
+  })(E || (E = {}));
   var a;
   !(function (a3) {
     (a3[a3.HELLO = 0] = "HELLO", a3[a3.ABORT = 1] = "ABORT", a3[a3.ENTRY = 2] = "ENTRY");
@@ -208,20 +208,22 @@ export default require => {
     (N2[N2.ONLINE = 0] = "ONLINE", N2[N2.EVAL_READY = 1] = "EVAL_READY", N2[N2.RUNNING = 2] = "RUNNING", N2[N2.WAITING = 3] = "WAITING", N2[N2.BREAKPOINT = 4] = "BREAKPOINT", N2[N2.STOPPED = 5] = "STOPPED", N2[N2.ERROR = 6] = "ERROR");
   })(N || (N = {}));
   var e2 = {
-    [O2.VOID]: false,
-    [O2.BOOLEAN]: false,
-    [O2.NUMBER]: false,
-    [O2.CONST_STRING]: false,
-    [O2.EMPTY_LIST]: true,
-    [O2.PAIR]: true,
-    [O2.ARRAY]: true,
-    [O2.CLOSURE]: true,
-    [O2.OPAQUE]: true,
-    [O2.LIST]: true
+    [E.VOID]: false,
+    [E.BOOLEAN]: false,
+    [E.NUMBER]: false,
+    [E.CONST_STRING]: false,
+    [E.EMPTY_LIST]: true,
+    [E.PAIR]: true,
+    [E.ARRAY]: true,
+    [E.CLOSURE]: true,
+    [E.OPAQUE]: true,
+    [E.LIST]: true,
+    [E.ANY]: false,
+    [E.INTEGER]: false
   };
   function t2(t5 = null) {
     return {
-      type: O2.EMPTY_LIST,
+      type: E.EMPTY_LIST,
       value: t5
     };
   }
@@ -230,21 +232,21 @@ export default require => {
       if (scale === null) return t2();
       const [head, tail] = scale;
       return evaluator.pair_make({
-        type: O2.NUMBER,
+        type: E.NUMBER,
         value: head
       }, yield scaleToConductorList(evaluator, tail));
     });
   }
   var s3 = class extends o {
-    constructor(r2, o5, s5, e6) {
-      super(`${void 0 !== o5 ? `${e6 ? e6 + ":" : ""}${o5}${void 0 !== s5 ? ":" + s5 : ""}: ` : ""}${r2}`);
+    constructor(r2, o5, s5, e7) {
+      super(`${void 0 !== o5 ? `${e7 ? e7 + ":" : ""}${o5}${void 0 !== s5 ? ":" + s5 : ""}: ` : ""}${r2}`);
       __publicField(this, "name", "EvaluatorError");
       __publicField(this, "errorType", _.EVALUATOR);
       __publicField(this, "rawMessage");
       __publicField(this, "line");
       __publicField(this, "column");
       __publicField(this, "fileName");
-      (this.rawMessage = r2, this.line = o5, this.column = s5, this.fileName = e6);
+      (this.rawMessage = r2, this.line = o5, this.column = s5, this.fileName = e7);
     }
   };
   function e4(r2) {
@@ -259,10 +261,10 @@ export default require => {
       if ("function" == typeof r3) return r3.name ? `function ${r3.name}` : "anonymous function";
       try {
         return (_a2 = JSON.stringify(r3)) != null ? _a2 : Object.prototype.toString.call(r3);
-      } catch (e6) {
+      } catch (e7) {
         try {
           return String(r3);
-        } catch (e7) {
+        } catch (e8) {
           return Object.prototype.toString.call(r3);
         }
       }
@@ -270,23 +272,23 @@ export default require => {
     return t5.length > 100 ? `${t5.slice(0, 100)}...` : t5;
   }
   var n2 = class extends s3 {
-    constructor(r2, t5, n4, o5, u3, a3, i) {
-      super(`${r2}: Expected ${n4}${t5 ? ` for ${t5}` : ""}, got ${e4(o5)}.`, u3, a3, i);
+    constructor(r2, t5, n3, o5, u3, a3, i) {
+      super(`${r2}: Expected ${n3}${t5 ? ` for ${t5}` : ""}, got ${e4(o5)}.`, u3, a3, i);
       __publicField(this, "name", "EvaluatorParameterTypeError");
       __publicField(this, "errorType", _.EVALUATOR_TYPE);
       __publicField(this, "funcName");
       __publicField(this, "paramName");
       __publicField(this, "expected");
       __publicField(this, "actual");
-      (this.funcName = r2, this.paramName = t5, this.expected = n4, this.actual = o5);
+      (this.funcName = r2, this.paramName = t5, this.expected = n3, this.actual = o5);
     }
   };
   var u = class extends n2 {
-    constructor(r2, t5, e6, n4, o5, u3, a3) {
-      super(e6, n4, (function (r3) {
+    constructor(r2, t5, e7, n3, o5, u3, a3) {
+      super(e7, n3, (function (r3) {
         if ("string" == typeof r3) return r3;
-        const {min: t6, max: e7, integer: n5 = true} = r3, o6 = n5 ? "integer" : "number";
-        return void 0 !== t6 && void 0 !== e7 ? `${o6} \u2208 [${t6}, ${e7}]` : void 0 !== t6 ? `${o6} \u2265 ${t6}` : void 0 !== e7 ? `${o6} \u2264 ${e7}` : o6;
+        const {min: t6, max: e8, integer: n4 = true} = r3, o6 = n4 ? "integer" : "number";
+        return void 0 !== t6 && void 0 !== e8 ? `${o6} \u2208 [${t6}, ${e8}]` : void 0 !== t6 ? `${o6} \u2265 ${t6}` : void 0 !== e8 ? `${o6} \u2264 ${e8}` : o6;
       })(t5), r2, o5, u3, a3);
       __publicField(this, "name", "EvaluatorNumberRangeError");
     }
@@ -298,13 +300,13 @@ export default require => {
       __publicField(this, "errorType", _.EVALUATOR_RUNTIME);
     }
   };
-  function f(r2, o5, t5, e6 = true) {
-    return "number" == typeof r2 && !Number.isNaN(r2) && (!(e6 && !Number.isInteger(r2)) && (!(void 0 !== o5 && r2 < o5) && !(void 0 !== t5 && r2 > t5)));
+  function p(r2, o5, t5, n3 = true) {
+    return "number" == typeof r2 && !Number.isNaN(r2) && (!(n3 && !Number.isInteger(r2)) && (!(void 0 !== o5 && r2 < o5) && !(void 0 !== t5 && r2 > t5)));
   }
-  function m(r2, t5, e6, n4, i = true, u3) {
-    if (!f(r2, e6, n4, i)) throw new u(r2, {
-      min: e6,
-      max: n4,
+  function l(o5, t5, n3, e7, i = true, u3) {
+    if (!p(o5, n3, e7, i)) throw new u(o5, {
+      min: n3,
+      max: e7,
       integer: i
     }, t5, u3);
   }
@@ -454,14 +456,14 @@ export default require => {
     return `${note}${octave}`;
   }
   function midi_note_to_frequency(note) {
-    m(note, "midi_note_to_frequency");
+    l(note, "midi_note_to_frequency");
     return 440 * __pow(2, (note - 69) / 12);
   }
   function letter_name_to_frequency(note) {
     return midi_note_to_frequency(letter_name_to_midi_note(note));
   }
   function add_octave_to_note(note, octave) {
-    m(octave, "add_octave_to_note", 0, void 0, true, "octave");
+    l(octave, "add_octave_to_note", 0, void 0, true, "octave");
     const match = (/^([A-Ga-g])([#♮b]?)$/).exec(note);
     if (match === null || parseNoteWithOctave(note) === null) {
       throw new n2("add_octave_to_note", "note", "a note without an octave", note);
@@ -482,7 +484,7 @@ export default require => {
     return accidental;
   }
   function key_signature_to_key(accidental, numAccidentals) {
-    m(numAccidentals, "key_signature_to_key", 0, 6, true, "numAccidentals");
+    l(numAccidentals, "key_signature_to_key", 0, 6, true, "numAccidentals");
     switch (accidental) {
       case "#":
         {
@@ -502,7 +504,7 @@ export default require => {
   var FLAT = "b";
   var NATURAL = "\u266E";
   var _locrian_scale_dec, _aeolian_scale_dec, _minor_scale_dec, _mixolydian_scale_dec, _lydian_scale_dec, _phrygian_scale_dec, _dorian_scale_dec, _ionian_scale_dec, _major_scale_dec, _key_signature_to_key_dec, _get_accidental_dec, _get_note_name_dec, _get_octave_dec, _add_octave_to_note_dec, _is_note_with_octave_dec, _letter_name_to_frequency_dec, _midi_note_to_frequency_dec, _midi_note_to_letter_name_dec, _letter_name_to_midi_note_dec, _a, _init;
-  var MidiModulePlugin = class extends (_a = o2, _letter_name_to_midi_note_dec = [n([O2.CONST_STRING], O2.NUMBER)], _midi_note_to_letter_name_dec = [n([O2.NUMBER, O2.CONST_STRING], O2.CONST_STRING)], _midi_note_to_frequency_dec = [n([O2.NUMBER], O2.NUMBER)], _letter_name_to_frequency_dec = [n([O2.CONST_STRING], O2.NUMBER)], _is_note_with_octave_dec = [n([], O2.BOOLEAN)], _add_octave_to_note_dec = [n([O2.CONST_STRING, O2.NUMBER], O2.CONST_STRING)], _get_octave_dec = [n([O2.CONST_STRING], O2.NUMBER)], _get_note_name_dec = [n([O2.CONST_STRING], O2.CONST_STRING)], _get_accidental_dec = [n([O2.CONST_STRING], O2.CONST_STRING)], _key_signature_to_key_dec = [n([O2.CONST_STRING, O2.NUMBER], O2.CONST_STRING)], _major_scale_dec = [n([O2.NUMBER], O2.LIST)], _ionian_scale_dec = [n([O2.NUMBER], O2.LIST)], _dorian_scale_dec = [n([O2.NUMBER], O2.LIST)], _phrygian_scale_dec = [n([O2.NUMBER], O2.LIST)], _lydian_scale_dec = [n([O2.NUMBER], O2.LIST)], _mixolydian_scale_dec = [n([O2.NUMBER], O2.LIST)], _minor_scale_dec = [n([O2.NUMBER], O2.LIST)], _aeolian_scale_dec = [n([O2.NUMBER], O2.LIST)], _locrian_scale_dec = [n([O2.NUMBER], O2.LIST)], _a) {
+  var MidiModulePlugin = class extends (_a = o2, _letter_name_to_midi_note_dec = [n([E.CONST_STRING], E.NUMBER)], _midi_note_to_letter_name_dec = [n([E.NUMBER, E.CONST_STRING], E.CONST_STRING)], _midi_note_to_frequency_dec = [n([E.NUMBER], E.NUMBER)], _letter_name_to_frequency_dec = [n([E.CONST_STRING], E.NUMBER)], _is_note_with_octave_dec = [n([E.ANY], E.BOOLEAN)], _add_octave_to_note_dec = [n([E.CONST_STRING, E.NUMBER], E.CONST_STRING)], _get_octave_dec = [n([E.CONST_STRING], E.NUMBER)], _get_note_name_dec = [n([E.CONST_STRING], E.CONST_STRING)], _get_accidental_dec = [n([E.CONST_STRING], E.CONST_STRING)], _key_signature_to_key_dec = [n([E.CONST_STRING, E.NUMBER], E.CONST_STRING)], _major_scale_dec = [n([E.NUMBER], E.LIST)], _ionian_scale_dec = [n([E.NUMBER], E.LIST)], _dorian_scale_dec = [n([E.NUMBER], E.LIST)], _phrygian_scale_dec = [n([E.NUMBER], E.LIST)], _lydian_scale_dec = [n([E.NUMBER], E.LIST)], _mixolydian_scale_dec = [n([E.NUMBER], E.LIST)], _minor_scale_dec = [n([E.NUMBER], E.LIST)], _aeolian_scale_dec = [n([E.NUMBER], E.LIST)], _locrian_scale_dec = [n([E.NUMBER], E.LIST)], _a) {
     constructor(conduit, channels, evaluator) {
       super(conduit, channels, evaluator);
       __runInitializers(_init, 5, this);
@@ -511,19 +513,19 @@ export default require => {
       this.exports.push({
         symbol: "SHARP",
         value: {
-          type: O2.CONST_STRING,
+          type: E.CONST_STRING,
           value: SHARP
         }
       }, {
         symbol: "FLAT",
         value: {
-          type: O2.CONST_STRING,
+          type: E.CONST_STRING,
           value: FLAT
         }
       }, {
         symbol: "NATURAL",
         value: {
-          type: O2.CONST_STRING,
+          type: E.CONST_STRING,
           value: NATURAL
         }
       });
@@ -531,7 +533,7 @@ export default require => {
     letter_name_to_midi_note(note) {
       return __asyncGenerator(this, null, function* () {
         return {
-          type: O2.NUMBER,
+          type: E.NUMBER,
           value: letter_name_to_midi_note(note.value)
         };
       });
@@ -539,7 +541,7 @@ export default require => {
     midi_note_to_letter_name(note, accidental) {
       return __asyncGenerator(this, null, function* () {
         return {
-          type: O2.CONST_STRING,
+          type: E.CONST_STRING,
           value: midi_note_to_letter_name(note.value, accidental.value)
         };
       });
@@ -547,7 +549,7 @@ export default require => {
     midi_note_to_frequency(note) {
       return __asyncGenerator(this, null, function* () {
         return {
-          type: O2.NUMBER,
+          type: E.NUMBER,
           value: midi_note_to_frequency(note.value)
         };
       });
@@ -555,7 +557,7 @@ export default require => {
     letter_name_to_frequency(note) {
       return __asyncGenerator(this, null, function* () {
         return {
-          type: O2.NUMBER,
+          type: E.NUMBER,
           value: letter_name_to_frequency(note.value)
         };
       });
@@ -563,7 +565,7 @@ export default require => {
     is_note_with_octave(value) {
       return __asyncGenerator(this, null, function* () {
         return {
-          type: O2.BOOLEAN,
+          type: E.BOOLEAN,
           value: is_note_with_octave(value == null ? void 0 : value.value)
         };
       });
@@ -571,7 +573,7 @@ export default require => {
     add_octave_to_note(note, octave) {
       return __asyncGenerator(this, null, function* () {
         return {
-          type: O2.CONST_STRING,
+          type: E.CONST_STRING,
           value: add_octave_to_note(note.value, octave.value)
         };
       });
@@ -579,7 +581,7 @@ export default require => {
     get_octave(note) {
       return __asyncGenerator(this, null, function* () {
         return {
-          type: O2.NUMBER,
+          type: E.NUMBER,
           value: get_octave(note.value)
         };
       });
@@ -587,7 +589,7 @@ export default require => {
     get_note_name(note) {
       return __asyncGenerator(this, null, function* () {
         return {
-          type: O2.CONST_STRING,
+          type: E.CONST_STRING,
           value: get_note_name(note.value)
         };
       });
@@ -595,7 +597,7 @@ export default require => {
     get_accidental(note) {
       return __asyncGenerator(this, null, function* () {
         return {
-          type: O2.CONST_STRING,
+          type: E.CONST_STRING,
           value: get_accidental(note.value)
         };
       });
@@ -603,7 +605,7 @@ export default require => {
     key_signature_to_key(accidental, numAccidentals) {
       return __asyncGenerator(this, null, function* () {
         return {
-          type: O2.CONST_STRING,
+          type: E.CONST_STRING,
           value: key_signature_to_key(accidental.value, numAccidentals.value)
         };
       });
