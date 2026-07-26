@@ -980,6 +980,7 @@ to obtain permission to use microphone.`);
     return stacking_adsr(sawtooth_sound, midi_note_to_frequency(note), duration, [adsrTransformer(0.35, 0, 1, 0.15), adsrTransformer(0.35, 0, 1, 0.15), adsrTransformer(0.45, 0, 1, 0.15), adsrTransformer(0.45, 0, 1, 0.15)]);
   }
   var SOUND_CHANNEL_ID = "sourceacademy-sound-channel";
+  var SOUND_TAB_NAME = "Sound";
   var waveDecodeCache = new WeakMap();
   var closureEncodeCache = new WeakMap();
   function closureToWave(evaluator, closure) {
@@ -1004,10 +1005,15 @@ to obtain permission to use microphone.`);
       });
     };
     const syncCall = (_a2 = evaluator.closure_call_sync) == null ? void 0 : _a2.bind(evaluator);
-    const probe = syncCall == null ? void 0 : syncCall(closure, [{
-      type: E.NUMBER,
-      value: 0
-    }]);
+    let probe;
+    try {
+      probe = syncCall == null ? void 0 : syncCall(closure, [{
+        type: E.NUMBER,
+        value: 0
+      }]);
+    } catch (e6) {
+      probe = void 0;
+    }
     if (probe !== void 0) {
       if (probe.type !== E.NUMBER) {
         throw new e2(`Expected a wave to return a number, got ${E[probe.type]}`);
@@ -1161,22 +1167,24 @@ to obtain permission to use microphone.`);
   var _violin_dec, _trombone_dec, _piano_dec, _cello_dec, _bell_dec, _pan_mod_dec, _pan_dec, _squash_dec, _phase_mod_dec, _stacking_adsr_dec, _adsr_dec, _simultaneously_dec, _consecutively_dec, _sawtooth_sound_dec, _sawtooth_wave_dec, _triangle_sound_dec, _triangle_wave_dec, _square_sound_dec, _square_wave_dec, _sine_sound_dec, _sine_wave_dec, _silence_sound_dec, _silence_wave_dec, _noise_sound_dec, _noise_wave_dec, _stop_dec, _play_dec, _play_waves_dec, _play_wave_dec, _record_for_dec, _record_dec, _init_record_dec, _is_sound_dec, _get_duration_dec, _get_right_wave_dec, _get_left_wave_dec, _get_wave_dec, _make_stereo_sound_dec, _make_sound_dec, _a, _init;
   var SoundModulePlugin = class extends (_a = o3, _make_sound_dec = [n4([E.CLOSURE, E.NUMBER], E.PAIR)], _make_stereo_sound_dec = [n4([E.CLOSURE, E.CLOSURE, E.NUMBER], E.PAIR)], _get_wave_dec = [n4([E.PAIR], E.CLOSURE)], _get_left_wave_dec = [n4([E.PAIR], E.CLOSURE)], _get_right_wave_dec = [n4([E.PAIR], E.CLOSURE)], _get_duration_dec = [n4([E.PAIR], E.NUMBER)], _is_sound_dec = [n4([E.ANY], E.BOOLEAN)], _init_record_dec = [n4([], E.CONST_STRING)], _record_dec = [n4([E.NUMBER], E.CLOSURE)], _record_for_dec = [n4([E.NUMBER, E.NUMBER], E.CLOSURE)], _play_wave_dec = [n4([E.CLOSURE, E.NUMBER], E.PAIR)], _play_waves_dec = [n4([E.CLOSURE, E.CLOSURE, E.NUMBER], E.PAIR)], _play_dec = [n4([E.PAIR], E.PAIR)], _stop_dec = [n4([], E.VOID)], _noise_wave_dec = [n4([], E.CLOSURE)], _noise_sound_dec = [n4([E.NUMBER], E.PAIR)], _silence_wave_dec = [n4([], E.CLOSURE)], _silence_sound_dec = [n4([E.NUMBER], E.PAIR)], _sine_wave_dec = [n4([E.NUMBER], E.CLOSURE)], _sine_sound_dec = [n4([E.NUMBER, E.NUMBER], E.PAIR)], _square_wave_dec = [n4([E.NUMBER], E.CLOSURE)], _square_sound_dec = [n4([E.NUMBER, E.NUMBER], E.PAIR)], _triangle_wave_dec = [n4([E.NUMBER], E.CLOSURE)], _triangle_sound_dec = [n4([E.NUMBER, E.NUMBER], E.PAIR)], _sawtooth_wave_dec = [n4([E.NUMBER], E.CLOSURE)], _sawtooth_sound_dec = [n4([E.NUMBER, E.NUMBER], E.PAIR)], _consecutively_dec = [n4([E.LIST], E.PAIR)], _simultaneously_dec = [n4([E.LIST], E.PAIR)], _adsr_dec = [n4([E.NUMBER, E.NUMBER, E.NUMBER, E.NUMBER], E.CLOSURE)], _stacking_adsr_dec = [n4([E.CLOSURE, E.NUMBER, E.NUMBER, E.LIST], E.PAIR)], _phase_mod_dec = [n4([E.NUMBER, E.NUMBER, E.NUMBER], E.CLOSURE)], _squash_dec = [n4([E.PAIR], E.PAIR)], _pan_dec = [n4([E.NUMBER], E.CLOSURE)], _pan_mod_dec = [n4([E.PAIR], E.CLOSURE)], _bell_dec = [n4([E.NUMBER, E.NUMBER], E.PAIR)], _cello_dec = [n4([E.NUMBER, E.NUMBER], E.PAIR)], _piano_dec = [n4([E.NUMBER, E.NUMBER], E.PAIR)], _trombone_dec = [n4([E.NUMBER, E.NUMBER], E.PAIR)], _violin_dec = [n4([E.NUMBER, E.NUMBER], E.PAIR)], _a) {
     constructor(conduit, [soundChannel], evaluator, tabLoader) {
+      if (!soundChannel) {
+        throw new Error("Sound channel is required but was not provided.");
+      }
       super(conduit, [soundChannel], evaluator);
       __runInitializers(_init, 5, this);
       this.id = "sound";
       this.exportedNames = ["adsr", "bell", "cello", "consecutively", "get_duration", "get_left_wave", "get_right_wave", "get_wave", "init_record", "is_sound", "make_sound", "make_stereo_sound", "noise_sound", "noise_wave", "pan", "pan_mod", "phase_mod", "piano", "play", "play_wave", "play_waves", "record", "record_for", "sawtooth_sound", "sawtooth_wave", "silence_sound", "silence_wave", "simultaneously", "sine_sound", "sine_wave", "square_sound", "square_wave", "squash", "stacking_adsr", "stop", "triangle_sound", "triangle_wave", "trombone", "violin"];
       this.__tabLoader = void 0;
       this.__tabLoaded = false;
-      if (!soundChannel) {
-        throw new Error("Sound channel is required but was not provided.");
-      }
       this.__tabLoader = tabLoader;
       setSoundIO(s4(soundChannel, {}));
     }
     __ensureTabLoaded() {
       if (this.__tabLoaded || this.__tabLoader === void 0) return;
-      const tabName = this.__tabLoader.tabs[0];
-      if (tabName === void 0) return;
+      const tabName = this.__tabLoader.tabs.find(tab => tab === SOUND_TAB_NAME);
+      if (tabName === void 0) {
+        throw new Error("Sound tab is required but was not provided.");
+      }
       this.__tabLoader.loadTab(tabName);
       this.__tabLoaded = true;
     }
