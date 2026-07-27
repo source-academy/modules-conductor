@@ -161,6 +161,7 @@ export default require => {
   };
   var index_exports = {};
   __export(index_exports, {
+    conductorToSound: () => conductorToSound,
     default: () => SoundModulePlugin
   });
   var _;
