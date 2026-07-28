@@ -276,18 +276,21 @@ export default require => {
     return __async(this, null, function* () {
       if (!value) return false;
       if (value.type === E.EMPTY_LIST) return true;
-      if (value.type !== E.PAIR) return false;
+      if (!isPairLike(value)) return false;
       const rest = yield evaluator.pair_tail(value);
-      if (rest.type !== E.PAIR) return false;
+      if (!isPairLike(rest)) return false;
       const left = yield evaluator.pair_head(rest);
       if (!(yield is_tree(evaluator, left))) return false;
       const rightRest = yield evaluator.pair_tail(rest);
-      if (rightRest.type !== E.PAIR) return false;
+      if (!isPairLike(rightRest)) return false;
       const right = yield evaluator.pair_head(rightRest);
       if (!(yield is_tree(evaluator, right))) return false;
       const tail = yield evaluator.pair_tail(rightRest);
       return tail.type === E.EMPTY_LIST;
     });
+  }
+  function isPairLike(value) {
+    return value.type === E.PAIR || value.type === E.ARRAY;
   }
   function is_empty_tree(value) {
     return (value == null ? void 0 : value.type) === E.EMPTY_LIST;
@@ -297,7 +300,7 @@ export default require => {
       if (!value || !(yield is_tree(evaluator, value))) {
         throw new s3(`${funcName} expects binary tree`, "binary tree", value ? E[value.type] : "undefined");
       }
-      if (value.type !== E.PAIR) {
+      if (!isPairLike(value)) {
         throw new e(`${funcName} received an empty binary tree!`);
       }
       return value;
