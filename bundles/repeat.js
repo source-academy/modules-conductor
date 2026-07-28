@@ -204,24 +204,24 @@ export default require => {
     (O2[O2.PROTOCOL_VERSION = 0] = "PROTOCOL_VERSION", O2[O2.PROTOCOL_MIN_VERSION = 0] = "PROTOCOL_MIN_VERSION", O2[O2.SETUP_MESSAGES_BUFFER_SIZE = 10] = "SETUP_MESSAGES_BUFFER_SIZE");
   })(O || (O = {}));
   var o2 = class {
-    constructor(t2, o3, r) {
+    constructor(t2, o3, s3) {
       __publicField(this, "exports", []);
       __publicField(this, "exportedNames", []);
       __publicField(this, "evaluator");
-      this.evaluator = r;
+      this.evaluator = s3;
     }
     initialise() {
       return __async(this, null, function* () {
         for (const o3 of this.exportedNames) {
-          const r = this[o3];
-          if (!r.signature || "function" != typeof r || "string" != typeof o3) throw new s(`'${String(o3)}' is not an exportable method`);
-          const s3 = r.bind(this);
-          s3.signature = r.signature;
-          const e2 = yield this.evaluator.closure_make(r.signature, s3);
+          const s3 = this[o3];
+          if (!s3.signature || "function" != typeof s3 || "string" != typeof o3) throw new s(`'${String(o3)}' is not an exportable method`);
+          const r = s3.bind(this);
+          (r.signature = s3.signature, s3.sync && (r.sync = s3.sync.bind(this)));
+          const i = yield this.evaluator.closure_make(s3.signature, r);
           this.exports.push({
             symbol: o3,
-            value: e2,
-            signature: r.signature
+            value: i,
+            signature: s3.signature
           });
         }
       });

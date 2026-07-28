@@ -306,24 +306,24 @@ export default require => {
     };
   }
   var o3 = class {
-    constructor(t5, o4, r3) {
+    constructor(t5, o4, s7) {
       __publicField(this, "exports", []);
       __publicField(this, "exportedNames", []);
       __publicField(this, "evaluator");
-      this.evaluator = r3;
+      this.evaluator = s7;
     }
     initialise() {
       return __async(this, null, function* () {
         for (const o4 of this.exportedNames) {
-          const r3 = this[o4];
-          if (!r3.signature || "function" != typeof r3 || "string" != typeof o4) throw new s(`'${String(o4)}' is not an exportable method`);
-          const s7 = r3.bind(this);
-          s7.signature = r3.signature;
-          const e6 = yield this.evaluator.closure_make(r3.signature, s7);
+          const s7 = this[o4];
+          if (!s7.signature || "function" != typeof s7 || "string" != typeof o4) throw new s(`'${String(o4)}' is not an exportable method`);
+          const r3 = s7.bind(this);
+          (r3.signature = s7.signature, s7.sync && (r3.sync = s7.sync.bind(this)));
+          const i = yield this.evaluator.closure_make(s7.signature, r3);
           this.exports.push({
             symbol: o4,
-            value: e6,
-            signature: r3.signature
+            value: i,
+            signature: s7.signature
           });
         }
       });
